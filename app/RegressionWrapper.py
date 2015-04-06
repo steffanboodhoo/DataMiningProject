@@ -1,5 +1,6 @@
 import RegressionLinear
 import RegressionRigid
+import RegressionEvaluation as Eval
 import pylab
 dataX = [[4,3,3,14,13],
 	[4,4,3,13,14],
@@ -20,12 +21,12 @@ dataYLabels = ["sec3"]
 def testLinear():
 	regLin = RegressionLinear.RegLnr(dataY,dataX,dataYLabels,dataXLabels)
 	predictedDataSet = regLin.predictTrainData()
-	return {'target':dataY,'predicted':list(predictedDataSet)}
+	return {'target':dataY,'predicted':list(predictedDataSet),'error':Eval.allErrors(dataY,predictedDataSet)}
 
 def testRidge():
 	regRig = RegressionRigid.RegRidge(dataY,dataX,dataYLabels,dataXLabels)
 	predictedDataSet = regRig.predictTrainData()
-	return {'target':dataY,'predicted':list(predictedDataSet)}
+	return {'target':dataY,'predicted':list(predictedDataSet),'error':Eval.allErrors(dataY,predictedDataSet)}
 
 #def acceptData(trainData,testData):
 
