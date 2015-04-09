@@ -5,7 +5,7 @@ from werkzeug import secure_filename
 import RegressionWrapper as regr
 import ClassificationWrapper as classify
 
-UPLOAD_FOLDER = '/uploads'
+UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['csv'])
 
 @app.route('/')
@@ -38,11 +38,11 @@ def allowed_file(filename):
 @app.route('/upload', methods = ['GET','POST'])
 def upload_file():
 	if request.method == 'POST':
-		file = request.files['files']
+		file = request.files['file']
 		logging.debug('upload file ' + file.filename)
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			# file.save(os.path.join(UPLOAD_FOLDER, filename))
 			
 			content = file.read()
 			print content
@@ -50,8 +50,8 @@ def upload_file():
 			jsonResponse = json.dumps({'file_content':content})
 			response = Response(jsonResponse, mimetype='application/json')
 			# return response
-			return redirect(url_for('uploaded_file',
-                                    filename=filename))
+			# return redirect(url_for('uploaded_file',
+   #                                  filename=filename))
 	return '''
     <!doctype html>
     <title>Upload new File</title>
@@ -64,5 +64,5 @@ def upload_file():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],
+    return send_from_directory(UPLOAD_FOLDER,
                                filename)
