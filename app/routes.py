@@ -2,8 +2,8 @@ import os, json, logging
 from flask import request, redirect, url_for, render_template, jsonify, render_template, send_from_directory, Response
 from app import app
 from werkzeug import secure_filename
-import RegressionWrapper as regr
-import ClassificationWrapper as classify
+import app.wrappers.RegressionWrapper as regr
+import app.wrappers.ClassificationWrapper as classify
 
 UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['csv'])

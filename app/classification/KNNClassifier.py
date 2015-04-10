@@ -1,7 +1,7 @@
 from sklearn import neighbors, datasets
 import random
 
-class KNNClass:
+class KNN:
 
 	def __init__(self,n_neighbors,weights,target,attributes):
 		self.n_neighbors = n_neighbors

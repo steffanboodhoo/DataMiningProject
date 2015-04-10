@@ -1,4 +1,4 @@
-import KNNClassification
+import app.classification.KNNClassifier as knn
 import pylab
 import random
 from sklearn import datasets
@@ -24,7 +24,7 @@ for x in range(len(iris.data)):
         testSet_target.append(iris.target[x])
 
 def testKNN():
-	nClass = KNNClassification.KNNClass(n_neighbors,weights,trainingSet_target,trainingSet_data)
+	nClass = knn.KNN(n_neighbors,weights,trainingSet_target,trainingSet_data)
 	predictedDataSet = nClass.predictDataSet(testSet_data)
 	accuracy = nClass.accuracy(testSet_data,testSet_target)
 	return {'target':testSet_target,'predicted':list(predictedDataSet),'accuracy':accuracy}
