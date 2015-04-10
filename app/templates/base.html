@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Fifty - A web based data mining platform</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, maximum-scale=1.0">
+		<meta name="theme-color" content="#ffffff">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arvo|Source+Sans+Pro:400,400italic,700|Lato:300,400">
+		<link rel="stylesheet" href="static/css/unsemantic.css">
+		<link rel="stylesheet" href="static/css/common.css">
+		<link rel="stylesheet" href="static/css/home.css">
+		<script src="static/bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="static/bower_components/skrollr/dist/skrollr.min.js"></script>
+		<script src="static/js/common.js"></script>
+		<script src="static/js/home.js"></script>
+	</head>
+	<body>
+		<div id="skrollr-body">
+			<!-- Unique page content goes here -->
+			<hr>
+    		{% block herounit %}{% endblock %}
+
+			<main>
+				<header>
+					<div class="grid-container">
+						<div class="grid-40 mobile-grid-50">
+							<div class="links">
+								<a href="#">
+									<i class="fa fa-magic fa-lg"></i> Analyze
+								</a>
+								<a href="#">
+									<i class="fa fa-book fa-lg"></i> Docs
+								</a>
+								<a href="#">
+									<i class="fa fa-question fa-lg"></i> FAQ
+								</a>
+							</div>
+						</div>
+						<div class="grid-20 hide-on-mobile text-center">
+							<a href="/" class="text-logo">Fifty</a>
+						</div>
+						<div class="grid-40 mobile-grid-50 text-right">
+							<div class="links">
+								<a href="https://github.com/steffanboodhoo/DataMiningProject">
+									<i class="fa fa-github fa-lg"></i> GitHub
+								</a>
+								<a href="#">
+									<i class="fa fa-stack-overflow fa-lg"></i> Help
+								</a>
+								<a href="#">
+									<i class="fa fa-heart fa-lg"></i> Blank
+								</a>
+							</div>
+						</div>
+					</div>
+				</header>
+				<!-- Unique page content goes here -->
+				<hr>
+	    		{% block content %}{% endblock %}
+			</main>
+
+			<footer>
+				<div class="footer-main">
+					<div class="grid-container">
+						<div class="grid-40 text-center">
+							<div class="logo">50</div>
+							<br><br>
+							Fifty by Steffan Boodhoo and Jherez Taylor
+							<br>
+							2015
+						</div>
+						<div class="grid-15 mobile-grid-50 links">
+							<h5>Analyze</h5>
+							<a href="#">Classification</a>
+							<a href="#">Regression</a>
+						</div>
+						<div class="grid-15 mobile-grid-50 links">
+							<h5>Project</h5>
+							<a href="#">Data Mining</a>
+							<a href="https://github.com/steffanboodhoo/DataMiningProject">GitHub</a>
+						</div>
+						<div class="clear hide-on-desktop"></div>
+						<div class="grid-15 mobile-grid-50 links">
+							<h5>About Us</h5>
+							<a href="http://https//tt.linkedin.com/in/steffanboodhoo">Steffan Boodhoo</a>
+							<a href="https://tt.linkedin.com/in/jhereztaylor">Jherez Taylor</a>
+						</div>
+						<div class="grid-15 mobile-grid-50 links">
+							<h5>GitHub</h5>
+							<a href="https://github.com/JherezTaylor">JT</a>
+							<a href="https://github.com/steffanboodhoo">SB</a>
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

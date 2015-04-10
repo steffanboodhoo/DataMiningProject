@@ -11,7 +11,8 @@ ALLOWED_EXTENSIONS = set(['csv'])
 @app.route('/')
 @app.route('/index')
 def index():
-	return render_template('starter.html')
+	user = {'nickname': 'Miguel'}  # fake user
+	return render_template('index.html')
 
 @app.route('/regression/linear/test')
 def regressionLinear():

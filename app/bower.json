@@ -1,0 +1,24 @@
+{
+  "name": "data-mining",
+  "version": "0.5",
+  "homepage": "https://github.com/steffanboodhoo/DataMiningProject",
+  "authors": [
+    "steffanboodhoo <steffan_boodhoo@hotmail.com",
+    "jherezTaylor <jherez.taylor@gmail.com>"
+  ],
+  "description": "Web based data mining",
+  "main": "run.py",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "static/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.3"
+  }
+}
