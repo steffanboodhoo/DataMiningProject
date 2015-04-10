@@ -49,6 +49,7 @@ def upload_file():
 
 			jsonResponse = json.dumps({'file_content':content})
 			response = Response(jsonResponse, mimetype='application/json')
+			print response
 			# return response
 			# return redirect(url_for('uploaded_file',
    #                                  filename=filename))

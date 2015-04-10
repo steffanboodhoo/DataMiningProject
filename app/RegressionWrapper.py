@@ -14,17 +14,18 @@ dataX = [[4,3,3,14,13],
 	[3,3,2,14,15],
 	[4,2,2,16,16],
 	[5,2,1,15,13]]
+
 dataY = [15,17,16,12,14,18,19,15,15,13,11,16]
 dataXLabels = ["wk1","wk2","wk3","sec1","sec2"]
 dataYLabels = ["sec3"]
 
 def testLinear():
-	regLin = RegressionLinear.RegLnr(dataY,dataX,dataYLabels,dataXLabels)
+	regLin = RegressionLinear.RegLnr(dataY,dataX,dataYLabels,dataXLabels,False,False)
 	predictedDataSet = regLin.predictTrainData()
 	return {'target':dataY,'predicted':list(predictedDataSet),'error':Eval.allErrors(dataY,predictedDataSet)}
 
 def testRidge():
-	regRig = RegressionRigid.RegRidge(dataY,dataX,dataYLabels,dataXLabels)
+	regRig = RegressionRigid.RegRidge(dataY,dataX,dataYLabels,dataXLabels,True,False)
 	predictedDataSet = regRig.predictTrainData()
 	return {'target':dataY,'predicted':list(predictedDataSet),'error':Eval.allErrors(dataY,predictedDataSet)}
 

@@ -1,9 +1,15 @@
 from sklearn import linear_model
-
+from sklearn import preprocessing
 class RegLnr:
 
-	def __init__(self,target,attributes,target_name,attribute_names):
+	def __init__(self,target,attributes,target_name,attribute_names,normalization,standardization):
 		self.target=target
+		if(normalization):
+			attributes = preprocessing.normalize(attributes)
+			self.normalization = True
+		if(standardization):
+			attributes = preprocessing.standardization(attributes)
+			self.standardization = True
 		self.attributes=attributes
 		self.target_name=target_name
 		self.attribute_names=attribute_names

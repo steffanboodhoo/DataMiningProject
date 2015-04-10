@@ -1,6 +1,5 @@
 import sklearn.metrics as metrics
 
-
 def allErrors(y_true,y_predict):
 	return {"r2":metrics.r2_score(y_true,y_predict),"mae":metrics.mean_absolute_error(y_true,y_predict),
 	"mse":metrics.mean_squared_error(y_true,y_predict)}
