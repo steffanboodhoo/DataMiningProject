@@ -34,3 +34,7 @@ def allowed_file(filename):
 @app.route('/upload')
 def upload_file():
 	return render_template('upload.html')
+
+@app.route('/ana')
+def analysis():
+	return render_template('analysis.html')
