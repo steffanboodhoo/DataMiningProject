@@ -4,6 +4,7 @@ var start, end;
 var firstRun = true;
 var maxUnparseLength = 10000;
 
+
 $(function()
 {
 	// Tabs
@@ -126,15 +127,15 @@ function printStats(msg)
 function buildConfig()
 {
 	return {
-		delimiter: $('#delimiter').val(),
-		header: $('#header').prop('checked'),
-		dynamicTyping: $('#dynamicTyping').prop('checked'),
+		dataset_name: $('#dataset_name').val(),
+		regression: $('#regression').prop('checked'),
+		classification: $('#classification').prop('checked'),
 		skipEmptyLines: $('#skipEmptyLines').prop('checked'),
 		preview: parseInt($('#preview').val() || 0),
 		step: $('#stream').prop('checked') ? stepFn : undefined,
 		encoding: $('#encoding').val(),
 		worker: $('#worker').prop('checked'),
-		comments: $('#comments').val(),
+		dataset_subject: $('#dataset_subject').val(),
 		complete: completeFn,
 		error: errorFn,
 		download: inputType == "remote"
@@ -177,7 +178,7 @@ function completeFn(results)
 	// icky hack
 	setTimeout(enableButton, 100);
 }
-
+p
 function errorFn(err, file)
 {
 	end = now();

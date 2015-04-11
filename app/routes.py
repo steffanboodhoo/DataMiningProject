@@ -35,6 +35,6 @@ def allowed_file(filename):
 def upload_file():
 	return render_template('upload.html')
 
-@app.route('/ana')
+@app.route('/analysis')
 def analysis():
 	return render_template('analysis.html')
