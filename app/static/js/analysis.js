@@ -16,11 +16,12 @@
 
 	function createAnalysisView(data,labels,type){
 		var divId = 'container'+containerCount //create Unique container ID
-		var container = $("<div/>", {id: divId,class:'container-fluid'})//create container for this analysis
+		var container = $("<div/>", {id: divId,class:'container-fluid analysis-Container'})//create container for this analysis
 		$('#mid_pane').append(container)//append it to the page
 		if(type===technique.regr){
 			//showing test data for regression
 			attachChart(data,labels,charts.chartB,divId)
+			attachMetrics(null,divId)
 			//showing actual prediction for regression
 			attachChart(data,labels,charts.chartA,divId)
 		}else if(type === technique.clfy){
@@ -32,7 +33,12 @@
 	function attachChart(data,labels,chartType,divId){
 		console.log('attach Chart'+chartType)
 		var chartId = 'chart'+chartCount //create unique ID for the container
-		$("<div/>", {id: chartId,class:'container-fluid'}).appendTo($('#'+divId)) //create the Container Itself and append it
+		var row = $("<div/>",{class:'row content-Container'})
+		var col = $("<div/>",{class:'col-md-12'})
+		$("<div/>", {id: chartId,class:'container-fluid'}).appendTo(col) //create the Container Itself and append it
+		col.appendTo(row)
+		row.appendTo($('#'+divId))
+
 		if(chartType===charts.chartA)
 			createChartA(data,labels,'#'+chartId)
 		else if(chartType===charts.chartB)
@@ -40,6 +46,21 @@
 		chartCount++
 	}
 
+	function attachMetrics(data,divId){
+		var row = $("<div/>",{class:'row content-Container'}).appendTo($('#'+divId))
+		var col1 = $("<div/>",{class:'col-md-4'})
+		var C1_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
+		C1_content.appendTo(col1)
+		var col2 = $("<div/>",{class:'col-md-4'})
+		var C2_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
+		C2_content.appendTo(col2)
+		var col3 = $("<div/>",{class:'col-md-4'})
+		var C3_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
+		C3_content.appendTo(col3)
+		row.append(col1)
+		row.append(col2)
+		row.append(col3)
+	}
 
 	function createChartA (data,categories,chartContainer) {
 		$(function () {
