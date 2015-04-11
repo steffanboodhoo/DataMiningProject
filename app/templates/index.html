@@ -1,4 +1,16 @@
 {% extends "base.html" %}
+
+{% block pagereqs %}
+	<script src="static/bower_components/skrollr/dist/skrollr.min.js"></script>
+	<script src="static/js/home.js"></script>
+	<link rel="stylesheet" href="static/css/home.css">
+{% endblock %}
+
+
+{% block skrollrbodystart %}
+	<div id="skrollr-body">
+{% endblock %}
+
 {% block herounit %}
 	<div id="top" data-top="bottom: 0px; opacity: 1;" data-top-bottom="bottom: -350px; opacity: .3;">
 		<div class="grid-container">
@@ -88,4 +100,8 @@
 			</div>
 		</div>
 	</section>
+{% endblock %}
+
+{% block skrollrbodyend %}
+	</div>
 {% endblock %}

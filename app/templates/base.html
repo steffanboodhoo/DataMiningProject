@@ -9,19 +9,13 @@
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Arvo|Source+Sans+Pro:400,400italic,700|Lato:300,400">
 		<link rel="stylesheet" href="static/css/unsemantic.css">
 		<link rel="stylesheet" href="static/css/common.css">
-		<link rel="stylesheet" href="static/css/home.css">
 		<script src="static/bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="static/bower_components/skrollr/dist/skrollr.min.js"></script>
-		<script src="static/js/common.js"></script>
-		<script src="static/js/home.js"></script>
-		<link rel="stylesheet" href="static/css/upload.css">
-		<script src="static/bower_components/papaparse/papaparse.min.js"></script>
-		<script src="static/js/upload.js"></script>
+		<script src="static/js/common.js"></script>	
+		{% block pagereqs %}{% endblock %}
 	</head>
 	<body>
-		<div id="skrollr-body">
+		{% block skrollerbodystart %}{% endblock %}
 			<!-- Unique page content goes here -->
-			<hr>
     		{% block herounit %}{% endblock %}
 
 			<main>
@@ -59,7 +53,6 @@
 					</div>
 				</header>
 				<!-- Unique page content goes here -->
-				<hr>
 	    		{% block content %}{% endblock %}
 			</main>
 
@@ -97,6 +90,6 @@
 					</div>
 				</div>
 			</footer>
-		</div>
+		{% block skrollerbodyend %}{% endblock %}
 	</body>
 </html>
