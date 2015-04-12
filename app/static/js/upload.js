@@ -127,15 +127,10 @@ function printStats(msg)
 function buildConfig()
 {
 	return {
-		dataset_name: $('#dataset_name').val(),
-		regression: $('#regression').prop('checked'),
-		classification: $('#classification').prop('checked'),
-		skipEmptyLines: $('#skipEmptyLines').prop('checked'),
-		preview: parseInt($('#preview').val() || 0),
-		step: $('#stream').prop('checked') ? stepFn : undefined,
-		encoding: $('#encoding').val(),
-		worker: $('#worker').prop('checked'),
-		dataset_subject: $('#dataset_subject').val(),
+		delimiter: $('#delimiter').val(),
+		header: $('#header').prop('checked'),
+		dynamicTyping: $('#dynamicTyping').prop('checked'),
+		comments: $('#comments').val(),
 		complete: completeFn,
 		error: errorFn,
 		download: inputType == "remote"
@@ -172,13 +167,38 @@ function completeFn(results)
 			rowCount = results.data.length;
 	}
 
+	var analysis_type = '';
+	var dataset_name = $('#dataset_name').val();
+	var dataset_subject = $('#dataset_subject').val();
+
+
+
+	regr = $('#regression').prop('checked');
+	classi = $('#classification').prop('checked');
+	clust = $('#clustering').prop('checked');
+
+	if(regr) {
+		analysis_type.concat("regression,");
+	}
+
+	if(classi) {
+		analysis_type.concat("classification,")
+	}
+
+	if(clust) {
+		analysis_type.concat("clustering");
+	}
+	
+	results['Type'] = analysis_type;
+	results['Name'] = dataset_name;
+	results['Subject'] = dataset_subject;
+	
 	printStats("Parse complete");
 	console.log("    Results:", results);
 
 	// icky hack
 	setTimeout(enableButton, 100);
 }
-p
 function errorFn(err, file)
 {
 	end = now();

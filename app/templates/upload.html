@@ -19,6 +19,14 @@
 
 		<div class="grid-25">
 			<label>
+				<input type="checkbox" id="header"> Header row
+				<dfn>Keys data by field name rather than an array.</dfn>
+			</label>
+			<label>
+				<input type="checkbox" id="dynamicTyping"> Dynamic typing
+				<dfn>Turns numeric data into numbers and true/false into booleans.</dfn>
+			</label>
+			<label>
 				<input type="checkbox" id="regression"> Regression
 				<dfn>Predicting a continuous-valued attribute associated with an object. [Numerical]</dfn>
 			</label>
@@ -45,6 +53,15 @@
 				<label>
 					Subject:<input type="text" size="7" id="dataset_subject" placeholder="default">
 					<dfn>Enter the domain to which the dataset belongs. Eg. Student Data</dfn>
+				</label>
+				
+				<label>
+					Delimiter:<input type="text" size="4" maxlength="1" placeholder="auto" id="delimiter"><a href="javascript:" id="insert-tab">tab</a>
+					<dfn>The delimiting character. Usually comma or tab. Default is comma.</dfn>
+				</label>
+				<label>
+					Comment char:<input type="text" size="7" maxlength="10" placeholder="default" id="comments">
+					<dfn>If specified, skips lines starting with this string.</dfn>
 				</label>
 			</div>
 
