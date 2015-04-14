@@ -35,11 +35,13 @@ def allowed_file(filename):
 def upload_file():
 	return render_template('upload.html')
 
-@app.route('/upload_success')
+@app.route('/upload_success',methods=['POST','GET'])
 def upload_success():
-    dataset = request.args.get('dataset')
-    # do some stuff
-    return jsonify(result=dataset)
+    if request.method == 'POST':
+        dataset = request.get_json()
+       	print dataset
+       	print len(dataset)
+        return jsonify(result=dataset)
 
 @app.route('/analysis')
 def analysis():

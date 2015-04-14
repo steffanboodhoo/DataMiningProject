@@ -190,23 +190,35 @@ function completeFn(results)
 		}
 	}
 	
-	results['Type'] = analysis_type;
-	results['Name'] = dataset_name;
-	results['Subject'] = dataset_subject;
+	
 	
 	printStats("Parse complete");
-	console.log("    Results:", results);
 
 	console.log("Serving file");
 	// Send data to backend
 	var parsed = results;
 	delete parsed.errors;
     delete parsed.meta;
-	$.getJSON($SCRIPT_ROOT + '/upload_success', {
-        dataset: JSON.stringify(parsed)
-    }, function(data){
-        $( "#result" ).text(data.result);
-    });
+    
+    parsed['Type'] = analysis_type;
+	parsed['Name'] = dataset_name;
+	parsed['Subject'] = dataset_subject;
+
+	$.ajax({
+	    type: 'POST',
+	    url: "/upload_success",
+	    data: JSON.stringify(parsed),
+	    dataType: 'json',
+	    contentType: 'application/json; charset=utf-8'
+	});
+
+
+ //    console.log(JSON.stringify(parsed));
+	// $.getJSON($SCRIPT_ROOT + '/upload_success', {
+ //        dataset: JSON.stringify(parsed)
+ //    }, function(data){
+ //        $( "#result" ).text(data.result);
+ //    });
 
 	// icky hack
 	setTimeout(enableButton, 100);
