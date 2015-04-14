@@ -7,6 +7,7 @@
 		console.log("im loaded")
 		setupTheme();
 		setupButtons();
+		setupMenu();
 	});
 	function setupButtons(){
 		$('#addChart').click(function(){
@@ -61,6 +62,15 @@
 		row.append(col2)
 		row.append(col3)
 	}
+	function setupMenu(){
+		 $(".toggle-btn").click(function(){
+        	$("#myCollapsible").collapse('toggle');
+    	});
+	}
+	function openAnalysisMenu(divId){
+
+	}
+
 
 	function createChartA (data,categories,chartContainer) {
 		$(function () {
