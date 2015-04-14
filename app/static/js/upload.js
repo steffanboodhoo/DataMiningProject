@@ -197,6 +197,17 @@ function completeFn(results)
 	printStats("Parse complete");
 	console.log("    Results:", results);
 
+	console.log("Serving file");
+	// Send data to backend
+	var parsed = results;
+	delete parsed.errors;
+    delete parsed.meta;
+	$.getJSON($SCRIPT_ROOT + '/upload_success', {
+        dataset: JSON.stringify(parsed)
+    }, function(data){
+        $( "#result" ).text(data.result);
+    });
+
 	// icky hack
 	setTimeout(enableButton, 100);
 }

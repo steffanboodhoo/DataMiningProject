@@ -10,7 +10,10 @@
 		<link rel="stylesheet" href="static/css/unsemantic.css">
 		<link rel="stylesheet" href="static/css/common.css">
 		<script src="static/bower_components/jquery/dist/jquery.min.js"></script>
-		<script src="static/js/common.js"></script>	
+		<script src="static/js/common.js"></script>
+		<script type=text/javascript>
+		  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+		</script>	
 		{% block pagereqs %}{% endblock %}
 	</head>
 	<body>

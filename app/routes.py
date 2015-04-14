@@ -35,6 +35,12 @@ def allowed_file(filename):
 def upload_file():
 	return render_template('upload.html')
 
+@app.route('/upload_success')
+def upload_success():
+    dataset = request.args.get('dataset')
+    # do some stuff
+    return jsonify(result=dataset)
+
 @app.route('/analysis')
 def analysis():
 	return render_template('analysis.html')
