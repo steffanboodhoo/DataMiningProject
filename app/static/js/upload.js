@@ -167,27 +167,32 @@ function completeFn(results)
 			rowCount = results.data.length;
 	}
 
-	var analysis_type = '';
+	var analysis_type = " ";
 	var dataset_name = $('#dataset_name').val();
 	var dataset_subject = $('#dataset_subject').val();
 
 
 
-	regr = $('#regression').prop('checked');
-	classi = $('#classification').prop('checked');
-	clust = $('#clustering').prop('checked');
+	var regr = $('#regression').prop('checked');
+	var classi = $('#classification').prop('checked');
+	var clust = $('#clustering').prop('checked');
 
-	if(regr) {
-		analysis_type.concat("regression,");
+	if (regr == true) {
+		analysis_type = "regression";
+		console.log(analysis_type);
 	}
+	// if(regr == true) {
+	// 	console.log(regr);
+	// 	analysis_type += "regression,";
+	// }
 
-	if(classi) {
-		analysis_type.concat("classification,")
-	}
+	// if(classi == true) {
+	// 	analysis_type += "classification,"
+	// }
 
-	if(clust) {
-		analysis_type.concat("clustering");
-	}
+	// if(clust == true) {
+	// 	analysis_type += "clustering";
+	// }
 	
 	results['Type'] = analysis_type;
 	results['Name'] = dataset_name;
