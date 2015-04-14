@@ -177,22 +177,18 @@ function completeFn(results)
 	var classi = $('#classification').prop('checked');
 	var clust = $('#clustering').prop('checked');
 
-	if (regr == true) {
-		analysis_type = "regression";
-		console.log(analysis_type);
+
+	if(regr == true || classi == true || clust == true) {
+		if(regr) {
+			analysis_type += "regression";
+		}
+		if(classi) {
+			analysis_type += ",classification";
+		}
+		if(clust) {
+			analysis_type += ",clustering";
+		}
 	}
-	// if(regr == true) {
-	// 	console.log(regr);
-	// 	analysis_type += "regression,";
-	// }
-
-	// if(classi == true) {
-	// 	analysis_type += "classification,"
-	// }
-
-	// if(clust == true) {
-	// 	analysis_type += "clustering";
-	// }
 	
 	results['Type'] = analysis_type;
 	results['Name'] = dataset_name;
