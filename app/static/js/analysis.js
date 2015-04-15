@@ -4,7 +4,7 @@ $(function(){
 		$('.tab').removeClass('active');
 		$(this).addClass('active');
 		$('grid-100').hide();
-		$('#analysis_pattern').show();
+		$('#analysis_pattern_tab').show();
 		$('#analyze').text("Analyze");
 	});
 
@@ -13,7 +13,7 @@ $(function(){
 		$('.tab').removeClass('active');
 		$(this).addClass('active');
 		$('.grid-100').hide();
-		$('#analysis_method').show();
+		$('#analysis_method_tab').show();
 		$('#analyze').text("Analyze");
 	});
 	
@@ -22,7 +22,7 @@ $(function(){
 		$('.tab').removeClass('active');
 		$(this).addClass('active');
 		$('grid-100').hide();
-		$('#analysis_data').show();
+		$('#analysis_data_tab').show();
 		$('#analyze').text("Analyze");
 	});
 
@@ -31,10 +31,9 @@ $(function(){
 		$('.tab').removeClass('active');
 		$(this).addClass('active');
 		$('.grid-100').hide();
-		$('#analysis_visualize').show();
+		$('#analysis_visualize_tab').show();
 		$('#analyze').text("Analyze");
 	});
-
 
 	$('div.dataset-chooser').not('.disabled').find('div.dataset-chooser-item').on('click', function(){
 		$(this).parent().parent().find('div.dataset-chooser-item').removeClass('selected');
@@ -485,36 +484,4 @@ $(function(){
 		// Apply the theme
 		Highcharts.setOptions(Highcharts.theme);
     }
-
-//You are allowed to pass nulls for all of these
-//Only pass in an actual argument if you want it filtered e.g. (null,null,Mining)
-//if you pass null for the call back it will take the data and print it to the console
-function previewDatasets(name,technique,purpose,call_back){
-	var query_str=''
-	if(name != null)
-		query_str+='name='+name
-	if(technique != null){
-		if(query_str!='')
-			query_str+='&'
-		query_str+='technique='+technique
-	}
-	if(purpose != null){
-		if(query_str!='')
-			query_str+='&'
-		query_str+='purpose='+purpose
-	}
-	$.ajax({
-		url:'/datasetPreviews'
-		type: 'GET',
-		data: query_str,
-		success: function(response){
-			var data = JSON.parse(response)
-			if(typeof call_back === 'function')
-				call_back(data)
-			else
-				console.log(data)
-		}
-
-	})
-}
 }(this));

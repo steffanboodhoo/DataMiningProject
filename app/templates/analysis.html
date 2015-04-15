@@ -17,8 +17,8 @@
 
 	<div class="tabs">
 		<div class="tab active" id="tab-pattern">Mining Pattern</div>
-		<div class="tab" id="tab-method">Method</div>
 		<div class="tab active" id="tab-dataset">Dataset</div>
+		<div class="tab" id="tab-method">Method</div>
 		<div class="tab" id="tab-visualize">Visualize</div>
 	</div>
 
@@ -31,15 +31,16 @@
 			</div>
 
 			<div class="grid-85 pull-15">
-				<div class="grid-100" id="analysis_pattern">
-
+				<div class="grid-50">
+					<div class="grid-100" id="analysis_pattern_tab">
+						<div>
+							<label><input type="radio" name="dataset_pattern" id="regression" value="Regression">Regression</label>
+							<label><input type="radio" name="dataset_pattern" id="classification" value="Classification">Classification</label>
+						</div>  
+					</div>
 				</div>
 
-				<div class="grid-100" id="analysis_method">
-					
-				</div>
-
-				<div class="grid-100 dataset-chooser" id="analysis_data">
+				<div class="grid-100 dataset-chooser" id="analysis_data_tab">
 					
 		    		<div class="dataset-chooser-item">
 		                <div class="grid-75">
@@ -59,8 +60,12 @@
 		    			<div class="clear"></div>
 		    		</div>
 				</div>
+
+				<div class="grid-100" id="analysis_method_tab">
+					
+				</div>
 				
-				<div class="grid-100" id="analysis_visualize">
+				<div class="grid-100" id="analysis_visualize_tab">
 
 				</div>
 				<div class="text-center">
