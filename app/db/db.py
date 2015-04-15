@@ -13,22 +13,28 @@ def createDataset(dataObj):
 def getTrainDataset(name):
 	dataset = db.Traindataset
 	resp = dataset.find_one({'name':name})
-	return dumps(resp)
+	return resp
 
 def getMineDataset(name):
 	dataset = db.Minedataset
 	resp = dataset.find_one({'name':name})
-	return dumps(resp)
+	return resp
 
-def getAllTrain(dataset_type):
+def getTrainFilter(filterObj):
 	dataset = db.Traindataset
 	resp = []
-	for d in dataset.find({'type':dataset_type},{'name':1,'type':1,'subject':1}):
+	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1}):
 		resp.append(d)
+	return resp
 
-	return dumps(resp)
+def getMineFilter(filterObj):
+	dataset = db.Minedataset
+	resp = []
+	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1}):
+		resp.append(d)
+	return resp
 
-def testMineForTrain(name,technique):
+def checkForTrain(name,technique):
 	dataset = db.dataset 
 	dObj = dataset.find_one({'name':name,'type':technique},{'name':1,'type':1})
 	if dObj == None:

@@ -1,6 +1,7 @@
 import json
 import yaml
 import db
+from bson.json_util import dumps
 
 def storeDataset(data):
 	dataObj = prepareData(data)
@@ -9,7 +10,7 @@ def storeDataset(data):
 		print "success"
 	else:
 		print resp
-	return resp
+	return dumps(resp)
 	
 
 def prepareData(dataObj):
@@ -62,5 +63,30 @@ def convertFloats(dataset):
 	return fixedData
 
 def getAllTrain(technique):
-	train = db.getAllTrain(technique)
-	return train
+	resp = db.getAllTrain(technique)
+	return dumps(resp)
+
+def checkForTrain(name,technique):
+	print 'ive entered the wrapper checking for train data'
+	resp = db.checkForTrain(name,technique)
+	print resp
+	return dumps(resp)
+
+def getFilteredDatasetPreviews(name,technique,purpose):
+	filterObj = {}
+	resp = []
+	if name != None:
+		filterObj['name'] = name
+
+	if technique != None:
+		filterObj['technique'] = technique
+
+	if purpose != None:
+		if purpose == 'Mining':
+			resp = dumps( db.getMineFilter(filterObj))
+		else:
+			resp = dumps( db.getTrainFilter(filterObj))
+	else:
+		resp.append( db.getMineFilter(filterObj))
+		resp.append( db.getTrainFilter(filterObj))
+		return dumps(resp)

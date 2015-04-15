@@ -214,7 +214,7 @@ function completeFn(results)
     parsed['type'] = analysis_type;
 	parsed['name'] = dataset_name;
 	parsed['subject'] = dataset_subject;
-	parsed['purpose'] = purpose+'';
+	parsed['purpose'] = purpose;
 	checkData(parsed)
 	//ajax call placed in postDataset
 
@@ -229,6 +229,7 @@ function completeFn(results)
 	setTimeout(enableButton, 100);
 }
 function postDataset(data){
+	console.log('pre POST-REQUEST for dataset')
 	$.ajax({
 	    type: 'POST',
 	    url: "/upload_success",
@@ -241,16 +242,18 @@ function handleError(err){
 	console.log(err)
 }
 function checkData(data){
-	if(data.name === null || data.name === 'undefined')
+	if(data['name'] === null || data['name'] === undefined || data['name'] === '')
 		handleError( {'status':'failure','reason':'name is missing'} )
-	if(data.purpose === null || data.purpose === 'undefined')
+	else if(data.purpose === null || data.purpose === undefined || data.purpose === '')
 		handleError( {'status':'failure','reason':'name is missing'} )
-	if(data.type === null || data.type === 'undefined')
+	else if(data['type'] === null || data['type'] === undefined || data['type'] === '')
 		handleError( {'status':'failure','reason':'no technique specified (classification/regression....)'} )
-	if(data.name === null || data.name === 'undefined')
+	else{
+		var query_str = 'name='+data['name']+'&technique='+data['type']+''
+		console.log(query_str)
 		$.ajax({type: 'GET',
-		    url: "/upload_success",
-		    data: JSON.stringify({'name':data.name,'technique':data.type}),
+		    url: "/checkForTrain",
+		    data: query_str,
 		    success: function(response){
 		    	response = JSON.parse(response)
 		    	if(response['status']==='success')
@@ -262,8 +265,7 @@ function checkData(data){
          		console.log(response)
         	}
 		})
-		//return {'status':'failure','reason':'name is missing'}
-	if(data.name === null || data.name === 'undefined')
+	}
 }
 
 function errorFn(err, file)
