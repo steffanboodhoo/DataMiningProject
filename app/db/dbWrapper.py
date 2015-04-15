@@ -10,7 +10,7 @@ def storeDataset(data):
 	dataset = convertFloats(dataset)
 	dataObj['data']=dataset
 	print dataObj
-
+import db
 
 def convertFloats(dataset):
 	fixedData=[]
@@ -23,4 +23,6 @@ def convertFloats(dataset):
 
 	return fixedData
 
-	
+def getAllTrain(technique):
+	train = db.getAllTrain(technique)
+	return train

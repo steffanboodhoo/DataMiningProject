@@ -200,9 +200,9 @@ function completeFn(results)
 	delete parsed.errors;
     delete parsed.meta;
     
-    parsed['Type'] = analysis_type;
-	parsed['Name'] = dataset_name;
-	parsed['Subject'] = dataset_subject;
+    parsed['type'] = analysis_type;
+	parsed['name'] = dataset_name;
+	parsed['subject'] = dataset_subject;
 
 	$.ajax({
 	    type: 'POST',
