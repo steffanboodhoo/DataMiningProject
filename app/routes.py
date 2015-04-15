@@ -1,6 +1,7 @@
 import os, json, logging
 from flask import request, redirect, url_for, render_template, jsonify, Response
 from app import app
+import app.db.dbWrapper as dbI
 import app.wrappers.RegressionWrapper as regr
 import app.wrappers.ClassificationWrapper as classify
 
@@ -38,8 +39,9 @@ def upload_file():
 @app.route('/upload_success',methods=['POST','GET'])
 def upload_success():
     if request.method == 'POST':
-        dataset = request.get_json()
-       	print dataset
+        dataset = request.data
+        
+       	dbI.storeDataset(dataset)
        	print len(dataset)
         return jsonify(result=dataset)
 
