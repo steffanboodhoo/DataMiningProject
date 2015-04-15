@@ -4,6 +4,7 @@
 	<script src="http://code.highcharts.com/highcharts.js"></script>
 	<script type="text/javascript" src="static/js/highslide/highslide.js"></script>
 	<link rel="stylesheet" href="static/css/upload.css">
+	<link rel="stylesheet" href="static/css/item-select.css">
 	<script type="text/javascript">
 		    // override Highslide settings here
 		    // instead of editing the highslide.js file
@@ -40,14 +41,36 @@
 		<div class="grid-85 grid-parent">
 
 			<div class="grid-33 push-66">
-				<label>
-					<dfn>Placeholder for metrics.</dfn>
-				</label>
+				<h1>"Yo"</h1>
 			</div>
 
 			<div class="grid-66 pull-33">
-				<div class="grid-100" id="analysis_data">
+				<div class="grid-100 dataset-chooser" id="analysis_data">
 					
+			    		<div class="dataset-chooser-item selected">
+			 
+			                <div class="grid-75">
+			    				<span class="title">Student Data - Regression</span>
+			    				<span class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</span>
+			    				<input type="radio" name="dataset" value="mobile_desktop" checked="checked">
+			    			</div>
+			    			<div class="clear"></div>
+			    		</div>
+
+			    		<div class="dataset-chooser-item">
+			    			
+			                <div class="grid-75">
+			    				<span class="title">Student Data - Classification</span>
+			    				<span class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</span>
+			    				<input type="radio" name="dataset" value="mobile_desktop">
+			    			</div>
+			    			<div class="clear"></div>
+			    		</div>
+
+
+
+
+
 				</div>
 				<div class="grid-100" id="analysis_method">
 					
