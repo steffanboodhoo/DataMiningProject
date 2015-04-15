@@ -214,16 +214,9 @@ function completeFn(results)
     parsed['type'] = analysis_type;
 	parsed['name'] = dataset_name;
 	parsed['subject'] = dataset_subject;
-	parsed['purpose'] = purpose;
-
-	$.ajax({
-	    type: 'POST',
-	    url: "/upload_success",
-	    data: JSON.stringify(parsed),
-	    dataType: 'json',
-	    contentType: 'application/json; charset=utf-8'
-	});
-
+	parsed['purpose'] = purpose+'';
+	checkData(parsed)
+	//ajax call placed in postDataset
 
  //    console.log(JSON.stringify(parsed));
 	// $.getJSON($SCRIPT_ROOT + '/upload_success', {
@@ -235,6 +228,44 @@ function completeFn(results)
 	// icky hack
 	setTimeout(enableButton, 100);
 }
+function postDataset(data){
+	$.ajax({
+	    type: 'POST',
+	    url: "/upload_success",
+	    data: JSON.stringify(data),
+	    dataType: 'json',
+	    contentType: 'application/json; charset=utf-8'
+	});
+}
+function handleError(err){
+	console.log(err)
+}
+function checkData(data){
+	if(data.name === null || data.name === 'undefined')
+		handleError( {'status':'failure','reason':'name is missing'} )
+	if(data.purpose === null || data.purpose === 'undefined')
+		handleError( {'status':'failure','reason':'name is missing'} )
+	if(data.type === null || data.type === 'undefined')
+		handleError( {'status':'failure','reason':'no technique specified (classification/regression....)'} )
+	if(data.name === null || data.name === 'undefined')
+		$.ajax({type: 'GET',
+		    url: "/upload_success",
+		    data: JSON.stringify({'name':data.name,'technique':data.type}),
+		    success: function(response){
+		    	response = JSON.parse(response)
+		    	if(response['status']==='success')
+		    		postDataset(data)
+		    	else
+		    		handleError(data)
+		    },
+		    error :   function(response){
+         		console.log(response)
+        	}
+		})
+		//return {'status':'failure','reason':'name is missing'}
+	if(data.name === null || data.name === 'undefined')
+}
+
 function errorFn(err, file)
 {
 	end = now();

@@ -28,12 +28,12 @@ def getAllTrain(dataset_type):
 
 	return dumps(resp)
 
-def testMineForTrain(technique,name):
+def testMineForTrain(name,technique):
 	dataset = db.dataset 
-	dObj = dataset.find_one({'name':name,'type':technique})
+	dObj = dataset.find_one({'name':name,'type':technique},{'name':1,'type':1})
 	if dObj == None:
-		return False
-	return True
+		return {'status':'failure'}
+	return {'status':'success'}
 
 if __name__ == '__main__':
 	getTest()

@@ -4,8 +4,14 @@ import db
 
 def storeDataset(data):
 	dataObj = prepareData(data)
-	print "----------"
+	resp = testData(dataObj)
+	if resp == True:
+		print "success"
+	else:
+		print resp
+	return resp
 	
+
 def prepareData(dataObj):
 	#parsing json to dictionary
 	dataObj = yaml.load(dataObj)
@@ -35,7 +41,13 @@ def testData(dataObj):
 		return {'status':'failure','reason':'No name given to dataset'}
 	if dataObj['type'] == None:
 		return {'status':'failure','reason':'No technique given to dataset'}
-	#if dataObj['type'] == ''
+	if dataObj['purpose'] == None:
+		return {'status':'failure','reason':'Purpose of dataset not stated'}
+	if dataObj['purpose'] == 'Mining':
+		obj = db.testMineForTrain(dataObj['name'],dataObj['type'])
+		if obj['status'] == 'failure':
+			return {'status':'failure','reason':'No training data found'}
+	return True
 	#dataset = db.getTreai
 
 def convertFloats(dataset):
