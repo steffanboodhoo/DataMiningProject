@@ -8,7 +8,7 @@ var maxUnparseLength = 10000;
 //     if ($('#dataset_name').val().length   >   0   &&
 //         $('#dataset_subject').val().length  >   0   &&
 //         ($('#regression').prop('checked') == true || $('#classification').prop('checked') == true || $('#clustering').prop('checked') == true)
-//         && $('#dataset_purpose_t').checked == true) {
+//         && ($('#testing').checked == true || $('#training').checked == true)){
 //         $("#submit").prop("disabled", false);
 //     }
 //     else {
@@ -18,8 +18,8 @@ var maxUnparseLength = 10000;
 
 $(function()
 {
-	 // validate();
-  //   $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #dataset_purpose_t, #dataset_purpose_ts').change(validate);
+	// validate();
+ //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 
 	// Tabs
 	$('#tab-string').click(function()

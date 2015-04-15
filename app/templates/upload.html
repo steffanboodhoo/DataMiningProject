@@ -18,14 +18,12 @@
 	<div class="grid-container">
 
 		<div class="grid-25">
-			<label>
-				<input type="radio" name="dataset_purpose_t" value="Training">Training
-				<dfn>Dataset will be used to train the model.</dfn>
-			</label>
-			<label>
-				<input type="radio" name="dataset_purpose-ts" value="Testing">Testing
-				<dfn>Dataset will be used to test the model.</dfn>
-			</label>
+			<form action="">
+				<label for="training">Set as Training data</label>
+			  	<input type="radio" name="dataset_purpose" id="training" value="Training"><br>
+			  	<label for="testing">Set as Testing data</label>
+			  	<input type="radio" name="dataset_purpose" id="testing" value="Testing"><br><br>
+			</form>
 			<label>
 				<input type="checkbox" id="regression"> Regression
 				<dfn>Predicting a continuous-valued attribute associated with an object. [Numerical]</dfn>
