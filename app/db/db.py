@@ -23,8 +23,10 @@ def getMineDataset(name):
 def getAllTrain(dataset_type):
 	dataset = db.Traindataset
 	resp = []
-	for d in dataset.find({'type':dataset_type},{'name':1,'type':1}):
-		resp.append()
+	for d in dataset.find({'type':dataset_type},{'name':1,'type':1,'subject':1}):
+		resp.append(d)
+
+	return dumps(resp)
 
 if __name__ == '__main__':
 	#insertTest()
