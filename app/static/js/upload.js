@@ -4,9 +4,23 @@ var start, end;
 var firstRun = true;
 var maxUnparseLength = 10000;
 
+function validate(){
+    if ($('#dataset_name').val().length   >   0   &&
+        $('#dataset_subject').val().length  >   0   &&
+        ($('#regression').prop('checked') == true || $('#classification').prop('checked') == true)
+        ) {
+        $("#submit").prop("disabled", false);
+    }
+    else {
+        $("#submit").prop("disabled", true);
+    }
+}
 
 $(function()
 {
+	 validate();
+    $('#dataset_name, #dataset_subject, #regression').change(validate);
+
 	// Tabs
 	$('#tab-string').click(function()
 	{
@@ -128,7 +142,6 @@ function buildConfig()
 {
 	return {
 		delimiter: $('#delimiter').val(),
-		header: $('#header').prop('checked'),
 		dynamicTyping: $('#dynamicTyping').prop('checked'),
 		comments: $('#comments').val(),
 		complete: completeFn,
@@ -167,7 +180,7 @@ function completeFn(results)
 			rowCount = results.data.length;
 	}
 
-	var analysis_type = " ";
+	var analysis_type = "";
 	var dataset_name = $('#dataset_name').val();
 	var dataset_subject = $('#dataset_subject').val();
 
@@ -176,10 +189,7 @@ function completeFn(results)
 	var regr = $('#regression').prop('checked');
 	var classi = $('#classification').prop('checked');
 	var clust = $('#clustering').prop('checked');
-	var train $('#traindata').prop('checked');
-	var mine $('#minedata').prop('checked');
-
-
+	var purpose = $('input:radio[name=dataset_purpose]:checked').val();
 
 	if(regr == true || classi == true || clust == true) {
 		if(regr) {
@@ -201,17 +211,10 @@ function completeFn(results)
 	delete parsed.errors;
     delete parsed.meta;
     
-    parsed['type'] = analysis_type;
-	parsed['name'] = dataset_name;
-	parsed['subject'] = dataset_subject;
-
-	if(train == true) {
-		parsed['Purpose'] = "Training";
-	}
-
-	else if(mine == true ) {
-		parsed['Purpose'] = "Mining";
-	}
+    parsed['Type'] = analysis_type;
+	parsed['Name'] = dataset_name;
+	parsed['Subject'] = dataset_subject;
+	parsed['Purpose'] = purpose;
 
 	$.ajax({
 	    type: 'POST',
