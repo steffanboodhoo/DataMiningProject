@@ -3,15 +3,6 @@ import yaml
 import db
 from bson.json_util import dumps
 
-def storeDataset(data):
-	dataObj = prepareData(data)
-	resp = testData(dataObj)
-	if resp == True:
-		print "success"
-	else:
-		print resp
-	return dumps(resp)
-	
 
 def prepareData(dataObj):
 	#parsing json to dictionary
@@ -62,10 +53,40 @@ def convertFloats(dataset):
 
 	return fixedData
 
-def getAllTrain(technique):
-	resp = db.getAllTrain(technique)
+def storeDataset(data):
+	dataObj = prepareData(data)
+	resp = testData(dataObj)
+	if resp == True:
+		print "success"
+	else:
+		print resp
 	return dumps(resp)
 
+def getOneDataset(purpose,code):
+	resp = db.getAdataset(purpose,code)
+	return dumps(resp)
+
+def getFilteredFullDatasets(name,technique,purpose):
+	filterObj = {}
+	resp = []
+	if name != None:
+		filterObj['name'] = str(name)
+
+	if technique != None:
+		filterObj['technique'] = str(technique)
+
+	if purpose != None:
+		if str(purpose) == 'Mining':
+			resp = dumps( db.getMineFilterFull(filterObj))
+		else:
+			resp = dumps( db.getTrainFilterFull(filterObj))
+	else:
+		resp.append( db.getMineFilterFull(filterObj))
+		resp.append( db.getTrainFilterFull(filterObj))
+		return dumps(resp)
+	
+
+	#returns preview
 def checkForTrain(name,technique):
 	print 'ive entered the wrapper checking for train data'
 	resp = db.checkForTrain(name,technique)
@@ -76,13 +97,13 @@ def getFilteredDatasetPreviews(name,technique,purpose):
 	filterObj = {}
 	resp = []
 	if name != None:
-		filterObj['name'] = name
+		filterObj['name'] = str(name)
 
 	if technique != None:
-		filterObj['technique'] = technique
+		filterObj['technique'] = str(technique)
 
 	if purpose != None:
-		if purpose == 'Mining':
+		if str(purpose) == 'Mining':
 			resp = dumps( db.getMineFilter(filterObj))
 		else:
 			resp = dumps( db.getTrainFilter(filterObj))

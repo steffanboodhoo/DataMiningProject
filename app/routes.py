@@ -36,6 +36,10 @@ def allowed_file(filename):
 def upload_file():
 	return render_template('upload.html')
 
+@app.route('/analysis')
+def analysis():
+	return render_template('analysis.html')
+	
 @app.route('/upload_success',methods=['POST','GET'])
 def upload_success():
     if request.method == 'POST':
@@ -55,14 +59,21 @@ def checkForTrain():
 	resp = dbWrapper.checkForTrain(name,technique)
 	return resp
 
-@app.route('/analysis')
-def analysis():
-	return render_template('analysis.html')
 
-@app.route('/datasetPreviews')
-def datasetPreviews(purpose):
+
+#made a change here******&&&&&&&######!!!!!!!!!
+@app.route('/dataset/previews')
+def datasetPreviews():
 	name = request.args.get('name')
 	technique = request.args.get('technique')
 	purpose = request.args.get('purpose')
-	obj = dbWrapper.getFilteredDatasetPreviews(name,technique,purpose)
-	return obj
+	resp = dbWrapper.getFilteredDatasetPreviews(name,technique,purpose)
+	return resp
+
+@app.route('/dataset/fullData')
+def datasetPreviews():
+	name = request.args.get('name')
+	technique = request.args.get('technique')
+	purpose = request.args.get('purpose')
+	resp = dbWrapper.getFilteredFullDatasets(name,technique,purpose)
+	return resp

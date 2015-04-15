@@ -10,15 +10,12 @@ def createDataset(dataObj):
 		dataset = db.Minedataset
 	dataset.insert(dataObj)
 
-def getTrainDataset(name):
-	dataset = db.Traindataset
-	resp = dataset.find_one({'name':name})
-	return resp
-
-def getMineDataset(name):
-	dataset = db.Minedataset
-	resp = dataset.find_one({'name':name})
-	return resp
+def getAdataset(purpose,code):
+	if purpose =='training':
+		dataset = db.Traindataset
+	elif purpose =='mining':
+		dataset = db.Minedataset
+	return dataset.find_one({'code':code})
 
 def getTrainFilter(filterObj):
 	dataset = db.Traindataset
@@ -31,6 +28,20 @@ def getMineFilter(filterObj):
 	dataset = db.Minedataset
 	resp = []
 	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1}):
+		resp.append(d)
+	return resp
+
+def getTrainFilterFull(filterObj):
+	dataset = db.Traindataset
+	resp = []
+	for d in dataset.find(filterObj):
+		resp.append(d)
+	return resp
+
+def getMineFilterFull(filterObj):
+	dataset = db.Minedataset
+	resp = []
+	for d in dataset.find(filterObj):
 		resp.append(d)
 	return resp
 
