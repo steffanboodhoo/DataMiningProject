@@ -28,6 +28,14 @@ def getAllTrain(dataset_type):
 
 	return dumps(resp)
 
+def testMineForTrain(technique,name):
+	dataset = db.dataset 
+	dObj = dataset.find_one({'name':name,'type':technique})
+	if dObj == None:
+		return False
+	return True
+
 if __name__ == '__main__':
-	#insertTest()
 	getTest()
+	#insertTest()
+	

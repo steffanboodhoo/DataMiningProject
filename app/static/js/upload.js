@@ -211,10 +211,10 @@ function completeFn(results)
 	delete parsed.errors;
     delete parsed.meta;
     
-    parsed['Type'] = analysis_type;
-	parsed['Name'] = dataset_name;
-	parsed['Subject'] = dataset_subject;
-	parsed['Purpose'] = purpose;
+    parsed['type'] = analysis_type;
+	parsed['name'] = dataset_name;
+	parsed['subject'] = dataset_subject;
+	parsed['purpose'] = purpose;
 
 	$.ajax({
 	    type: 'POST',
