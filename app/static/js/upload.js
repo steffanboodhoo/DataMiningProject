@@ -4,22 +4,22 @@ var start, end;
 var firstRun = true;
 var maxUnparseLength = 10000;
 
-function validate(){
-    if ($('#dataset_name').val().length   >   0   &&
-        $('#dataset_subject').val().length  >   0   &&
-        ($('#regression').prop('checked') == true || $('#classification').prop('checked') == true)
-        ) {
-        $("#submit").prop("disabled", false);
-    }
-    else {
-        $("#submit").prop("disabled", true);
-    }
-}
+// function validate(){
+//     if ($('#dataset_name').val().length   >   0   &&
+//         $('#dataset_subject').val().length  >   0   &&
+//         ($('#regression').prop('checked') == true || $('#classification').prop('checked') == true || $('#clustering').prop('checked') == true)
+//         && $('#dataset_purpose_t').checked == true) {
+//         $("#submit").prop("disabled", false);
+//     }
+//     else {
+//         $("#submit").prop("disabled", true);
+//     }
+// }
 
 $(function()
 {
-	 validate();
-    $('#dataset_name, #dataset_subject, #regression').change(validate);
+	 // validate();
+  //   $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #dataset_purpose_t, #dataset_purpose_ts').change(validate);
 
 	// Tabs
 	$('#tab-string').click(function()
