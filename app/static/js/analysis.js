@@ -1,3 +1,40 @@
+$(function(){
+	$('div.dataset-chooser').not('.disabled').find('div.dataset-chooser-item').on('click', function(){
+		$(this).parent().parent().find('div.dataset-chooser-item').removeClass('selected');
+		$(this).addClass('selected');
+		$(this).find('input[type="radio"]').prop("checked", true);
+		
+	});
+
+	$('#tab-dataset').click(function()
+	{
+		$('.tab').removeClass('active');
+		$(this).addClass('active');
+		$('grid-100').hide();
+		$('#analysis_data').show();
+		$('#analyze').text("Analyze");
+	});
+
+	$('#tab-method').click(function()
+	{
+		$('.tab').removeClass('active');
+		$(this).addClass('active');
+		$('.grid-100').hide();
+		$('#analysis_method').show();
+		$('#analyze').text("Analyze");
+	});
+
+	$('#tab-visualize').click(function()
+	{
+		$('.tab').removeClass('active');
+		$(this).addClass('active');
+		$('.grid-100').hide();
+		$('#analysis_visualize').show();
+		$('#analyze').text("Analyze");
+	});
+});
+
+
 (function(window){
 	var containerCount = 0
 	var chartCount = 0
@@ -10,15 +47,15 @@
 		setupMenu();
 	});
 	function setupButtons(){
-		$('#addChart').click(function(){
+		$('#analyze').click(function(){
 			createAnalysisView(testData,testSeries,technique.regr)
 		})
 	}
 
 	function createAnalysisView(data,labels,type){
 		var divId = 'container'+containerCount //create Unique container ID
-		var container = $("<div/>", {id: divId,class:'container-fluid analysis-Container'})//create container for this analysis
-		$('#mid_pane').append(container)//append it to the page
+		var container = $("<div/>", {id: divId,class:'grid-100'})//create container for this analysis
+		$('#analysis_visualize').append(container)//append it to the page
 		if(type===technique.regr){
 			//showing test data for regression
 			attachChart(data,labels,charts.chartB,divId)
@@ -34,9 +71,9 @@
 	function attachChart(data,labels,chartType,divId){
 		console.log('attach Chart'+chartType)
 		var chartId = 'chart'+chartCount //create unique ID for the container
-		var row = $("<div/>",{class:'row content-Container'})
-		var col = $("<div/>",{class:'col-md-12'})
-		$("<div/>", {id: chartId,class:'container-fluid'}).appendTo(col) //create the Container Itself and append it
+		var row = $("<div/>",{class:'grid-100'})
+		var col = $("<div/>",{class:'grid-container'})
+		$("<div/>", {id: chartId,class:'grid-container'}).appendTo(col) //create the Container Itself and append it
 		col.appendTo(row)
 		row.appendTo($('#'+divId))
 
@@ -48,14 +85,14 @@
 	}
 
 	function attachMetrics(data,divId){
-		var row = $("<div/>",{class:'row content-Container'}).appendTo($('#'+divId))
-		var col1 = $("<div/>",{class:'col-md-4'})
+		var row = $("<div/>",{class:'grid-container'}).appendTo($('#'+divId))
+		var col1 = $("<div/>",{class:'grid-50'})
 		var C1_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
 		C1_content.appendTo(col1)
-		var col2 = $("<div/>",{class:'col-md-4'})
+		var col2 = $("<div/>",{class:'grid-50'})
 		var C2_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
 		C2_content.appendTo(col2)
-		var col3 = $("<div/>",{class:'col-md-4'})
+		var col3 = $("<div/>",{class:'grid-50'})
 		var C3_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
 		C3_content.appendTo(col3)
 		row.append(col1)
