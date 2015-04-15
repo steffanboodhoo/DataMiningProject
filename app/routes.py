@@ -59,7 +59,10 @@ def checkForTrain():
 def analysis():
 	return render_template('analysis.html')
 
-@app.route('/datasetPreviews/<string:purpose>')
+@app.route('/datasetPreviews')
 def datasetPreviews(purpose):
-	obj = dbWrapper.getDatasetPreviews(purpose)
+	name = request.args.get('name')
+	technique = request.args.get('technique')
+	purpose = request.args.get('purpose')
+	obj = dbWrapper.getFilteredDatasetPreviews(name,technique,purpose)
 	return obj
