@@ -176,6 +176,9 @@ function completeFn(results)
 	var regr = $('#regression').prop('checked');
 	var classi = $('#classification').prop('checked');
 	var clust = $('#clustering').prop('checked');
+	var train $('#traindata').prop('checked');
+	var mine $('#minedata').prop('checked');
+
 
 
 	if(regr == true || classi == true || clust == true) {
@@ -190,8 +193,6 @@ function completeFn(results)
 		}
 	}
 	
-	
-	
 	printStats("Parse complete");
 
 	console.log("Serving file");
@@ -203,6 +204,14 @@ function completeFn(results)
     parsed['Type'] = analysis_type;
 	parsed['Name'] = dataset_name;
 	parsed['Subject'] = dataset_subject;
+
+	if(train == true) {
+		parsed['Purpose'] = "Training";
+	}
+
+	else if(mine == true ) {
+		parsed['Purpose'] = "Mining";
+	}
 
 	$.ajax({
 	    type: 'POST',
