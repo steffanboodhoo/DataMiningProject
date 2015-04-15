@@ -16,27 +16,13 @@
 	<h1>Data Analysis</h1>
 
 	<div class="tabs">
-		<div class="tab active" id="tab-dataset">Select Dataset</div>
-		<div class="tab" id="tab-method">Select Analysis Method</div>
+		<div class="tab active" id="tab-pattern">Mining Pattern</div>
+		<div class="tab" id="tab-method">Method</div>
+		<div class="tab active" id="tab-dataset">Dataset</div>
 		<div class="tab" id="tab-visualize">Visualize</div>
 	</div>
 
 	<div class="grid-container">
-
-		<div class="grid-15">
-			<select id="dataset_select">
-			  <option selected value="base">Available Datasets</option>
-			  <option value="student_grades">Student Grades</option>
-			  <option value="iris_data">Iris Color</option>
-			</select><br>
-
-			<select id="dataset_method">
-			  <option selected value="base">Analysis Method</option>
-			  <option value="regression">Regression</option>
-			  <option value="classification">Classification</option>
-			  <option value="clustering">Clustering</option>
-			</select>
-		</div>
 
 		<div class="grid-85 grid-parent">
 
@@ -45,33 +31,10 @@
 			</div>
 
 			<div class="grid-66 pull-33">
-				<div class="grid-100 dataset-chooser" id="analysis_data">
-					
-			    		<div class="dataset-chooser-item selected">
-			 
-			                <div class="grid-75">
-			    				<span class="title">Student Data - Regression</span>
-			    				<span class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</span>
-			    				<input type="radio" name="dataset" value="mobile_desktop" checked="checked">
-			    			</div>
-			    			<div class="clear"></div>
-			    		</div>
-
-			    		<div class="dataset-chooser-item">
-			    			
-			                <div class="grid-75">
-			    				<span class="title">Student Data - Classification</span>
-			    				<span class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</span>
-			    				<input type="radio" name="dataset" value="mobile_desktop">
-			    			</div>
-			    			<div class="clear"></div>
-			    		</div>
-
-
-
-
+				<div class="grid-100" id="analysis_pattern">
 
 				</div>
+
 				<div class="grid-100" id="analysis_method">
 					
 					<!-- <div class="grid-container">
@@ -80,6 +43,28 @@
 						<button id="clustering" class="green">Clustering</button>
 					</div> -->
 				</div>
+
+				<div class="grid-100 dataset-chooser" id="analysis_data">
+					
+		    		<div class="dataset-chooser-item">
+		                <div class="grid-75">
+		    				<span class="title">Student Data - Regression</span>
+		    				<span class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</span>
+		    				<input type="radio" name="dataset" value="student_data_r">
+		    			</div>
+		    			<div class="clear"></div>
+		    		</div>
+
+		    		<div class="dataset-chooser-item">
+		                <div class="grid-75">
+		    				<span class="title">Student Data - Classification</span>
+		    				<span class="description">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.</span>
+		    				<input type="radio" name="dataset" value="student_data_r">
+		    			</div>
+		    			<div class="clear"></div>
+		    		</div>
+				</div>
+				
 				<div class="grid-100" id="analysis_visualize">
 
 				</div>

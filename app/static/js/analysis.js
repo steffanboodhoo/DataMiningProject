@@ -1,17 +1,10 @@
 $(function(){
-	$('div.dataset-chooser').not('.disabled').find('div.dataset-chooser-item').on('click', function(){
-		$(this).parent().parent().find('div.dataset-chooser-item').removeClass('selected');
-		$(this).addClass('selected');
-		$(this).find('input[type="radio"]').prop("checked", true);
-		
-	});
-
-	$('#tab-dataset').click(function()
+	$('#tab-pattern').click(function()
 	{
 		$('.tab').removeClass('active');
 		$(this).addClass('active');
 		$('grid-100').hide();
-		$('#analysis_data').show();
+		$('#analysis_pattern').show();
 		$('#analyze').text("Analyze");
 	});
 
@@ -23,6 +16,15 @@ $(function(){
 		$('#analysis_method').show();
 		$('#analyze').text("Analyze");
 	});
+	
+	$('#tab-dataset').click(function()
+	{
+		$('.tab').removeClass('active');
+		$(this).addClass('active');
+		$('grid-100').hide();
+		$('#analysis_data').show();
+		$('#analyze').text("Analyze");
+	});
 
 	$('#tab-visualize').click(function()
 	{
@@ -31,6 +33,14 @@ $(function(){
 		$('.grid-100').hide();
 		$('#analysis_visualize').show();
 		$('#analyze').text("Analyze");
+	});
+
+
+	$('div.dataset-chooser').not('.disabled').find('div.dataset-chooser-item').on('click', function(){
+		$(this).parent().parent().find('div.dataset-chooser-item').removeClass('selected');
+		$(this).addClass('selected');
+		$(this).find('input[type="radio"]').prop("checked", true);
+		
 	});
 });
 
