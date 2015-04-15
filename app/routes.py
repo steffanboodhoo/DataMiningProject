@@ -39,7 +39,7 @@ def upload_file():
 @app.route('/analysis')
 def analysis():
 	return render_template('analysis.html')
-	
+
 @app.route('/upload_success',methods=['POST','GET'])
 def upload_success():
     if request.method == 'POST':
@@ -71,7 +71,7 @@ def datasetPreviews():
 	return resp
 
 @app.route('/dataset/fullData')
-def datasetPreviews():
+def datasetFullData():
 	name = request.args.get('name')
 	technique = request.args.get('technique')
 	purpose = request.args.get('purpose')
