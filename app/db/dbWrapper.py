@@ -2,7 +2,9 @@ import json
 import yaml
 import db
 from bson.json_util import dumps
-
+import app.wrappers.RegressionWrapper as regr
+import app.wrappers.ClassificationWrapper as classify
+import numpy as np
 
 def prepareData(dataObj):
 	#parsing json to dictionary
@@ -27,7 +29,7 @@ def prepareData(dataObj):
 
 	print dataObj
 	return dataObj
-
+'''
 def testData(dataObj):
 	if dataObj['name'] == None:
 		return {'status':'failure','reason':'No name given to dataset'}
@@ -41,7 +43,7 @@ def testData(dataObj):
 			return {'status':'failure','reason':'No training data found'}
 	return True
 	#dataset = db.getTreai
-
+'''
 def convertFloats(dataset):
 	fixedData=[]
 	for e in dataset:
@@ -55,12 +57,15 @@ def convertFloats(dataset):
 
 def storeDataset(data):
 	dataObj = prepareData(data)
+	resp = db.createDataset(dataObj)
+	'''
 	resp = testData(dataObj)
 	if resp == True:
 		print "success"
 		resp = db.createDataset(dataObj)
 	else:
 		print resp
+	'''
 	return dumps(resp)
 
 def getOneDataset(purpose,code):
@@ -113,3 +118,70 @@ def getFilteredDatasetPreviews(name,technique,purpose):
 		resp.append( db.getMineFilter(filterObj))
 		resp.append( db.getTrainFilter(filterObj))
 	return dumps(resp)
+
+
+def mine(name,technique,method,normalization,standardization):
+	#fetching from database
+	print name,',',technique
+	mineObj = db.getAdataset(name,'Mining')
+	trainObj = db.getAdataset(name,'Training')
+	print mineObj
+	print trainObj
+	mineData = np.array(mineObj['data'])
+	trainData = np.array(trainObj['data'])
+
+	#seperating sets to fit model
+	L = len(trainData[0])
+	n = len(trainData)
+	
+	tdataY = trainData[0:n,(L-1)]
+	tdataX = trainData[0:n,0:(L-1)]
+	#training data:x,y; mining data mineData (a set of x attributes i.e. independent)
+
+	#applying preprocessing methods Normailization / Standardization
+	if normalization=="yes":
+		tdataX = normalize(tdataX)
+		mineData = normalize(mineData)
+
+	#finally ready to apply data mining
+	resp = None
+	if technique=="regression":
+		resp = regr.handleRequest(tdataX,tdataY,mineData,method)
+	elif technique=="classification":
+		resp = classify.handleRequest(tdataX,tdataY,mineData)
+	return dumps(resp)
+
+def normalize(attributes):
+	'''
+	#ensuring the values are floats
+	fixedDataX=[]
+	for e in attributes:
+		row=[]
+		for f in e:
+			f=float(f)
+			row.append(f)
+		fixedDataX.append(row)
+	'''
+	#normalizing each feature
+	attributes = np.array(fixedDataX)
+	L = len(attributes[0])
+	n = len(attributes)
+	for i in range(L):
+		feature = np.array(attributes[0:n,i])
+		feature = normalizeRow(feature)
+		#feature = preprocessing.normalize(feature[:,np.newaxis], axis=0).ravel()
+		attributes[0:n,i] = feature
+		
+	#attributes = preprocessing.normalize(fixedDataX)
+	print attributes
+	return attributes
+
+	def normalizeRow(row):
+		maximum = np.amax(row)
+		minimum = np.amin(row)
+		div = maximum - minimum
+		v = []
+		for e in row:
+			v.append( (maximum - e) / div )
+		#print v
+		return v

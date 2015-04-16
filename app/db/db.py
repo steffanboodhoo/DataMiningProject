@@ -18,7 +18,7 @@ def getAdataset(name,purpose):
 	elif purpose =='Mining':
 		dataset = db.Minedataset
 	return dataset.find_one({'name':name})
-
+	 
 def getTrainFilter(filterObj):
 	dataset = db.Traindataset
 	resp = []
@@ -49,8 +49,8 @@ def getMineFilterFull(filterObj):
 	return resp
 
 def checkForTrain(name,technique):
-	dataset = db.dataset 
-	dObj = dataset.find_one({'name':name,'type':technique},{'name':1,'type':1})
+	dataset = db.Traindataset 
+	dObj = dataset.find_one({'name':name,'type':technique})
 	if dObj == None:
 		return {'status':'failure'}
 	return {'status':'success'}

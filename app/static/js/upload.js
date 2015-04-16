@@ -10,7 +10,27 @@ $(function()
  //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 
 	// Tabs
-	previewDatasets(null,'regression','Training',null)
+	//previewDatasets(null,'regression','Training',null)
+	mine('weightRegrTest','regression','ridge','no','no',null)
+	/*var regrList = [];
+	var clsfList = [];
+	filterFullDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]
+		$.each(response, function(index, sublist){//[{..},{..}]
+			var a=[],b=[];
+			  $.each(sublist, function(index,dataObj){//{..}
+				console.log(dataObj['type'])
+			  	if(dataObj['type'] === 'regression'){
+			  		var name = dataObj['name']
+			  		regrList.push(name)
+			  	}else
+			  		clsfList.push(dataObj['name'])
+			  })
+		});
+		console.log(regrList)
+		console.log(clsfList)
+		//call functions here
+	})	*/
+	//here is called before get is completed
 
 	$('#tab-string').click(function()
 	{
@@ -317,6 +337,22 @@ function checkData(data){
 			postDataset(data)
 		}
 	}
+}
+function mine(name,technique,method,normalization,standardization,call_back){
+	query_str='name='+name+'&technique='+technique+''
+	query_str+='&method='+method+'&normalization='+normalization+''
+	query_str+='&standardization='+standardization+''
+	$.ajax({
+		url:'/Mine',
+		type:'GET',
+		data:query_str,
+		success:function(response){
+			if(typeof call_back==='function')
+				call_back(response)
+			else
+				console.log(response)
+		}
+	})
 }
 
 function errorFn(err, file)

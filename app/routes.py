@@ -52,10 +52,8 @@ def upload_success():
 @app.route('/checkForTrain',methods=['GET','OPTIONS'])
 def checkForTrain():
 	#print request.args.get('test')
-	name = request.args.get('name')
-	technique = request.args.get('technique')
-	obj = {'name':str(name),'technique':str(technique)}
-	print obj
+	name = str(request.args.get('name'))
+	technique = str(request.args.get('technique'))
 	resp = dbWrapper.checkForTrain(name,technique)
 	return resp
 
@@ -81,9 +79,13 @@ def datasetFullData():
 
 @app.route('/Mine')
 def mineData():
-	name = request.args.get('name') #ourIdentifier
-	technique = request.args.get('technique') #technique being used e.g. classification regression
-	method = request.args.get('method')#the method being used e.g. linearRegression, ridgeRegression, lassoRegression
-	normalization = request.args.get('normalization')#yes,no for normalization
-	standardization = request.args.get('standardization')#yes, no for standardization
+	name = str(request.args.get('name')) #ourIdentifier
+	technique = str(request.args.get('technique')) #technique being used e.g. classification regression
+	method = str(request.args.get('method'))#the method being used e.g. linearRegression, ridgeRegression, lassoRegression
+	normalization = str(request.args.get('normalization'))#yes,no for normalization
+	standardization = str(request.args.get('standardization'))#yes, no for standardization
+	dbWrapper.mine(name,technique,method,normalization, standardization)
+	#print name,'',technique,'',method,'',normalization,'',standardization
+	
+
 	
