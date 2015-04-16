@@ -10,7 +10,7 @@ $(function()
  //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 
 	// Tabs
-	filterFullDatasets(null,'regression','Training',null)
+	previewDatasets(null,'regression','Training',null)
 
 	$('#tab-string').click(function()
 	{

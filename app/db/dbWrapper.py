@@ -112,4 +112,4 @@ def getFilteredDatasetPreviews(name,technique,purpose):
 	else:
 		resp.append( db.getMineFilter(filterObj))
 		resp.append( db.getTrainFilter(filterObj))
-		return dumps(resp)
+	return dumps(resp)
