@@ -84,7 +84,8 @@ def mineData():
 	method = str(request.args.get('method'))#the method being used e.g. linearRegression, ridgeRegression, lassoRegression
 	normalization = str(request.args.get('normalization'))#yes,no for normalization
 	standardization = str(request.args.get('standardization'))#yes, no for standardization
-	dbWrapper.mine(name,technique,method,normalization, standardization)
+	resp = dbWrapper.mine(name,technique,method,normalization, standardization)
+	return resp
 	#print name,'',technique,'',method,'',normalization,'',standardization
 	
 

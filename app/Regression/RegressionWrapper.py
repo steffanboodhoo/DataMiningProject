@@ -4,11 +4,13 @@ from sklearn import cross_validation
 import pylab
 
 def handleRequest(tDatax,tDatay,mineData,method):
+	print method
 	print 'we are in the Regression wrapper with our lovely data'
 	if(method =='ridge'):
 		resp = Ridge(tDatax,tDatay,mineData)
 	elif method =='linear':
 		resp = Linear(tDataX, tDataY, mineData)
+	print resp
 	return resp
 	
 def Linear(tDataX,tDataY,mineData):
