@@ -4,18 +4,6 @@ var start, end;
 var firstRun = true;
 var maxUnparseLength = 10000;
 
-// function validate(){
-//     if ($('#dataset_name').val().length   >   0   &&
-//         $('#dataset_subject').val().length  >   0   &&
-//         ($('#regression').prop('checked') == true || $('#classification').prop('checked') == true || $('#clustering').prop('checked') == true)
-//         && ($('#testing').checked == true || $('#training').checked == true)){
-//         $("#submit").prop("disabled", false);
-//     }
-//     else {
-//         $("#submit").prop("disabled", true);
-//     }
-// }
-
 $(function()
 {
 	// validate();
@@ -216,14 +204,6 @@ function completeFn(results)
 	parsed['subject'] = dataset_subject;
 	parsed['purpose'] = purpose;
 	checkData(parsed)
-	//ajax call placed in postDataset
-
- //    console.log(JSON.stringify(parsed));
-	// $.getJSON($SCRIPT_ROOT + '/upload_success', {
- //        dataset: JSON.stringify(parsed)
- //    }, function(data){
- //        $( "#result" ).text(data.result);
- //    });
 
 	// icky hack
 	setTimeout(enableButton, 100);

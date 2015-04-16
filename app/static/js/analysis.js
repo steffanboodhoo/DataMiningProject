@@ -492,18 +492,21 @@ function previewDatasets(name,technique,purpose,call_back){
 	var query_str=''
 	if(name != null)
 		query_str+='name='+name
+	
 	if(technique != null){
 		if(query_str!='')
 			query_str+='&'
 		query_str+='technique='+technique
 	}
+
 	if(purpose != null){
 		if(query_str!='')
 			query_str+='&'
 		query_str+='purpose='+purpose
 	}
+
 	$.ajax({
-		url:'/dataset/previews'
+		url:'/dataset/previews',
 		type: 'GET',
 		data: query_str,
 		success: function(response){
@@ -513,8 +516,21 @@ function previewDatasets(name,technique,purpose,call_back){
 			else
 				console.log(data)
 		}
-
-	})
+	});
 }
+
+
+function postDataset(data){
+	console.log('pre POST-REQUEST for dataset')
+	$.ajax({
+	    type: 'POST',
+	    url: "/upload_success",
+	    data: JSON.stringify(data),
+	    dataType: 'json',
+	    contentType: 'application/json; charset=utf-8'
+	});
+}
+
+
 
 }(this));
