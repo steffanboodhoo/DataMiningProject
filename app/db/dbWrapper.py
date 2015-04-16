@@ -2,6 +2,7 @@ import json
 import yaml
 import db
 from bson.json_util import dumps
+import app.Regression.RegressionEval as evl
 import app.Regression.RegressionWrapper as regr
 import app.wrappers.ClassificationWrapper as classify
 import numpy as np
@@ -149,6 +150,9 @@ def mine(name,technique,method,normalization,standardization):
 		resp = regr.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData)
+
+	errors = evl.allErrors(resp['testY'],resp['testPredY'])
+	resp['errors'] = errors
 	return dumps(resp)
 
 def normalize(attributes):

@@ -1,8 +1,9 @@
 import sklearn.metrics as metrics
+import scipy.spatial.distance as dist
 
 def allErrors(y_true,y_predict):
 	return {"r2":metrics.r2_score(y_true,y_predict),"mae":metrics.mean_absolute_error(y_true,y_predict),
-	"mse":metrics.mean_squared_error(y_true,y_predict)}
+	"mse":metrics.mean_squared_error(y_true,y_predict),"dist":dist.euclidean(y_true,y_predict)}
 
 #Best possible score is 1.0, lower values are worse. [0,1]
 #basically 0% to 100% accuracy[0,1]
@@ -21,5 +22,7 @@ def mdeianSquared(y_true,y_predict):
 def meanAbosolute(y_true,y_predict):
 	return metrics.mean_absolute_error(y_true,y_predict)
 
+def euclideanDistance(y_true,y_predict):
+	return dist.euclidean(y_true,y_predict)
 if __name__ == '__main__':
 	test()
