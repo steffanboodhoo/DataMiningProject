@@ -2,7 +2,7 @@ import json
 import yaml
 import db
 from bson.json_util import dumps
-import app.wrappers.RegressionWrapper as regr
+import app.Regression.RegressionWrapper as regr
 import app.wrappers.ClassificationWrapper as classify
 import numpy as np
 
