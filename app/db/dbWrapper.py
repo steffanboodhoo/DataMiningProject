@@ -68,13 +68,14 @@ def getOneDataset(purpose,code):
 	return dumps(resp)
 
 def getFilteredFullDatasets(name,technique,purpose):
+	print 'getFilterFull'
 	filterObj = {}
 	resp = []
 	if name != None:
 		filterObj['name'] = str(name)
 
 	if technique != None:
-		filterObj['technique'] = str(technique)
+		filterObj['type'] = str(technique)
 
 	if purpose != None:
 		if str(purpose) == 'Mining':
@@ -84,7 +85,7 @@ def getFilteredFullDatasets(name,technique,purpose):
 	else:
 		resp.append( db.getMineFilterFull(filterObj))
 		resp.append( db.getTrainFilterFull(filterObj))
-		return dumps(resp)
+	return dumps(resp)
 	
 
 	#returns preview
@@ -101,7 +102,7 @@ def getFilteredDatasetPreviews(name,technique,purpose):
 		filterObj['name'] = str(name)
 
 	if technique != None:
-		filterObj['technique'] = str(technique)
+		filterObj['type'] = str(technique)
 
 	if purpose != None:
 		if str(purpose) == 'Mining':

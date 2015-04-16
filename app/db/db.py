@@ -34,6 +34,7 @@ def getMineFilter(filterObj):
 	return resp
 
 def getTrainFilterFull(filterObj):
+	print(filterObj)
 	dataset = db.Traindataset
 	resp = []
 	for d in dataset.find(filterObj):

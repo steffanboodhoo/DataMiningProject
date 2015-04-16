@@ -75,6 +75,7 @@ def datasetFullData():
 	name = request.args.get('name')
 	technique = request.args.get('technique')
 	purpose = request.args.get('purpose')
+	print 'db---'
 	resp = dbWrapper.getFilteredFullDatasets(name,technique,purpose)
 	return resp
 
