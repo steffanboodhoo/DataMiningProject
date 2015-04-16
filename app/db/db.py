@@ -12,12 +12,12 @@ def createDataset(dataObj):
 	dataset.insert(dataObj)
 	return {'status':'success'}
 
-def getAdataset(purpose,code):
+def getAdataset(name,purpose):
 	if purpose =='Training':
 		dataset = db.Traindataset
 	elif purpose =='Mining':
 		dataset = db.Minedataset
-	return dataset.find_one({'code':code})
+	return dataset.find_one({'name':name})
 
 def getTrainFilter(filterObj):
 	dataset = db.Traindataset

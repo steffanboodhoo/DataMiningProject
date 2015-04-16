@@ -64,7 +64,7 @@ def storeDataset(data):
 	return dumps(resp)
 
 def getOneDataset(purpose,code):
-	resp = db.getAdataset(purpose,code)
+	resp = db.getAdataset(name,purpose)
 	return dumps(resp)
 
 def getFilteredFullDatasets(name,technique,purpose):
