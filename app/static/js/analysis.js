@@ -88,7 +88,7 @@ $(function(){
 	function createAnalysisView(data,labels,type){
 		var divId = 'container'+containerCount //create Unique container ID
 		var container = $("<div/>", {id: divId,class:'grid-100'})//create container for this analysis
-		$('#analysis_visualize').append(container)//append it to the page
+		$('#analysis_visualize_tab').append(container)//append it to the page
 		if(type===technique.regr){
 			//showing test data for regression
 			attachChart(data,labels,charts.chartB,divId)
