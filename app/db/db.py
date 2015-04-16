@@ -5,16 +5,17 @@ client = MongoClient(URI)
 db = client.get_default_database()
 
 def createDataset(dataObj):
-	if dataObj['purpose']=='training':
+	if dataObj['purpose']=='Training':
 		dataset = db.Traindataset
-	elif dataObj['purpose']=='mining':
+	elif dataObj['purpose']=='Mining':
 		dataset = db.Minedataset
 	dataset.insert(dataObj)
+	return {'status':'success'}
 
 def getAdataset(purpose,code):
-	if purpose =='training':
+	if purpose =='Training':
 		dataset = db.Traindataset
-	elif purpose =='mining':
+	elif purpose =='Mining':
 		dataset = db.Minedataset
 	return dataset.find_one({'code':code})
 

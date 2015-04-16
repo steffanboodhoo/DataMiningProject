@@ -58,6 +58,7 @@ def storeDataset(data):
 	resp = testData(dataObj)
 	if resp == True:
 		print "success"
+		resp = db.createDataset(dataObj)
 	else:
 		print resp
 	return dumps(resp)

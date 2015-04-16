@@ -249,22 +249,26 @@ function checkData(data){
 	else if(data['type'] === null || data['type'] === undefined || data['type'] === '')
 		handleError( {'status':'failure','reason':'no technique specified (classification/regression....)'} )
 	else{
-		var query_str = 'name='+data['name']+'&technique='+data['type']+''
-		console.log(query_str)
-		$.ajax({type: 'GET',
-		    url: "/checkForTrain",
-		    data: query_str,
-		    success: function(response){
-		    	response = JSON.parse(response)
-		    	if(response['status']==='success')
-		    		postDataset(data)
-		    	else
-		    		handleError(data)
-		    },
-		    error :   function(response){
-         		console.log(response)
-        	}
-		})
+		if(data['purpose'] === 'Mining'){
+			var query_str = 'name='+data['name']+'&technique='+data['type']+''
+			console.log(query_str)
+			$.ajax({type: 'GET',
+			    url: "/checkForTrain",
+			    data: query_str,
+			    success: function(response){
+			    	response = JSON.parse(response)
+			    	if(response['status']==='success')
+			    		postDataset(data)
+			    	else
+			    		handleError(data)
+			    },
+			    error :   function(response){
+	         		console.log(response)
+	        	}
+			})
+		}else{
+			postDataset(data)
+		}
 	}
 }
 
