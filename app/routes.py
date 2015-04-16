@@ -77,3 +77,12 @@ def datasetFullData():
 	purpose = request.args.get('purpose')
 	resp = dbWrapper.getFilteredFullDatasets(name,technique,purpose)
 	return resp
+
+@app.route('/Mine')
+def mineData():
+	name = request.args.get('name') #ourIdentifier
+	technique = request.args.get('technique') #technique being used e.g. classification regression
+	method = request.args.get('method')#the method being used e.g. linearRegression, ridgeRegression, lassoRegression
+	normalization = request.args.get('normalization')#yes,no for normalization
+	standardization = request.args.get('standardization')#yes, no for standardization
+	
