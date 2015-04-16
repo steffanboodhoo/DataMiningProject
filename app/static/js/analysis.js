@@ -55,6 +55,30 @@ $(function(){
 		setupButtons();
 		setupMenu();
 	});
+
+	// Fetch the list of datasets
+	var objectList ={};
+
+	filterFullDatasets(null,null,null,function(response){
+		var i = 0
+		var n = response[1].length
+		for(i = 0; i < n; ++i){
+			objectList['datasets'+i] = {
+				'type' :response[1][i].type,
+				'name' :response[1][i].name
+			};
+		}
+	})
+
+	var pattern = $('input:radio[name=dataset_pattern]:checked').val();
+
+	//Generate the list of datasets to select
+
+	$.each(objectList,function(index,value){
+		//if(value.type == 'regression')
+			console.log(index)
+	});
+
 	function setupButtons(){
 		$('#analyze').click(function(){
 			createAnalysisView(testData,testSeries,technique.regr)
@@ -492,19 +516,16 @@ function previewDatasets(name,technique,purpose,call_back){
 	var query_str=''
 	if(name != null)
 		query_str+='name='+name
-	
 	if(technique != null){
 		if(query_str!='')
 			query_str+='&'
 		query_str+='technique='+technique
 	}
-
 	if(purpose != null){
 		if(query_str!='')
 			query_str+='&'
 		query_str+='purpose='+purpose
 	}
-
 	$.ajax({
 		url:'/dataset/previews',
 		type: 'GET',
@@ -516,7 +537,38 @@ function previewDatasets(name,technique,purpose,call_back){
 			else
 				console.log(data)
 		}
-	});
+
+	})
+}
+
+//same rules as the preview but returns full datasets
+function filterFullDatasets(name,technique,purpose,call_back){
+	var query_str=''
+	if(name != null)
+		query_str+='name='+name
+	if(technique != null){
+		if(query_str!='')
+			query_str+='&'
+		query_str+='technique='+technique
+	}
+	if(purpose != null){
+		if(query_str!='')
+			query_str+='&'
+		query_str+='purpose='+purpose
+	}
+	$.ajax({
+		url:'/dataset/fullData',
+		type: 'GET',
+		data: query_str,
+		success: function(response){
+			var data = JSON.parse(response)
+			if(typeof call_back === 'function')
+				call_back(data)
+			else
+				console.log(data)
+		}
+
+	})
 }
 
 
