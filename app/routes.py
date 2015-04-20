@@ -11,7 +11,7 @@ def index():
 	return render_template('index.html')
 
 @app.route('/myAnalysis')
-def index():
+def myanalysis():
 	return render_template('myAnalysis.html')
 
 @app.route('/regression/linear/test')

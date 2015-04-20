@@ -1,4 +1,3 @@
-
 (function(window){
 	var containerCount = 0
 	var chartCount = 0
@@ -10,77 +9,83 @@
 		setupButtons();
 		setupMenu();
 	});
-
-	// Fetch the list of datasets
-	var objectList ={};
-
-	filterFullDatasets(null,null,null,function(response){
-		var i = 0
-		var n = response[1].length
-		for(i = 0; i < n; ++i){
-			objectList['datasets'+i] = {
-				'type' :response[1][i].type,
-				'name' :response[1][i].name
-			};
-		}
-	})
-
-	var pattern = $('input:radio[name=dataset_pattern]:checked').val();
-
-	//Generate the list of datasets to select
-
-	$.each(objectList,function(index,value){
-		//if(value.type == 'regression')
-			console.log(index)
-	});
-
 	function setupButtons(){
-		$('#analyze').click(function(){
+		$('#addChart').click(function(){
 			createAnalysisView(testData,testSeries,technique.regr)
 		})
 	}
-
+	function setupCloseBtn(closeBtnId,divId){
+		$('#'+closeBtnId).click(function(){
+			console.log('click')
+			$('#'+divId).fadeOut(1000,function(){
+				$('#'+divId).remove();
+			})
+		})
+	}
 	function createAnalysisView(data,labels,type){
 		var divId = 'container'+containerCount //create Unique container ID
-		var container = $("<div/>", {id: divId,class:'grid-100'})//create container for this analysis
-		$('#analysis_visualize_tab').append(container)//append it to the page
+		var container = $("<div/>", {id: divId,class:'container-fluid analysis-Container'})//create container for this analysis
+		$('#mid_pane').append(container)//append it to the page
+
 		if(type===technique.regr){
 			//showing test data for regression
-			attachChart(data,labels,charts.chartB,divId)
+			attachChartWithButtons(data,labels,charts.chartB,divId)
 			attachMetrics(null,divId)
 			//showing actual prediction for regression
-			attachChart(data,labels,charts.chartA,divId)
+			attachChartWithButtons(data,labels,charts.chartA,divId)
 		}else if(type === technique.clfy){
 			// attach what you want etc using attachChart
 		}
+		//moves screen to container
+		 $('html, body').animate({'scrollTop': container.offset().top}, 'slow', 'swing');
+		//$('html, body').animate({'scrollTop': container.offset().top}, 1000);
 		containerCount++;
 	}
 
-	function attachChart(data,labels,chartType,divId){
+	function attachChartWithButtons(data,labels,chartType,divId){
 		console.log('attach Chart'+chartType)
 		var chartId = 'chart'+chartCount //create unique ID for the container
-		var row = $("<div/>",{class:'grid-100'})
-		var col = $("<div/>",{class:'grid-container'})
-		$("<div/>", {id: chartId,class:'grid-container'}).appendTo(col) //create the Container Itself and append it
-		col.appendTo(row)
+		var row = $("<div/>",{class:'row content-Container'})//creates a row for the chart and buttons
+		var col = $("<div/>",{class:'col-md-11'})//creates a column span 11/12 for chart
+		$("<div/>", {id: chartId,class:'container-fluid'}).appendTo(col) //create the Container Itself and append it
+		col.appendTo(row) 
+		attachChartButtons(divId,row,chartCount);
+		//create buttons here before attaching
 		row.appendTo($('#'+divId))
+		if(chartCount%2==0)
+			setupCloseBtn("btn_close_"+chartCount,divId)
 
 		if(chartType===charts.chartA)
-			createChartA(data,labels,'#'+chartId)
+			createChartC(data,labels,'#'+chartId)
 		else if(chartType===charts.chartB)
-			createChartB(data, labels, '#'+chartId)
+			createChartD(data, labels, '#'+chartId)
 		chartCount++
+	}
+	function attachChartButtons(divId,row,chartCount){
+		var btns_col  = $("<div/>",{class:'col-md-1'})//creates a column span 1/12 for buttons
+		var btn_group = $("<div/>",{class:'btn-group-vertial'})
+		if(chartCount%2==0){
+			$("<button>",{id:"btn_close_"+chartCount,class:'btn btn-default btn-lg '}).append($('<span>',{class:'glyphicon glyphicon-remove-circle'})).appendTo(btn_group)
+			$("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:1}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
+		}else{
+			$("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:2}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
+		}
+		btn_group.appendTo(btns_col)
+		//<div class="btn-group-vertical" role="group" aria-label="...">
+		//</div>
+		//btnClose.appendTo(btns_col);
+		btns_col.appendTo(row);
 	}
 
 	function attachMetrics(data,divId){
-		var row = $("<div/>",{class:'grid-container'}).appendTo($('#'+divId))
-		var col1 = $("<div/>",{class:'grid-50'})
+		var row = $("<div/>",{class:'row content-Container'}).appendTo($('#'+divId))
+		var col1 = $("<div/>",{class:'col-md-4'})
 		var C1_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
 		C1_content.appendTo(col1)
-		var col2 = $("<div/>",{class:'grid-50'})
+		var col2 = $("<div/>",{class:'col-md-4'})
 		var C2_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
 		C2_content.appendTo(col2)
-		var col3 = $("<div/>",{class:'grid-50'})
+		var col3 = $("<div/>",{class:'col-md-4'})
 		var C3_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
 		C3_content.appendTo(col3)
 		row.append(col1)
@@ -152,8 +157,6 @@
 
 	            xAxis: {
 	                 // one week
-	                
-	                
 	                labels: {
 	                    align: 'left',
 	                    x: 3,
@@ -228,10 +231,107 @@
 	            series:data
 	        });
 	    });
-
 	}
-	
 
+	function createChartC(data,categories,chartContainer){
+		data.forEach(function(obj){
+			obj['type']='area';
+		})
+
+		$(function () {
+		    $(chartContainer).highcharts({
+		        chart: {
+		            zoomType: 'x'
+		        },
+		        title: {
+		            text: 'USD to EUR exchange rate from 2006 through 2008'
+		        },
+		        subtitle: {
+		            text: document.ontouchstart === undefined ?
+		                    'Click and drag in the plot area to zoom in' :
+		                    'Pinch the chart to zoom in'
+		        },
+		        xAxis: {
+		            categories:categories
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Exchange rate'
+		            }
+		        },
+		        legend: {
+		            enabled: false
+		        },
+		        plotOptions: {
+		            area: {
+		                fillColor: {
+		                    linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1},
+		                    stops: [
+		                        [0, Highcharts.getOptions().colors[0]],
+		                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+		                    ]
+		                },
+		                marker: {
+		                    radius: 2
+		                },
+		                lineWidth: 1,
+		                states: {
+		                    hover: {
+		                        lineWidth: 1
+		                    }
+		                },
+		                threshold: null
+		            }
+		        },
+		        series: data
+		    });
+		});
+	}
+	function createChartD(data,categories,chartContainer){
+		$(function () {
+		    $(chartContainer).highcharts({
+		        chart: {
+		            type: 'area'
+		        },
+		        title: {
+		            text: 'US and USSR nuclear stockpiles'
+		        },
+		        subtitle: {
+		            text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
+		                'thebulletin.metapress.com</a>'
+		        },
+		        xAxis: {
+		            categories:categories
+		        },
+		        yAxis: {
+		            title: {
+		                text: 'Nuclear weapon states'
+		            },
+		            
+		        },
+		        tooltip: {
+			                shared: true,
+			                crosshairs: true
+			            },
+		        plotOptions: {
+		            area: {
+		                
+		                marker: {
+		                    enabled: false,
+		                    symbol: 'circle',
+		                    radius: 2,
+		                    states: {
+		                        hover: {
+		                            enabled: true
+		                        }
+		                    }
+		                }
+		            }
+		        },
+		        series: data
+		    });
+		});
+	}
 	var testData=[{
             name: 'Tokyo',
             data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
@@ -249,14 +349,7 @@
                 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
     //-------------------------------------------------------------------
-    
-
-
-
-
-}(this));
-
-function setupTheme(){
+    function setupTheme(){
     	/**
 		 * Dark theme for Highcharts JS
 		 * @author Torstein Honsi
@@ -470,3 +563,4 @@ function setupTheme(){
 		// Apply the theme
 		Highcharts.setOptions(Highcharts.theme);
     }
+}(this));
