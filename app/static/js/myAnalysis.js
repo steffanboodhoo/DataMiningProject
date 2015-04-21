@@ -58,7 +58,7 @@
 		if(chartType===charts.chartA)
 			createChartC(data,labels,'#'+chartId)
 		else if(chartType===charts.chartB)
-			createChartD(data, labels, '#'+chartId)
+			createChartE(data, labels, '#'+chartId)
 		chartCount++
 	}
 	function attachChartButtons(divId,row,chartCount){
@@ -332,6 +332,235 @@
 		    });
 		});
 	}
+
+	function createChartE(dataa,categories,chartContainer){
+		//$("<div/>",{class:'container-fluid',id:'container'}).appendTo(chartContainer)
+		//$("<div/>",{class:'container-fluid ',id='master-container'}).appendTo(chartContainer)
+
+		$(function () {
+		    var data = [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
+		        detailChart;
+
+	   
+
+	        // create the detail chart
+	        function createDetail(masterChart) {
+
+	            // prepare the detail chart
+	            var detailData = [],
+	                detailStart = Date.UTC(2008, 7, 1);
+
+	            $.each(masterChart.series[0].data, function () {
+	                if (this.x >= detailStart) {
+	                    detailData.push(this.y);
+	                }
+	            });
+
+	            // create a detail chart referenced by a global variable
+	            detailChart = $('#detail-container').highcharts({
+	                chart: {
+	                    marginBottom: 120,
+	                    reflow: false,
+	                    marginLeft: 50,
+	                    marginRight: 20,
+	                    style: {
+	                        position: 'absolute'
+	                    }
+	                },
+	                credits: {
+	                    enabled: false
+	                },
+	                title: {
+	                    text: 'Historical USD to EUR Exchange Rate'
+	                },
+	                subtitle: {
+	                    text: 'Select an area by dragging across the lower chart'
+	                },
+	                xAxis: {
+	                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+	                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+	                },
+	                yAxis: {
+	                    title: {
+	                        text: null
+	                    },
+	                    maxZoom: 0.1
+	                },
+	                tooltip: {
+	                    formatter: function () {
+	                        var point = this.points[0];
+	                        return '<b>' + point.series.name + '</b><br/>' +
+	                            Highcharts.dateFormat('%A %B %e %Y', this.x) + ':<br/>' +
+	                            '1 USD = ' + Highcharts.numberFormat(point.y, 2) + ' EUR';
+	                    },
+	                    shared: true
+	                },
+	                legend: {
+	                    enabled: false
+	                },
+	                plotOptions: {
+	                    series: {
+	                        marker: {
+	                            enabled: false,
+	                            states: {
+	                                hover: {
+	                                    enabled: true,
+	                                    radius: 3
+	                                }
+	                            }
+	                        }
+	                    }
+	                },
+	                series: [{
+	                    name: 'USD to EUR',
+	                    data: detailData
+	                }],
+
+	                exporting: {
+	                    enabled: false
+	                }
+
+	            }).highcharts(); // return chart
+	        }
+
+	        // create the master chart
+	        function createMaster() {
+	            $('#master-container').highcharts({
+	                chart: {
+	                    reflow: false,
+	                    borderWidth: 0,
+	                    backgroundColor: null,
+	                    marginLeft: 50,
+	                    marginRight: 20,
+	                    zoomType: 'x',
+	                    events: {
+
+	                        // listen to the selection event on the master chart to update the
+	                        // extremes of the detail chart
+	                        selection: function (event) {
+	                            var extremesObject = event.xAxis[0],
+	                                min = extremesObject.min,
+	                                max = extremesObject.max,
+	                                detailData = [],
+	                                xAxis = this.xAxis[0];
+
+	                            // reverse engineer the last part of the data
+	                            $.each(this.series[0].data, function () {
+	                                if (this.x > min && this.x < max) {
+	                                    detailData.push([this.x, this.y]);
+	                                }
+	                            });
+
+	                            // move the plot bands to reflect the new detail span
+	                            xAxis.removePlotBand('mask-before');
+	                            xAxis.addPlotBand({
+	                                id: 'mask-before',
+	                                from: Date.UTC(2006, 0, 1),
+	                                to: min,
+	                                color: 'rgba(0, 0, 0, 0.2)'
+	                            });
+
+	                            xAxis.removePlotBand('mask-after');
+	                            xAxis.addPlotBand({
+	                                id: 'mask-after',
+	                                from: max,
+	                                to: Date.UTC(2008, 11, 31),
+	                                color: 'rgba(0, 0, 0, 0.2)'
+	                            });
+
+
+	                            detailChart.series[0].setData(detailData);
+
+	                            return false;
+	                        }
+	                    }
+	                },
+	                title: {
+	                    text: null
+	                },
+	                xAxis: {
+	                    
+	                    title: {
+	                        text: null
+	                    }
+	                },
+	                yAxis: {
+	                    gridLineWidth: 0,
+	                    labels: {
+	                        enabled: false
+	                    },
+	                    title: {
+	                        text: null
+	                    },
+	                    min: 0.6,
+	                    showFirstLabel: false
+	                },
+	                tooltip: {
+	                    formatter: function () {
+	                        return false;
+	                    }
+	                },
+	                legend: {
+	                    enabled: false
+	                },
+	                credits: {
+	                    enabled: false
+	                },
+	                plotOptions: {
+	                    series: {
+	                        fillColor: {
+	                            linearGradient: [0, 0, 0, 70],
+	                            stops: [
+	                                [0, Highcharts.getOptions().colors[0]],
+	                                [1, 'rgba(255,255,255,0)']
+	                            ]
+	                        },
+	                        lineWidth: 1,
+	                        marker: {
+	                            enabled: false
+	                        },
+	                        shadow: false,
+	                        states: {
+	                            hover: {
+	                                lineWidth: 1
+	                            }
+	                        },
+	                        enableMouseTracking: false
+	                    }
+	                },
+
+	                series: [{
+	                    type: 'area',
+	                    name: 'USD to EUR',
+	                    data: data
+	                }],
+
+	                exporting: {
+	                    enabled: false
+	                }
+
+	            }, function (masterChart) {
+	                createDetail(masterChart);
+	            })
+	                .highcharts(); // return chart instance
+	        }
+
+	        // make the container smaller and add a second container for the master chart
+	        //var $container = $(chartContainer)
+	            
+
+	        $('<div id="detail-container">')
+	            .appendTo($(chartContainer));
+
+	        $('<div id="master-container">')
+	            .appendTo($(chartContainer));
+
+	        // create master and in its callback, create the detail chart
+	        createMaster();
+
+		});
+	}
+
 	var testData=[{
             name: 'Tokyo',
             data: [7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6]
