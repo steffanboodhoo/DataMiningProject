@@ -1,6 +1,7 @@
 import json
 import yaml
 import db
+from sklearn import preprocessing
 from bson.json_util import dumps
 import app.Regression.RegressionEval as evl
 import app.Regression.RegressionWrapper as regr
@@ -143,6 +144,11 @@ def mine(name,technique,method,normalization,standardization):
 	if normalization=="yes":
 		tdataX = normalize(tdataX)
 		mineData = normalize(mineData)
+
+	if standardization=="yes":
+		min_max_scaler = preprocessing.MinMaxScaler()
+		tdataX = min_max_scaler.fit_transform(tdataX)
+		mineData = min_max_scaler.fit_transform(mineData)
 
 	#finally ready to apply data mining
 	resp = None
