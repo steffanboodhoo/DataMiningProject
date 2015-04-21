@@ -2,7 +2,7 @@
 	var containerCount = 0
 	var chartCount = 0
 	var technique = {'regr':'REGRESSION','clfy':'CLASSIFICATION'}
-	var charts = {'chartA':'CHARTA','chartB':'CHARTB'}
+	var charts = {'chartA':'CHARTA','chartB':'CHARTB','chartC':'CHARTC','chartD':'CHARTD','chartE':'CHARTE'}
 	$(document).ready(function(){
 		console.log("im loaded")
 		setupTheme();
@@ -11,7 +11,8 @@
 	});
 	function setupButtons(){
 		$('#addChart').click(function(){
-			createAnalysisView(testData,testSeries,technique.regr)
+			var dataCopy = testData
+			createAnalysisView(dataCopy,testSeries,technique.regr)
 		})
 	}
 	function setupCloseBtn(closeBtnId,divId){
@@ -20,6 +21,36 @@
 			$('#'+divId).fadeOut(1000,function(){
 				$('#'+divId).remove();
 			})
+		})
+	}
+	function deepCopy(data){
+		var dataCopy = []
+		data.forEach(function(oldObject){
+			var newObject = jQuery.extend(true, {}, oldObject);
+			dataCopy.push(newObject)
+		})
+		return dataCopy
+	}
+	function setupChangeBtn(nextBtnId,chartId,chartCount){
+		$('#'+nextBtnId).click(function(){
+			$(chartId).empty()
+			var val = parseInt($('#'+nextBtnId).val()) + 1
+			val = (val)%5
+			$('#'+nextBtnId).val(val)
+			var dataCopy = deepCopy(testData)
+			var categories = testSeries
+			console.log(dataCopy)
+			if(val===0){
+				createChartA(dataCopy,categories,chartId)
+			}else if(val===1){
+				createChartB(dataCopy,categories,chartId)
+			}else if(val===2){
+				createChartC(dataCopy,categories,chartId)
+			}else if(val===3){
+				createChartD(dataCopy,categories,chartId)
+			}else if(val===4){
+				createChartE(dataCopy,categories,chartId)
+			}
 		})
 	}
 	function createAnalysisView(data,labels,type){
@@ -54,10 +85,17 @@
 		row.appendTo($('#'+divId))
 		if(chartCount%2==0)
 			setupCloseBtn("btn_close_"+chartCount,divId)
+		setupChangeBtn("btn_next_"+chartCount,'#'+chartId,chartCount)
 
 		if(chartType===charts.chartA)
-			createChartC(data,labels,'#'+chartId)
+			createChartA(data,labels,'#'+chartId)
 		else if(chartType===charts.chartB)
+			createChartB(data, labels, '#'+chartId)
+		else if(chartType===charts.chartC)
+			createChartC(data, labels, '#'+chartId)
+		else if(chartType===charts.chartD)
+			createChartD(data, labels, '#'+chartId)
+		else if(chartType===charts.chartE)
 			createChartE(data, labels, '#'+chartId)
 		chartCount++
 	}
@@ -68,7 +106,7 @@
 			$("<button>",{id:"btn_close_"+chartCount,class:'btn btn-default btn-lg '}).append($('<span>',{class:'glyphicon glyphicon-remove-circle'})).appendTo(btn_group)
 			$("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:1}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
 		}else{
-			$("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:2}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
+			$("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:0}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
 		}
 		btn_group.appendTo(btns_col)
 		//<div class="btn-group-vertical" role="group" aria-label="...">
@@ -234,7 +272,8 @@
 	}
 
 	function createChartC(data,categories,chartContainer){
-		data.forEach(function(obj){
+		var dataC = data
+		dataC.forEach(function(obj){
 			obj['type']='area';
 		})
 
@@ -283,7 +322,7 @@
 		                threshold: null
 		            }
 		        },
-		        series: data
+		        series: dataC
 		    });
 		});
 	}
