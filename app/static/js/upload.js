@@ -152,7 +152,6 @@ function buildConfig()
 {
 	return {
 		delimiter: $('#delimiter').val(),
-		dynamicTyping: $('#dynamicTyping').prop('checked'),
 		comments: $('#comments').val(),
 		complete: completeFn,
 		error: errorFn,
@@ -200,7 +199,8 @@ function completeFn(results)
 	var classi = $('#classification').prop('checked');
 	var clust = $('#clustering').prop('checked');
 	var purpose = $('input:radio[name=dataset_purpose]:checked').val();
-
+	var targetCol = $('#target_column').val();
+	
 	if(regr == true || classi == true || clust == true) {
 		if(regr) {
 			analysis_type += "regression";
@@ -308,6 +308,7 @@ function filterFullDatasets(name,technique,purpose,call_back){
 function getADataset(){
 	
 }
+
 function checkData(data){
 	if(data['name'] === null || data['name'] === undefined || data['name'] === '')
 		handleError( {'status':'failure','reason':'name is missing'} )
@@ -338,6 +339,7 @@ function checkData(data){
 		}
 	}
 }
+
 function mine(name,technique,method,normalization,standardization,call_back){
 	query_str='name='+name+'&technique='+technique+''
 	query_str+='&method='+method+'&normalization='+normalization+''
