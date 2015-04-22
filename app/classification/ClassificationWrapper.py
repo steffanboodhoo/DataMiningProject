@@ -1,4 +1,4 @@
-import app.classification.KNNClassifier as knn
+import KNNClassifier as knn
 import pylab
 import random
 from sklearn import datasets
