@@ -207,12 +207,11 @@ function prepareData(data){
 	var dataset_name = $('#dataset_name').val();
 	var dataset_subject = $('#dataset_subject').val();
 
-
 	var regr = $('#regression').prop('checked');
 	var classi = $('#classification').prop('checked');
 	var clust = $('#clustering').prop('checked');
 	var purpose = $('input:radio[name=dataset_purpose]:checked').val();
-	var targetCol = $('#target_column').val();
+	var targetCol = parseInt($('#target_column').val() - 1);
 
 	if(regr == true || classi == true || clust == true) {
 		if(regr) {
@@ -234,7 +233,39 @@ function prepareData(data){
 	parsed['name'] = dataset_name;
 	parsed['subject'] = dataset_subject;
 	parsed['purpose'] = purpose;
-	
+	parsed['attributes'] = [];
+
+	var targetData = [];
+	var attributes = [];
+	var targetName;
+
+	// Alright, lets cut out the data in the target column now
+	$.each(parsed['data'], function(topIndex, row){
+		$.each(row,function(index,value) {
+			// Get the column headers for the attributes
+			if (topIndex == 0 && index == targetCol) {
+				targetName = value
+			}
+			else if(topIndex == 0 && index != targetCol) {
+				attributes.push(value)
+			}
+			// Fetch the elements in the target column
+			else if(topIndex != 0 && index == targetCol) {
+				targetData.push(value)
+			}
+		})
+		// Remove the column from the original array
+		row = row.splice(targetCol,1)
+	});
+
+	// Pass values onto object
+	parsed['attributes'] = attributes;
+	parsed['target'] = targetData;
+	parsed['targetName'] = targetName;
+
+	// Remove column headers from data
+	parsed['data'].splice(0,1);
+	// Verify the goods	
 	checkData(parsed)
 }
 
