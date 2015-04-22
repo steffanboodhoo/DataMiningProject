@@ -189,10 +189,23 @@ function completeFn(results)
 			rowCount = results.data.length;
 	}
 
+
+	
+	printStats("Parse complete");
+
+	console.log("Serving file");
+	
+	prepareData(results);
+
+	// icky hack
+	setTimeout(enableButton, 100);
+}
+
+function prepareData(data){
+	
 	var analysis_type = "";
 	var dataset_name = $('#dataset_name').val();
 	var dataset_subject = $('#dataset_subject').val();
-
 
 
 	var regr = $('#regression').prop('checked');
@@ -200,7 +213,7 @@ function completeFn(results)
 	var clust = $('#clustering').prop('checked');
 	var purpose = $('input:radio[name=dataset_purpose]:checked').val();
 	var targetCol = $('#target_column').val();
-	
+
 	if(regr == true || classi == true || clust == true) {
 		if(regr) {
 			analysis_type += "regression";
@@ -212,24 +225,51 @@ function completeFn(results)
 			analysis_type += ",clustering";
 		}
 	}
-	
-	printStats("Parse complete");
 
-	console.log("Serving file");
-	// Send data to backend
-	var parsed = results;
+	var parsed = data;
 	delete parsed.errors;
-    delete parsed.meta;
-    
-    parsed['type'] = analysis_type;
+	delete parsed.meta;
+
+	parsed['type'] = analysis_type;
 	parsed['name'] = dataset_name;
 	parsed['subject'] = dataset_subject;
 	parsed['purpose'] = purpose;
+	
 	checkData(parsed)
-
-	// icky hack
-	setTimeout(enableButton, 100);
 }
+
+function checkData(data){
+	if(data['name'] === null || data['name'] === undefined || data['name'] === '')
+		handleError( {'status':'failure','reason':'name is missing'} )
+	else if(data.purpose === null || data.purpose === undefined || data.purpose === '')
+		handleError( {'status':'failure','reason':'name is missing'} )
+	else if(data['type'] === null || data['type'] === undefined || data['type'] === '')
+		handleError( {'status':'failure','reason':'no technique specified (classification/regression....)'} )
+	else{
+		if(data['purpose'] === 'Mining'){
+			var query_str = 'name='+data['name']+'&technique='+data['type']+''
+			console.log(query_str)
+			$.ajax({type: 'GET',
+			    url: "/checkForTrain",
+			    data: query_str,
+			    success: function(response){
+			    	response = JSON.parse(response)
+			    	if(response['status']==='success')
+			    		postDataset(data)
+			    	else
+			    		handleError(data)
+			    },
+			    error :   function(response){
+	         		console.log(response)
+	        	}
+			})
+		}else{
+			postDataset(data)
+		}
+	}
+}
+
+
 function postDataset(data){
 	console.log('pre POST-REQUEST for dataset')
 	$.ajax({
@@ -240,9 +280,11 @@ function postDataset(data){
 	    contentType: 'application/json; charset=utf-8'
 	});
 }
+
 function handleError(err){
 	console.log(err)
 }
+
 //You are allowed to pass nulls for all of these
 //Only pass in an actual argument if you want it filtered e.g. (null,null,Mining)
 //if you pass null for the call back it will take the data and print it to the console
@@ -305,40 +347,6 @@ function filterFullDatasets(name,technique,purpose,call_back){
 	})
 }
 
-function getADataset(){
-	
-}
-
-function checkData(data){
-	if(data['name'] === null || data['name'] === undefined || data['name'] === '')
-		handleError( {'status':'failure','reason':'name is missing'} )
-	else if(data.purpose === null || data.purpose === undefined || data.purpose === '')
-		handleError( {'status':'failure','reason':'name is missing'} )
-	else if(data['type'] === null || data['type'] === undefined || data['type'] === '')
-		handleError( {'status':'failure','reason':'no technique specified (classification/regression....)'} )
-	else{
-		if(data['purpose'] === 'Mining'){
-			var query_str = 'name='+data['name']+'&technique='+data['type']+''
-			console.log(query_str)
-			$.ajax({type: 'GET',
-			    url: "/checkForTrain",
-			    data: query_str,
-			    success: function(response){
-			    	response = JSON.parse(response)
-			    	if(response['status']==='success')
-			    		postDataset(data)
-			    	else
-			    		handleError(data)
-			    },
-			    error :   function(response){
-	         		console.log(response)
-	        	}
-			})
-		}else{
-			postDataset(data)
-		}
-	}
-}
 
 function mine(name,technique,method,normalization,standardization,call_back){
 	query_str='name='+name+'&technique='+technique+''
