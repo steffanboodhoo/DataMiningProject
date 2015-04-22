@@ -2,8 +2,8 @@ import os, json, logging
 from flask import request, redirect, url_for, render_template, jsonify, Response
 from app import app
 import app.db.dbWrapper as dbWrapper
-import app.wrappers.RegressionWrapper as regr
-import app.wrappers.ClassificationWrapper as classify
+import app.Regression.RegressionWrapper as regr
+import app.Classification.ClassificationWrapper as classify
 
 @app.route('/')
 @app.route('/index')

@@ -5,7 +5,7 @@ from sklearn import preprocessing
 from bson.json_util import dumps
 import app.Regression.RegressionEval as evl
 import app.Regression.RegressionWrapper as regr
-import app.wrappers.ClassificationWrapper as classify
+import app.Classification.ClassificationWrapper as classify
 import numpy as np
 
 def prepareData(dataObj):
