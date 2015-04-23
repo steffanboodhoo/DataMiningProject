@@ -12,8 +12,6 @@ def prepareData(dataObj):
 	#parsing json to dictionary
 	dataObj = yaml.load(dataObj)
 	dataset = dataObj['data']
-
-	
 	
 	#convert the strings into floats
 	dataset = convertFloats(dataset)
@@ -125,6 +123,11 @@ def mine(name,technique,method,normalization,standardization):
 	print trainObj
 	mineData = np.array(mineObj['data'])
 	trainData = np.array(trainObj['data'])
+
+	#Set missing values in datasets
+	imp = preprocessing.Imputer(missing_values='NaN', strategy='mean', axis=0)
+	trainData = imp.fit_transform(trainData)
+	mineData = imp.fit_transform(mineData)
 
 	#seperating sets to fit model
 	L = len(trainData[0])
