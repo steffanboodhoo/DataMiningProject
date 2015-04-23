@@ -13,17 +13,7 @@ def prepareData(dataObj):
 	dataObj = yaml.load(dataObj)
 	dataset = dataObj['data']
 
-	#combing for if there are labels in the csv
-	labels = None
-	try:
-		val = dataset[0,0]
-		val = float(val)
-	except Exception: 
-		labels = dataset[0]
-		dataset.remove(labels)
-
-	if labels != None:
-		dataObj['labels']=labels
+	
 	
 	#convert the strings into floats
 	dataset = convertFloats(dataset)
@@ -51,7 +41,11 @@ def convertFloats(dataset):
 	for e in dataset:
 		row=[]
 		for f in e:
-			f=float(f)
+			# Check for empty field
+			if f == '':
+				f = 'NaN'
+			else:
+				f = float(f)
 			row.append(f)
 		fixedData.append(row)
 

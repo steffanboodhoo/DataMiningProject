@@ -11,7 +11,7 @@ $(function()
 
 	// Tabs
 	//previewDatasets(null,'regression','Training',null)
-	mine('weightRegrTest','regression','ridge','no','no',null)
+	// mine('weightRegrTest','regression','ridge','no','no',null)
 	/*var regrList = [];
 	var clsfList = [];
 	filterFullDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]
@@ -233,10 +233,10 @@ function prepareData(data){
 	parsed['name'] = dataset_name;
 	parsed['subject'] = dataset_subject;
 	parsed['purpose'] = purpose;
-	parsed['attributes'] = [];
+	parsed['labels'] = [];
 
 	var targetData = [];
-	var attributes = [];
+	var labels = [];
 	var targetName;
 
 	// Alright, lets cut out the data in the target column now
@@ -247,7 +247,7 @@ function prepareData(data){
 				targetName = value
 			}
 			else if(topIndex == 0 && index != targetCol) {
-				attributes.push(value)
+				labels.push(value)
 			}
 			// Fetch the elements in the target column
 			else if(topIndex != 0 && index == targetCol) {
@@ -259,7 +259,7 @@ function prepareData(data){
 	});
 
 	// Pass values onto object
-	parsed['attributes'] = attributes;
+	parsed['labels'] = labels;
 	parsed['target'] = targetData;
 	parsed['targetName'] = targetName;
 
