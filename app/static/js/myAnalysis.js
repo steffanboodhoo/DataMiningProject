@@ -8,11 +8,15 @@
 		setupTheme();
 		setupButtons();
 		setupMenu();
+		createMethodTab(null)
 	});
 	function setupButtons(){
 		$('#addChart').click(function(){
 			var dataCopy = testData
 			createAnalysisView(dataCopy,testSeries,technique.regr)
+		})
+		$('#doneTabOption').click(function(){
+			getMethodAndPrep();
 		})
 	}
 	function setupCloseBtn(closeBtnId,divId){
@@ -53,6 +57,33 @@
 			}
 		})
 	}
+	function createMethodTab(type){
+		//if(type==='regression'){
+			/*<label class="btn btn-default btn-block">
+            <input type="radio" name="options" id="option2"> Option 2
+        </label>*/
+        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions"})).append("Multivariate Linear").appendTo($("#method_options_group"))
+        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions"})).append("Ridge").appendTo($("#method_options_group"))
+        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions"})).append("Lasso").appendTo($("#method_options_group"))
+			
+		/*}else if(type==='classification'){
+
+		}*/
+	}
+	function createPreparationAndDoneTab(){
+		///<div class="btn-group btn-group-justified" role="group" aria-label="...">
+		//</div>
+	}
+	function getMethodAndPrep(){
+		var vals=[]
+		$('input[name="dataprepOption"]:checked').each(function() {
+		   vals.push(this.value); 
+		});
+		console.log(vals)
+		console.log($('#method_options_group > .btn.active').text());
+	}
+
+
 	function createAnalysisView(data,labels,type){
 		var divId = 'container'+containerCount //create Unique container ID
 		var container = $("<div/>", {id: divId,class:'container-fluid analysis-Container'})//create container for this analysis

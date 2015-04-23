@@ -14,13 +14,52 @@
 				<div class="col-md-9 pane" id="mid_pane" >
 				</div>
 				<div class="col-md-3" id="right_pane" >
-					<div class="container-fluid pane" id="right_menu">
-						<button type="button" id="addChart" class="btn btn-primary toggle-btn">Primary</button>
-						 <div id="myCollapsible" >
-        					<p >This is an example of twitter bootstrap collapse methods. Click on the buttons to see how it works.</p>
-   	 					</div>
+					<div class="container-fluid " id="right_menu">
+
+						<div class="row container-fluid">
+							<button type="button" id="addChart" class="btn btn-primary toggle-btn btn-block">New Analysis</button>
+						</div>
+
+						<div class="container-fluid row">
+
+							 <div id="myCollapsible" >
+							 	<div role="tabpanel">
+
+								  <!-- Nav tabs -->
+								  <ul class="nav nav-tabs" role="tablist">
+								    <li role="presentation" class="active"><a href="#method-tab" aria-controls="method-tab" role="tab" data-toggle="tab">Method</a></li>
+								    <li role="presentation"><a href="#preparation-tab" aria-controls="preparation-tab" role="tab" data-toggle="tab">Preparation</a></li>
+								    <li role="presentation"><a href="#done-tab" aria-controls="done-tab" role="tab" data-toggle="tab" id="doneTabOption">Done</a></li>
+								   
+								  </ul>
+
+								  <!-- Tab panes -->
+								  <div class="tab-content">
+								    <div role="tabpanel" class="tab-pane active btn-group-vertical" id="method-tab">
+										<div class="btn-group"  data-toggle="buttons" id="method_options_group">
+											
+										</div>
+									</div>
+
+								    <div role="tabpanel" class="tab-pane" id="preparation-tab">
+								    	<div class="btn-group pagination-centered test" data-toggle="buttons">
+										  <label class="btn btn-default">
+										    <input type="checkbox" value='standardization' name="dataprepOption" autocomplete="off" >Standardization
+										  </label>
+										  <label class="btn btn-default">
+										    <input type="checkbox" value='normalization' name="dataprepOption" autocomplete="off"> Normalization
+										  </label>
+										</div>
+									</div>
+
+								    <div role="tabpanel" class="tab-pane" id="done-tab">Confirmation  of what was presented goes here</div>
+								  </div>
+
+								</div>
+	   	 					</div>
+
+	   	 				</div>
 					</div>
-					
 				</div>
 			</div>
 		</div>
