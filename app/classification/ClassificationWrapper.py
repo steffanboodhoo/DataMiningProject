@@ -1,30 +1,27 @@
-import KNNClassifier as knn
+import KNNClassifier as nClass
+from sklearn import cross_validation
 import pylab
-import random
-from sklearn import datasets
+import numpy as np
 
-n_neighbors = 15
-weights = 'uniform'
 
-# import some data to play with
-iris = datasets.load_iris()
-split = 0.66
+def handleRequest(tDatax,tDatay,mineData,method):
+    print method
+    print 'we are in the Classification wrapper with our lovely data'
+    if(method == 'knn'):
+        resp = kneighbors(tDatax,tDatay,mineData)
+    print resp
+    return resp
 
-trainingSet_data = []
-testSet_data = []
-trainingSet_target = []
-testSet_target = []
-
-for x in range(len(iris.data)):
-    if random.random() < split:
-        trainingSet_data.append(iris.data[x])
-        trainingSet_target.append(iris.target[x])
-    else:
-        testSet_data.append(iris.data[x])
-        testSet_target.append(iris.target[x])
-
-def testKNN():
-	nClass = knn.KNN(n_neighbors,weights,trainingSet_target,trainingSet_data)
-	predictedDataSet = nClass.predictDataSet(testSet_data)
-	accuracy = nClass.accuracy(testSet_data,testSet_target)
-	return {'target':testSet_target,'predicted':list(predictedDataSet),'accuracy':accuracy}
+def kneighbors(tDataX,tDataY,mineData):
+    X_train, X_test, y_train, y_test = cross_validation.train_test_split(tDataX, tDataY, test_size=0.4, random_state=0)
+    # A good rule of thumb is that k = the sqrt of n
+    n_neighbors = np.sqrt(len(X_train))
+    weights = 'uniform'
+    
+    # we create an instance of Neighbours Classifier and fit the data.
+    knn = nClass.KNN(n_neighbors,weights,y_train,X_train)
+    test_pred = knn.predictDataSet(X_test)
+    accuracy = knn.accuracy(X_test,y_test)
+    
+    actual_pred = knn.predictDataSet(mineData)
+    return {'testY':y_test,'testPredY':test_pred,'actual_pred':actual_pred}

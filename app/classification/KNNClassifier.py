@@ -1,6 +1,4 @@
-from sklearn import neighbors, datasets
-import random
-
+from sklearn import neighbors
 class KNN:
 
 	def __init__(self,n_neighbors,weights,target,attributes):

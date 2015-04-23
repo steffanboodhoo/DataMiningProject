@@ -28,10 +28,6 @@ def KNNClassification():
 	print data
 	return jsonify(**data)
 
-def allowed_file(filename):
-	return '.' in filename and \
-		filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
 @app.route('/upload')
 def upload_file():
 	return render_template('upload.html')
@@ -40,24 +36,22 @@ def upload_file():
 def analysis():
 	return render_template('analysis.html')
 
-@app.route('/upload_success',methods=['POST','GET'])
+@app.route('/upload_success', methods = ['POST','GET'])
 def upload_success():
     if request.method == 'POST':
         dataset = request.data
         
        	dbWrapper.storeDataset(dataset)
        	print len(dataset)
-        return jsonify(result=dataset)
+        return jsonify(result = dataset)
 
-@app.route('/checkForTrain',methods=['GET','OPTIONS'])
+@app.route('/checkForTrain', methods = ['GET','OPTIONS'])
 def checkForTrain():
 	#print request.args.get('test')
 	name = str(request.args.get('name'))
 	technique = str(request.args.get('technique'))
 	resp = dbWrapper.checkForTrain(name,technique)
 	return resp
-
-
 
 #made a change here******&&&&&&&######!!!!!!!!!
 @app.route('/dataset/previews')
@@ -87,6 +81,3 @@ def mineData():
 	resp = dbWrapper.mine(name,technique,method,normalization, standardization)
 	return resp
 	#print name,'',technique,'',method,'',normalization,'',standardization
-	
-
-	

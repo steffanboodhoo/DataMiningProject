@@ -11,7 +11,7 @@ $(function()
 
 	// Tabs
 	//previewDatasets(null,'regression','Training',null)
-	// mine('z','regression','ridge','no','no',null)
+	mine('Iris','classification','knn','no','no',null)
 	/*var regrList = [];
 	var clsfList = [];
 	filterFullDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]
@@ -239,32 +239,34 @@ function prepareData(data){
 	var labels = [];
 	var targetName;
 
-	// Alright, lets cut out the data in the target column now
-	$.each(parsed['data'], function(topIndex, row){
-		$.each(row,function(index,value) {
-			// Get the column headers for the attributes
-			if (topIndex == 0 && index == targetCol) {
-				targetName = value
-			}
-			else if(topIndex == 0 && index != targetCol) {
-				labels.push(value)
-			}
-			// Fetch the elements in the target column
-			else if(topIndex != 0 && index == targetCol) {
-				targetData.push(value)
-			}
-		})
-		// Remove the column from the original array
-		row = row.splice(targetCol,1)
-	});
-
-	// Pass values onto object
-	parsed['labels'] = labels;
-	parsed['target'] = targetData;
-	parsed['targetName'] = targetName;
+	if(purpose == 'Training') {
+		// Alright, lets cut out the data in the target column now
+		$.each(parsed['data'], function(topIndex, row){
+			$.each(row,function(index,value) {
+				// Get the column headers for the attributes
+				if (topIndex == 0 && index == targetCol) {
+					targetName = value
+				}
+				else if(topIndex == 0 && index != targetCol) {
+					labels.push(value)
+				}
+				// Fetch the elements in the target column
+				else if(topIndex != 0 && index == targetCol) {
+					targetData.push(value)
+				}
+			})
+			// Remove the column from the original array
+			row = row.splice(targetCol,1)
+		});
+		// Pass values onto object
+		parsed['labels'] = labels;
+		parsed['target'] = targetData;
+		parsed['targetName'] = targetName;
+	}
 
 	// Remove column headers from data
-	parsed['data'].splice(0,1);
+		parsed['data'].splice(0,1);
+
 	// Verify the goods	
 	checkData(parsed)
 }
