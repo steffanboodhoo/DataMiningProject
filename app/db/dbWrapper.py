@@ -120,7 +120,8 @@ def mine(name,technique,method,normalization,standardization):
 	print mineObj
 	print trainObj
 	mineData = np.array(mineObj['data'])
-	trainData = np.array(trainObj['data'])
+	trainDataX = np.array(trainObj['data'])
+	trainDataY = np.array(trainObj['target'])
 
 	#Set missing values in datasets
 	# imp = preprocessing.Imputer(missing_values='NaN', strategy='mean', axis=0)
@@ -128,12 +129,12 @@ def mine(name,technique,method,normalization,standardization):
 	# mineData = imp.fit_transform(mineData)
 
 	#seperating sets to fit model
-	L = len(trainData[0])
-	print trainData
-	n = len(trainData)
+	n = len(trainDataX)
 	
-	tdataY = trainData[0:n,(L-1)]
-	tdataX = trainData[0:n,0:(L-1)]
+	tdataY = trainDataY
+	tdataX = trainDataX
+	print tdataY
+	print tdataX
 	#training data:x,y; mining data mineData (a set of x attributes i.e. independent)
 
 	#applying preprocessing methods Normailization / Standardization
@@ -153,8 +154,9 @@ def mine(name,technique,method,normalization,standardization):
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 
-	errors = evl.allErrors(resp['testY'],resp['testPredY'])
-	resp['errors'] = errors
+	if technique == "regression":
+		errors = evl.allErrors(resp['testY'],resp['testPredY'])
+		resp['errors'] = errors
 	return dumps(resp)
 
 def normalize(attributes):
