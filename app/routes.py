@@ -10,6 +10,10 @@ import app.Classification.ClassificationWrapper as classify
 def index():
 	return render_template('index.html')
 
+@app.route('/myAnalysis')
+def myanalysis():
+	return render_template('myAnalysis.html')
+
 @app.route('/regression/linear/test')
 def regressionLinear():
 	 data = regr.testLinear()

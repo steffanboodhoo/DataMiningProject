@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .content-Container{
 	margin: 10px;
 }
@@ -14,4 +15,43 @@
 .pane{
 	background-color: #eee;
 	height:100%;
+=======
+.content-Container{
+	margin: 10px;
+}
+.analysis-Container{
+	background-color: #555;
+	margin-bottom: 100px;
+}
+.analysis-text-Container{
+
+	height: 50px;
+	background-color: #eee;
+	text-align:center;
+}
+.pane{
+	background-color: #eee;
+	height:100%;
+
+	border-color: #ddd;
+  border-width: 3px;
+}
+#right_pane{
+background-color: #FFFFFF;
+border-radius: 30px 30px 30px 30px;
+-moz-border-radius: 30px 30px 30px 30px;
+-webkit-border-radius: 30px 30px 30px 30px;
+border: 1px solid #ddd;
+  
+  -webkit-box-shadow: 7px 9px 18px -2px rgba(95,142,173,1);
+-moz-box-shadow: 7px 9px 18px -2px rgba(95,142,173,1);
+box-shadow: 7px 9px 18px -2px rgba(95,142,173,1);
+}
+#addChart{
+	margin:10px;
+}
+.test{
+	display:block;
+	padding:10px;
+>>>>>>> analysis
 }
