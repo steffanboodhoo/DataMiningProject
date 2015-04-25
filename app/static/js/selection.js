@@ -19,16 +19,14 @@ function populate(){
 		});
 	});
 	// attachDataset(datasets,divID);
-	var row = $("<div/>",{class:'grid-100'});
+	var row = $("<div/>",{class:'grid-75'});
 	var inner = $("<div/>",{class:'dataset-chooser-item'});
-	var img = $("<img src='http://renswijnmalen.nl/bootstrap/desktop_mobile.png'>")
-	var row2 = $("<div/>",{class:'grid-75'});
+	var row2 = $("<div/>",{class:'grid-100'});
 	var title = $("<span/>",{class:"title", text:'Mobile and Desktop'});
 	var desc = $("<span/>",{class:"description", text : 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.'});
 	var something = $('<input/>').attr({ type: 'radio', name:'product', value:'mobile_desktop'});
 	var ending = $("<div/>",{class:'clear'});
 	
-	img.appendTo(inner);
 	title.appendTo(row2);
 	desc.appendTo(row2);
 	something.appendTo(row2);
@@ -39,10 +37,10 @@ function populate(){
 	$('#'+divID).append(row);
 
 
-	var row2 = $("<div/>",{class:'grid-100'});
+	var row2 = $("<div/>",{class:'grid-75'});
 	var inner2 = $("<div/>",{class:'dataset-chooser-item'});
 	var img2 = $("<img src='http://renswijnmalen.nl/bootstrap/desktop_mobile.png'>")
-	var row22 = $("<div/>",{class:'grid-75'});
+	var row22 = $("<div/>",{class:'grid-100'});
 	var title2 = $("<span/>",{class:"title", text:'Mobile and Desktop'});
 	var desc2 = $("<span/>",{class:"description", text : 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.'});
 	var something2 = $('<input/>').attr({ type: 'radio', name:'product', value:'desktop'});
