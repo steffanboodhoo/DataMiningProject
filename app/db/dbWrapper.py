@@ -100,7 +100,7 @@ def getFilteredDatasetPreviews(name, technique, purpose):
 
 	if technique != None:
 		filterObj['type'] = str(technique)
-
+	
 	if purpose != None:
 		if str(purpose) == 'Mining':
 			resp = dumps( db.getMineFilter(filterObj))

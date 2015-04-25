@@ -36,6 +36,10 @@ def KNNClassification():
 def upload_file():
 	return render_template('upload.html')
 
+@app.route('/selection')
+def selection():
+	return render_template('selection.html')
+
 @app.route('/analysis')
 def analysis():
 	return render_template('analysis.html')
