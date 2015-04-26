@@ -20,23 +20,27 @@ function populate(callback){
 		$.each(data,function(index,sublist){
 			generateSelection(sublist)
 		});
+		// Wait until complete to run the function
 		callback()
 	});
 }
 
 function generateSelection(data){
+	console.log(data);
 	var divID = 'content';
 	var col = $("<div/>",{class:'grid-75'});
 	var row = $("<div/>",{class:'dataset-chooser-item'});
 	var subrow = $("<div/>",{class:'grid-100'});
-	var title = $("<span/>",{class:"title", text:data['name']});
-	var operationType = $("<span/>",{class:"description", text :data['type']});
+	var title = $("<span/>",{class:"title", text:'Title - '+data['name']});
+	var operationType = $("<span/>",{class:"method", text :'Method - '+data['type']});
+	var subject = $("<span/>",{class:"subject", text :'Subject - '+data['subject']});
 	var selection = $('<input/>').attr({ type: 'radio', name:'product', value:data['name']});
 	var ending = $("<div/>",{class:'clear'});
 
 	// Append created object to HTML page
 	title.appendTo(subrow);
 	operationType.appendTo(subrow);
+	subject.appendTo(subrow);
 	selection.appendTo(subrow);
 	subrow.appendTo(row);
 	ending.appendTo(row);

@@ -41,12 +41,28 @@ div.dataset-chooser div.dataset-chooser-item img{
 div.dataset-chooser div.dataset-chooser-item span.title{
 	display: block;
 	margin: 10px 0 5px 0;
-	font-weight: bold;
-	font-size: 12px;
+	font-family: Arvo;
+	font-weight: 300;
+	font-size: 24px;
+	color: #565656;
+	line-height: 1.25em;
 }
 
-div.dataset-chooser div.dataset-chooser-item span.description{
-	font-size: 12px;
+div.dataset-chooser div.dataset-chooser-item span.method{
+	font-family: Lato;
+	font-weight: 300;
+	font-size: 20px;
+	color: #565656;
+	line-height: 1.25em;
+}
+
+div.dataset-chooser div.dataset-chooser-item span.subject{
+	display: block;
+	font-family: Lato;
+	font-weight: 300;
+	font-size: 20px;
+	color: #565656;
+	line-height: 1.25em;
 }
 
 div.dataset-chooser div.dataset-chooser-item input{
