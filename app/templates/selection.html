@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block pagereqs %}
+	<!-- <link href="static/css/bootstrap.min.css" rel="stylesheet"> -->
+	<link rel="stylesheet" href="static/css/selection.css">
+	<script src="static/js/selection.js"></script>
+{% endblock %}
+
+{% block content %}
+<div  class="grid-container">
+	<div class="grid-25">
+		<div class="text-center">
+			<button id="submit" class="green">Confirm</button>
+		</div>
+	</div>
+	
+	<div id='content' class="grid-50 form-group dataset-chooser">
+	
+	</div>
+</div>
+{% endblock %}
