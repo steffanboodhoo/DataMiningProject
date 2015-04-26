@@ -1,9 +1,6 @@
-//Global Vars
-var DIVID = 'content';
-// var DATASETS = [];
-
-var temp = 'Hey';
 $(function(){
+	// Pass in chooser function as callback, will wait until populate
+	// function is finished to execute
 	populate(chooser);
 	
 });
@@ -13,9 +10,9 @@ function chooser(){
 		$(this).parent().parent().find('div.dataset-chooser-item').removeClass('selected');
 		$(this).addClass('selected');
 		$(this).find('input[type="radio"]').prop("checked", true);
-		
 	});
 }
+
 function populate(callback){
 	// Fetch the list of datasets
 	previewDatasets(null,null,'Mining',function(response){
@@ -28,31 +25,23 @@ function populate(callback){
 }
 
 function generateSelection(data){
-	// console.log(data);
-	// $.each(data,function(index,value){
-	// 		console.log(value)
-	// })
-console.log(data);
-		
-		var col = $("<div/>",{class:'grid-75'});
-		var row = $("<div/>",{class:'dataset-chooser-item'});
-		var subrow = $("<div/>",{class:'grid-100'});
-		var title = $("<span/>",{class:"title", text:'Hey'});
-		var operationType = $("<span/>",{class:"description", text : 'Yo'});
-		var selection = $('<input/>').attr({ type: 'radio', name:'product', value:'Yea'});
-		var ending = $("<div/>",{class:'clear'});
+	var divID = 'content';
+	var col = $("<div/>",{class:'grid-75'});
+	var row = $("<div/>",{class:'dataset-chooser-item'});
+	var subrow = $("<div/>",{class:'grid-100'});
+	var title = $("<span/>",{class:"title", text:data['name']});
+	var operationType = $("<span/>",{class:"description", text :data['type']});
+	var selection = $('<input/>').attr({ type: 'radio', name:'product', value:data['name']});
+	var ending = $("<div/>",{class:'clear'});
 
-		// Append created object to HTML page
-		title.appendTo(subrow);
-		operationType.appendTo(subrow);
-		selection.appendTo(subrow);
-		subrow.appendTo(row);
-		ending.appendTo(row);
-		row.appendTo(col);
-		$('#'+DIVID).append(col);
-		
-		
-	// })
+	// Append created object to HTML page
+	title.appendTo(subrow);
+	operationType.appendTo(subrow);
+	selection.appendTo(subrow);
+	subrow.appendTo(row);
+	ending.appendTo(row);
+	row.appendTo(col);
+	$('#'+divID).append(col);
 }
 
 function previewDatasets(name,technique,purpose,call_back){
