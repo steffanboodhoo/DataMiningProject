@@ -22,14 +22,14 @@ def getAdataset(name, purpose):
 def getTrainFilter(filterObj):
 	dataset = db.Traindataset
 	resp = []
-	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1}):
+	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1,'purpose':1}):
 		resp.append(d)
 	return resp
 
 def getMineFilter(filterObj):
 	dataset = db.Minedataset
 	resp = []
-	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1}):
+	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1,'purpose':1}):
 		resp.append(d)
 	return resp
 

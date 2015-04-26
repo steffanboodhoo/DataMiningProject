@@ -10,26 +10,28 @@ $(function()
  //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 
 	// Tabs
-	//previewDatasets(null,'regression','Training',null)
-	mine('Iris','classification','knn','no','no',null)
-	/*var regrList = [];
-	var clsfList = [];
-	filterFullDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]
-		$.each(response, function(index, sublist){//[{..},{..}]
-			var a=[],b=[];
-			  $.each(sublist, function(index,dataObj){//{..}
-				console.log(dataObj['type'])
-			  	if(dataObj['type'] === 'regression'){
-			  		var name = dataObj['name']
-			  		regrList.push(name)
-			  	}else
-			  		clsfList.push(dataObj['name'])
-			  })
-		});
-		console.log(regrList)
-		console.log(clsfList)
-		//call functions here
-	})	*/
+	previewDatasets(null,null,'Mining',null)
+	//mine('Iris','classification','knn','no','no',null);
+	// populate()
+	// var regrList = [];
+	// var clsfList = [];
+	// previewDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]
+	// 	$.each(response, function(index, sublist){//[{..},{..}]
+	// 		var a=[],b=[];
+	// 		  $.each(sublist, function(index,dataObj){//{..}
+	// 			console.log(dataObj['type'])
+	// 		  	if(dataObj['type'] === 'regression'){
+	// 		  		var name = dataObj['name']
+	// 		  		regrList.push(name)
+	// 		  	}else
+	// 		  		clsfList.push(dataObj['name'])
+	// 		  })
+	// 	});
+	// 	console.log(regrList)
+	// 	console.log(clsfList)
+	// 	//call functions here
+	// })	
+
 	//here is called before get is completed
 
 	$('#tab-string').click(function()
@@ -132,6 +134,16 @@ $(function()
 		}
 	});
 });
+
+// function populate(){
+// 	// Fetch the list of datasets
+// 	previewDatasets(null,null,'Mining',function(response){
+// 		data = $.parseJSON(response);
+// 		$.each(data,function(index,sublist){
+// 			console.log(sublist)
+// 		})
+// 	})
+// }
 
 function printStats(msg)
 {
