@@ -156,7 +156,7 @@ def mine(name,technique,method,normalization,standardization):
 	return dumps(resp)
 
 def normalize(attributes):
-	'''
+
 	#ensuring the values are floats
 	fixedDataX=[]
 	for e in attributes:
@@ -165,7 +165,7 @@ def normalize(attributes):
 			f=float(f)
 			row.append(f)
 		fixedDataX.append(row)
-	'''
+	
 	#normalizing each feature
 	attributes = np.array(fixedDataX)
 	L = len(attributes[0])

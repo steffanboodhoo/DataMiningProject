@@ -11,7 +11,7 @@ $(function()
 
 	// Tabs
 	//previewDatasets(null,'regression','Training',null)
-	mine('weightRegrTest','regression','ridge','no','no',null)
+	mine('weight','regression','ridge','no','no',null)
 	/*var regrList = [];
 	var clsfList = [];
 	filterFullDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]

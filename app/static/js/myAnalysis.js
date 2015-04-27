@@ -1,4 +1,5 @@
 (function(window){
+	var canCreate = true;
 	var containerCount = 0
 	var chartCount = 0
 	var technique = {'regr':'REGRESSION','clfy':'CLASSIFICATION'}
@@ -11,12 +12,14 @@
 		createMethodTab(null)
 	});
 	function setupButtons(){
-		$('#addChart').click(function(){
+		$('#doneCreatingBtn').click(function(){
 			var dataCopy = testData
-			createAnalysisView(dataCopy,testSeries,technique.regr)
+			mineData("weight","regression",createAnalysisView)
+				//fetch data and pass them into this function
+				//createAnalysisView(dataCopy,testSeries,technique.regr)
 		})
 		$('#doneTabOption').click(function(){
-			getMethodAndPrep();
+			displayOptions();
 		})
 	}
 	function setupCloseBtn(closeBtnId,divId){
@@ -74,13 +77,58 @@
 		///<div class="btn-group btn-group-justified" role="group" aria-label="...">
 		//</div>
 	}
-	function getMethodAndPrep(){
-		var vals=[]
+	function displayOptions(){
+		$("#optionsDisplay").empty()
+		var method = $('#method_options_group > .btn.active').text();
+		$('<h1>').append("Method").appendTo($("#optionsDisplay"))
+		$('<p>').append(method).appendTo($("#optionsDisplay"))
+
+		$('<h1>').append("Preparation").appendTo($("#optionsDisplay"))
 		$('input[name="dataprepOption"]:checked').each(function() {
-		   vals.push(this.value); 
+		   $('<p>').append(this.value).appendTo($("#optionsDisplay")) 
 		});
-		console.log(vals)
-		console.log($('#method_options_group > .btn.active').text());
+	}
+
+	function mineData(name,technique,callback){
+
+		var method = $('#method_options_group > .btn.active').text();
+		var vals=[],normalization,standardization
+		$('input[name="dataprepOption"]:checked').each(function() {
+			vals.push(this.value)
+			if(this.value==="standardization")
+				standardization='yes'
+			if(this.value==="normalization")
+				normalization='yes'
+		});
+
+		if(vals.length==0){
+			console.log("nothing selected")
+		}else if(method===""){	
+			console.log("no method selected")
+		}else{
+
+			mine(name,technique,method,normalization,standardization,function(data){
+				//createAnalysisView()
+				console.log(data)
+				//callback	
+			})
+		}
+	}
+	function mine(name,technique,method,normalization,standardization,call_back){
+		query_str='name='+name+'&technique='+technique+''
+		query_str+='&method='+method+'&normalization='+normalization+''
+		query_str+='&standardization='+standardization+''
+		$.ajax({
+			url:'/Mine',
+			type:'GET',
+			data:query_str,
+			success:function(response){
+				if(typeof call_back==='function')
+					call_back(response)
+				else
+					console.log(response)
+			}
+		})
 	}
 
 

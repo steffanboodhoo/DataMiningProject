@@ -17,12 +17,12 @@
 					<div class="container-fluid " id="right_menu">
 
 						<div class="row container-fluid">
-							<button type="button" id="addChart" class="btn btn-primary toggle-btn btn-block">New Analysis</button>
+							<button type="button" id="newAnalysis" class="btn btn-primary toggle-btn btn-block">New Analysis</button>
 						</div>
 
 						<div class="container-fluid row">
 
-							 <div id="myCollapsible" >
+							 <div id="myCollapsible" aria-expanded="false" class="collapse">
 							 	<div role="tabpanel">
 
 								  <!-- Nav tabs -->
@@ -52,7 +52,10 @@
 										</div>
 									</div>
 
-								    <div role="tabpanel" class="tab-pane" id="done-tab">Confirmation  of what was presented goes here</div>
+								    <div role="tabpanel" class="tab-pane" id="done-tab">
+								    	<div id="optionsDisplay"></div>
+								    	<button type="button" id="doneCreatingBtn" class="btn btn-primary toggle-btn btn-default pull-right">Finish</button>
+								    </div>
 								  </div>
 
 								</div>
