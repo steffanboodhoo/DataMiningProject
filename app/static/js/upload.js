@@ -10,6 +10,7 @@ $(function()
  //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 
 	// Tabs
+<<<<<<< HEAD
 	//previewDatasets(null,'regression','Training',null)
 	mine('weight','regression','ridge','no','no',null)
 	/*var regrList = [];
@@ -30,6 +31,30 @@ $(function()
 		console.log(clsfList)
 		//call functions here
 	})	*/
+=======
+	previewDatasets(null,null,'Mining',null)
+	//mine('Iris','classification','knn','no','no',null);
+	// populate()
+	// var regrList = [];
+	// var clsfList = [];
+	// previewDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]
+	// 	$.each(response, function(index, sublist){//[{..},{..}]
+	// 		var a=[],b=[];
+	// 		  $.each(sublist, function(index,dataObj){//{..}
+	// 			console.log(dataObj['type'])
+	// 		  	if(dataObj['type'] === 'regression'){
+	// 		  		var name = dataObj['name']
+	// 		  		regrList.push(name)
+	// 		  	}else
+	// 		  		clsfList.push(dataObj['name'])
+	// 		  })
+	// 	});
+	// 	console.log(regrList)
+	// 	console.log(clsfList)
+	// 	//call functions here
+	// })	
+
+>>>>>>> 00a245c7e25cd8cf74c802deb8517e06fd5ac739
 	//here is called before get is completed
 
 	$('#tab-string').click(function()
@@ -133,6 +158,16 @@ $(function()
 	});
 });
 
+// function populate(){
+// 	// Fetch the list of datasets
+// 	previewDatasets(null,null,'Mining',function(response){
+// 		data = $.parseJSON(response);
+// 		$.each(data,function(index,sublist){
+// 			console.log(sublist)
+// 		})
+// 	})
+// }
+
 function printStats(msg)
 {
 	if (msg)
@@ -152,7 +187,6 @@ function buildConfig()
 {
 	return {
 		delimiter: $('#delimiter').val(),
-		dynamicTyping: $('#dynamicTyping').prop('checked'),
 		comments: $('#comments').val(),
 		complete: completeFn,
 		error: errorFn,
@@ -190,16 +224,29 @@ function completeFn(results)
 			rowCount = results.data.length;
 	}
 
+
+	
+	printStats("Parse complete");
+
+	console.log("Serving file");
+	
+	prepareData(results);
+
+	// icky hack
+	setTimeout(enableButton, 100);
+}
+
+function prepareData(data){
+	
 	var analysis_type = "";
 	var dataset_name = $('#dataset_name').val();
 	var dataset_subject = $('#dataset_subject').val();
-
-
 
 	var regr = $('#regression').prop('checked');
 	var classi = $('#classification').prop('checked');
 	var clust = $('#clustering').prop('checked');
 	var purpose = $('input:radio[name=dataset_purpose]:checked').val();
+	var targetCol = parseInt($('#target_column').val() - 1);
 
 	if(regr == true || classi == true || clust == true) {
 		if(regr) {
@@ -212,24 +259,85 @@ function completeFn(results)
 			analysis_type += ",clustering";
 		}
 	}
-	
-	printStats("Parse complete");
 
-	console.log("Serving file");
-	// Send data to backend
-	var parsed = results;
+	var parsed = data;
 	delete parsed.errors;
-    delete parsed.meta;
-    
-    parsed['type'] = analysis_type;
+	delete parsed.meta;
+
+	parsed['type'] = analysis_type;
 	parsed['name'] = dataset_name;
 	parsed['subject'] = dataset_subject;
 	parsed['purpose'] = purpose;
-	checkData(parsed)
+	parsed['labels'] = [];
 
-	// icky hack
-	setTimeout(enableButton, 100);
+	var targetData = [];
+	var labels = [];
+	var targetName;
+
+	if(purpose == 'Training') {
+		// Alright, lets cut out the data in the target column now
+		$.each(parsed['data'], function(topIndex, row){
+			$.each(row,function(index,value) {
+				// Get the column headers for the attributes
+				if (topIndex == 0 && index == targetCol) {
+					targetName = value
+				}
+				else if(topIndex == 0 && index != targetCol) {
+					labels.push(value)
+				}
+				// Fetch the elements in the target column
+				else if(topIndex != 0 && index == targetCol) {
+					targetData.push(value)
+				}
+			})
+			// Remove the column from the original array
+			row = row.splice(targetCol,1)
+		});
+		// Pass values onto object
+		parsed['labels'] = labels;
+		parsed['target'] = targetData;
+		parsed['targetName'] = targetName;
+	}
+
+	// Remove column headers from data
+		parsed['data'].splice(0,1);
+
+	// Verify the goods	
+	checkData(parsed)
 }
+
+function checkData(data){
+	if(data['name'] === null || data['name'] === undefined || data['name'] === '')
+		handleError( {'status':'failure','reason':'name is missing'} )
+	else if(data.purpose === null || data.purpose === undefined || data.purpose === '')
+		handleError( {'status':'failure','reason':'name is missing'} )
+	else if(data['type'] === null || data['type'] === undefined || data['type'] === '')
+		handleError( {'status':'failure','reason':'no technique specified (classification/regression....)'} )
+	else{
+		if(data['purpose'] === 'Mining'){
+			var query_str = 'name='+data['name']+'&technique='+data['type']+''
+			console.log(query_str)
+			$.ajax({type: 'GET',
+			    url: "/checkForTrain",
+			    data: query_str,
+			    success: function(response){
+			    	response = JSON.parse(response)
+			    	if(response['status']==='success')
+			    		postDataset(data)
+			    	else
+			    		handleError(data)
+			    },
+			    error :   function(response){
+	         		console.log(response)
+	        	}
+			})
+		}else{
+			postDataset(data)
+		}
+	}
+}
+
+
 function postDataset(data){
 	console.log('pre POST-REQUEST for dataset')
 	$.ajax({
@@ -240,9 +348,11 @@ function postDataset(data){
 	    contentType: 'application/json; charset=utf-8'
 	});
 }
+
 function handleError(err){
 	console.log(err)
 }
+
 //You are allowed to pass nulls for all of these
 //Only pass in an actual argument if you want it filtered e.g. (null,null,Mining)
 //if you pass null for the call back it will take the data and print it to the console
@@ -305,39 +415,7 @@ function filterFullDatasets(name,technique,purpose,call_back){
 	})
 }
 
-function getADataset(){
-	
-}
-function checkData(data){
-	if(data['name'] === null || data['name'] === undefined || data['name'] === '')
-		handleError( {'status':'failure','reason':'name is missing'} )
-	else if(data.purpose === null || data.purpose === undefined || data.purpose === '')
-		handleError( {'status':'failure','reason':'name is missing'} )
-	else if(data['type'] === null || data['type'] === undefined || data['type'] === '')
-		handleError( {'status':'failure','reason':'no technique specified (classification/regression....)'} )
-	else{
-		if(data['purpose'] === 'Mining'){
-			var query_str = 'name='+data['name']+'&technique='+data['type']+''
-			console.log(query_str)
-			$.ajax({type: 'GET',
-			    url: "/checkForTrain",
-			    data: query_str,
-			    success: function(response){
-			    	response = JSON.parse(response)
-			    	if(response['status']==='success')
-			    		postDataset(data)
-			    	else
-			    		handleError(data)
-			    },
-			    error :   function(response){
-	         		console.log(response)
-	        	}
-			})
-		}else{
-			postDataset(data)
-		}
-	}
-}
+
 function mine(name,technique,method,normalization,standardization,call_back){
 	query_str='name='+name+'&technique='+technique+''
 	query_str+='&method='+method+'&normalization='+normalization+''

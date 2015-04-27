@@ -1,13 +1,11 @@
-from sklearn import neighbors, datasets
-import random
-
+from sklearn import neighbors
 class KNN:
 
-	def __init__(self,n_neighbors,weights,target,attributes):
+	def __init__(self,n_neighbors,weights,attributes,target):
 		self.n_neighbors = n_neighbors
 		self.weights = weights
-		self.target = target
 		self.attributes = attributes
+		self.target = target
 		self.clf = neighbors.KNeighborsClassifier(n_neighbors, weights=weights)
 		self.clf.fit(attributes,target)
 

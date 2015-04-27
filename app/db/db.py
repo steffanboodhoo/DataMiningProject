@@ -5,31 +5,31 @@ client = MongoClient(URI)
 db = client.get_default_database()
 
 def createDataset(dataObj):
-	if dataObj['purpose']=='Training':
+	if dataObj['purpose'] == 'Training':
 		dataset = db.Traindataset
-	elif dataObj['purpose']=='Mining':
+	elif dataObj['purpose'] == 'Mining':
 		dataset = db.Minedataset
 	dataset.insert(dataObj)
 	return {'status':'success'}
 
-def getAdataset(name,purpose):
-	if purpose =='Training':
+def getAdataset(name, purpose):
+	if purpose == 'Training':
 		dataset = db.Traindataset
-	elif purpose =='Mining':
+	elif purpose == 'Mining':
 		dataset = db.Minedataset
 	return dataset.find_one({'name':name})
 	 
 def getTrainFilter(filterObj):
 	dataset = db.Traindataset
 	resp = []
-	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1}):
+	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1,'purpose':1}):
 		resp.append(d)
 	return resp
 
 def getMineFilter(filterObj):
 	dataset = db.Minedataset
 	resp = []
-	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1}):
+	for d in dataset.find(filterObj,{'name':1,'type':1,'subject':1,'purpose':1}):
 		resp.append(d)
 	return resp
 
@@ -48,7 +48,7 @@ def getMineFilterFull(filterObj):
 		resp.append(d)
 	return resp
 
-def checkForTrain(name,technique):
+def checkForTrain(name, technique):
 	dataset = db.Traindataset 
 	dObj = dataset.find_one({'name':name,'type':technique})
 	if dObj == None:
@@ -58,4 +58,3 @@ def checkForTrain(name,technique):
 if __name__ == '__main__':
 	getTest()
 	#insertTest()
-	

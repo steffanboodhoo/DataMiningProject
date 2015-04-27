@@ -21,7 +21,7 @@
 			<form action="">
 				<label for="training">Set as Training data</label>
 			  	<input type="radio" name="dataset_purpose" id="training" value="Training"><br>
-			  	<label for="testing">Set as Testing data</label>
+			  	<label for="testing">Set as Mining data</label>
 			  	<input type="radio" name="dataset_purpose" id="mining" value="Mining"><br><br>
 			</form>
 			<label>
@@ -44,8 +44,8 @@
 
 			<div class="grid-33 push-66">
 				<label>
-					<input type="checkbox" id="dynamicTyping"> Dynamic typing
-					<dfn>Turns numeric data into numbers and true/false into booleans.</dfn>
+					Target:<input type="text" id="target_column" size="7" placeholder="default">
+					<dfn>Specify which column number represents the target data.</dfn>
 				</label>
 				<label>
 					Name:<input type="text" id="dataset_name" size="7" placeholder="default">
