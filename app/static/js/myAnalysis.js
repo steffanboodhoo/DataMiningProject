@@ -1,4 +1,10 @@
 (function(window){
+	var dataset_name = JSON.parse(localStorage.getItem(dataset_name));
+	var dataset_method = JSON.parse(localStorage.getItem(dataset_method));
+
+	console.log(dataset_name);
+	console.log(dataset_method);
+
 	var canCreate = true;
 	var containerCount = 0
 	var chartCount = 0

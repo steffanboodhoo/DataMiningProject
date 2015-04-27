@@ -6,7 +6,8 @@ var maxUnparseLength = 10000;
 
 $(function()
 {
-	// validate();
+	
+		// validate();
  //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 	// Tabs
 	previewDatasets(null,null,'Mining',null)
