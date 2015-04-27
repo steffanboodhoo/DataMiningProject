@@ -227,13 +227,13 @@ function prepareData(data){
 
 	if(regr == true || classi == true || clust == true) {
 		if(regr) {
-			analysis_type += "regression";
+			analysis_type = "regression";
 		}
-		if(classi) {
-			analysis_type += ",classification";
+		if(classi){
+			analysis_type = "classification";
 		}
 		if(clust) {
-			analysis_type += ",clustering";
+			analysis_type = ",clustering";
 		}
 	}
 
