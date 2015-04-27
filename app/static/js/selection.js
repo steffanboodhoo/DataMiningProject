@@ -21,7 +21,6 @@ function chooser(){
 		localStorage.setItem("dataset_name", JSON.stringify(dataset_name));
 		localStorage.setItem("dataset_method", JSON.stringify(dataset_method));
 	});
-	});
 }
 
 function populate(callback){

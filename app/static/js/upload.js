@@ -9,6 +9,8 @@ $(function()
 	// validate();
  //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 
+	console.log(dataset_name);
+	console.log(dataset_method);
 	// Tabs
 	previewDatasets(null,null,'Mining',null)
 	//mine('Iris','classification','knn','no','no',null);
