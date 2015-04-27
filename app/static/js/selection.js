@@ -1,3 +1,7 @@
+// Globals
+var dataset_name;
+var dataset_method;
+
 $(function(){
 	// Pass in chooser function as callback, will wait until populate
 	// function is finished to execute
@@ -10,6 +14,12 @@ function chooser(){
 		$(this).parent().parent().find('div.dataset-chooser-item').removeClass('selected');
 		$(this).addClass('selected');
 		$(this).find('input[type="radio"]').prop("checked", true);
+		dataset_name = $('input:radio[name=product]:checked').val();
+		dataset_method = document.getElementById(dataset_name).innerHTML;
+		console.log(dataset_name);
+		console.log(dataset_method);
+		localStorage.setItem("dataset_name", JSON.stringify(dataset_name));
+		localStorage.setItem("dataset_method", JSON.stringify(dataset_method));
 	});
 }
 
@@ -26,13 +36,12 @@ function populate(callback){
 }
 
 function generateSelection(data){
-	console.log(data);
 	var divID = 'content';
 	var col = $("<div/>",{class:'grid-75'});
 	var row = $("<div/>",{class:'dataset-chooser-item'});
 	var subrow = $("<div/>",{class:'grid-100'});
 	var title = $("<span/>",{class:"title", text:'Title - '+data['name']});
-	var operationType = $("<span/>",{class:"method", text :'Method - '+data['type']});
+	var operationType = $("<span/>",{id:data['name'],class:"method", text :'Method - '+data['type']});
 	var subject = $("<span/>",{class:"subject", text :'Subject - '+data['subject']});
 	var selection = $('<input/>').attr({ type: 'radio', name:'product', value:data['name']});
 	var ending = $("<div/>",{class:'clear'});

@@ -9,6 +9,8 @@ $(function()
 	// validate();
  //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
 
+	console.log(dataset_name);
+	console.log(dataset_method);
 	// Tabs
 <<<<<<< HEAD
 	//previewDatasets(null,'regression','Training',null)
@@ -250,13 +252,13 @@ function prepareData(data){
 
 	if(regr == true || classi == true || clust == true) {
 		if(regr) {
-			analysis_type += "regression";
+			analysis_type = "regression";
 		}
-		if(classi) {
-			analysis_type += ",classification";
+		if(classi){
+			analysis_type = "classification";
 		}
 		if(clust) {
-			analysis_type += ",clustering";
+			analysis_type = ",clustering";
 		}
 	}
 
