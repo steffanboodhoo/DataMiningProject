@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block pagereqs %}
-	<!-- <link href="static/css/bootstrap.min.css" rel="stylesheet"> -->
 	<link rel="stylesheet" href="static/css/selection.css">
 	<script src="static/js/selection.js"></script>
 {% endblock %}
@@ -10,12 +9,9 @@
 <div  class="grid-container">
 	<div class="grid-25">
 		<div class="text-center">
-			<a href="/myAnalysis" class="button">
-				<i class="fa fa-magic"></i>&nbsp; Confirm Selection
-			</a>
+			<button id="submit" class="green"><i class="fa fa-magic"></i>&nbsp; Confirm Selection</button>
 		</div>
 	</div>
-	
 	<div id='content' class="grid-50 form-group dataset-chooser">
 	
 	</div>

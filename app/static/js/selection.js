@@ -6,8 +6,20 @@ $(function(){
 	// Pass in chooser function as callback, will wait until populate
 	// function is finished to execute
 	populate(chooser);
+	$('#submit').click(function() {
+		if(dataset_method == 'regression') {
+			window.location = getRootUrl()+'myAnalysis'
+		}
+		if(dataset_method == 'classification') {
+			window.location = getRootUrl()+'myAnalysis'
+		}
+	});
 	
 });
+
+function getRootUrl() {
+	return window.location.origin?window.location.origin+'/':window.location.protocol+'/'+window.location.host+'/';
+}
 
 function chooser(){
 	$('div.dataset-chooser').not('.disabled').find('div.dataset-chooser-item').on('click', function(){
@@ -15,7 +27,7 @@ function chooser(){
 		$(this).addClass('selected');
 		$(this).find('input[type="radio"]').prop("checked", true);
 		dataset_name = $('input:radio[name=product]:checked').val();
-		dataset_method = document.getElementById(dataset_name).innerHTML;
+		dataset_method = $('#'+dataset_name).attr('value');
 		console.log(dataset_name);
 		console.log(dataset_method);
 		localStorage.setItem("dataset_name", JSON.stringify(dataset_name));
@@ -41,7 +53,7 @@ function generateSelection(data){
 	var row = $("<div/>",{class:'dataset-chooser-item'});
 	var subrow = $("<div/>",{class:'grid-100'});
 	var title = $("<span/>",{class:"title", text:'Title - '+data['name']});
-	var operationType = $("<span/>",{id:data['name'],class:"method", text :'Method - '+data['type']});
+	var operationType = $("<span/>",{id:data['name'], value:data['type'], class:"method", text :'Method - '+data['type']});
 	var subject = $("<span/>",{class:"subject", text :'Subject - '+data['subject']});
 	var selection = $('<input/>').attr({ type: 'radio', name:'product', value:data['name']});
 	var ending = $("<div/>",{class:'clear'});
