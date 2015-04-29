@@ -141,8 +141,6 @@ def mine(name,technique,method,normalization,standardization):
 	
 	tdataY = trainDataY
 	tdataX = trainDataX
-	print tdataY
-	print tdataX
 	#training data:x,y; mining data mineData (a set of x attributes i.e. independent)
 	'''
 	#applying preprocessing methods Normailization / Standardization
@@ -163,6 +161,7 @@ def mine(name,technique,method,normalization,standardization):
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 
 	if technique == "regression":
+		#print "\n\n",resp
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
 		resp['errors'] = errors
 	return dumps(resp)

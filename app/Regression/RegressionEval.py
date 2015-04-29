@@ -24,5 +24,6 @@ def meanAbosolute(y_true,y_predict):
 
 def euclideanDistance(y_true,y_predict):
 	return dist.euclidean(y_true,y_predict)
+
 if __name__ == '__main__':
 	test()

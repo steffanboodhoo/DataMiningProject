@@ -1,6 +1,6 @@
 from sklearn import linear_model
 from sklearn import preprocessing
-class RegLnr(object):
+class RegLnr:
 
 	def __init__(self,target,attributes):
 		self.target=target
