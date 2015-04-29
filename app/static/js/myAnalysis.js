@@ -71,9 +71,9 @@
 			/*<label class="btn btn-default btn-block">
             <input type="radio" name="options" id="option2"> Option 2
         </label>*/
-        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions"})).append("Multivariate Linear").appendTo($("#method_options_group"))
-        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions"})).append("Ridge").appendTo($("#method_options_group"))
-        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions"})).append("Lasso").appendTo($("#method_options_group"))
+        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions",value:"linear"})).append("Multivariate Linear").appendTo($("#method_options_group"))
+        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions",value:"ridge"})).append("Ridge").appendTo($("#method_options_group"))
+        	$("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions",value:"lasso"})).append("Lasso").appendTo($("#method_options_group"))
 			
 		/*}else if(type==='classification'){
 
@@ -85,7 +85,7 @@
 	}
 	function displayOptions(){
 		$("#optionsDisplay").empty()
-		var method = $('#method_options_group > .btn.active').text();
+		var method = $('#method_options_group > .btn.active').find('input').attr('value');
 		$('<h1>').append("Method").appendTo($("#optionsDisplay"))
 		$('<p>').append(method).appendTo($("#optionsDisplay"))
 
@@ -97,7 +97,7 @@
 
 	function mineData(name,technique,callback){
 
-		var method = $('#method_options_group > .btn.active').text();
+		var method = $('#method_options_group > .btn.active').find('input').attr('value');
 		var vals=[],normalization,standardization
 		$('input[name="dataprepOption"]:checked').each(function() {
 			vals.push(this.value)

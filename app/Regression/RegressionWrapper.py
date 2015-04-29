@@ -9,13 +9,15 @@ def handleRequest(tDatax,tDatay,mineData,method):
 	if(method =='ridge'):
 		resp = Ridge(tDatax,tDatay,mineData)
 	elif method =='linear':
-		resp = Linear(tDataX, tDataY, mineData)
+		resp = Linear(tDatax, tDatay, mineData)
 	print resp
 	return resp
 	
 def Linear(tDataX,tDataY,mineData):
+	print "\n\n",tDataX
+	print "\n\n",tDataY
 	X_train, X_test, y_train, y_test = cross_validation.train_test_split(tDataX, tDataY, test_size=0.4, random_state=0)
-	regLin =Linear(y_train,X_train)
+	regLin = Linear(y_train,X_train)
 	test_pred = regLin.predictDataSet(X_test)
 	#compute metrics now
 
