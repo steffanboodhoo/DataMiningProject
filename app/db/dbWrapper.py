@@ -19,8 +19,12 @@ def prepareData(dataObj):
 
 	if(dataObj['purpose']=="Training"):
 		target = dataObj['target']
-		target = convertFloats(target)
-		dataObj['target'] = target
+		fixedTarget = []
+		for e in target:
+			fixedTarget.append(float(e))
+
+		print fixedTarget,' !!!!!!!!!!!!!!\n'
+		dataObj['target'] = fixedTarget
 
 	print dataObj
 	return dataObj
@@ -122,8 +126,7 @@ def mine(name,technique,method,normalization,standardization):
 	print name,',',technique
 	mineObj = db.getAdataset(name,'Mining')
 	trainObj = db.getAdataset(name,'Training')
-	print mineObj
-	print trainObj
+	
 	mineData = np.array(mineObj['data'])
 	#mineData = mineObj['data']
 	trainDataX = np.array(trainObj['data'])
@@ -161,8 +164,8 @@ def mine(name,technique,method,normalization,standardization):
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 
 	if technique == "regression":
-		#print "\n\n",resp
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
+		print errors
 		resp['errors'] = errors
 	return dumps(resp)
 

@@ -6,7 +6,7 @@
 	console.log(dataset_method);
 	console.log(window.location);
 
-	var canCreate = true;
+	var chartData=[];//
 	var containerCount = 0
 	var chartCount = 0
 	var technique = {'regr':'REGRESSION','clfy':'CLASSIFICATION'}
@@ -51,8 +51,9 @@
 			var val = parseInt($('#'+nextBtnId).val()) + 1
 			val = (val)%5
 			$('#'+nextBtnId).val(val)
-			var dataCopy = deepCopy(testData)
-			var categories = testSeries
+			console.log(chartData[chartCount])
+			var dataCopy = deepCopy(chartData[chartCount])
+			var categories = range(1,dataCopy[0].data.length)
 			console.log(dataCopy)
 			if(val===0){
 				createChartA(dataCopy,categories,chartId)
@@ -116,8 +117,9 @@
 
 			mine(name,technique,method,normalization,standardization,function(data){
 				//createAnalysisView()
-				console.log(data)
-				//callback	
+				console.log('before call')
+				var t=technique.regr
+				callback(data,null,'REGRESSION')
 			})
 		}
 	}
@@ -131,7 +133,7 @@
 			data:query_str,
 			success:function(response){
 				if(typeof call_back==='function')
-					call_back(response)
+					call_back(JSON.parse(response))
 				else
 					console.log(response)
 			}
@@ -143,13 +145,16 @@
 		var divId = 'container'+containerCount //create Unique container ID
 		var container = $("<div/>", {id: divId,class:'container-fluid analysis-Container'})//create container for this analysis
 		$('#mid_pane').append(container)//append it to the page
-
+		console.log('in call before IF')
 		if(type===technique.regr){
+			console.log('i am here');
+			var testData=[{'name':'actual_test','data':data['testY']},{'name':'predicted_test','data':data['testPredY']}]
+			var predictData = [{'name':'predicted','data':data['actual_pred']}]
 			//showing test data for regression
-			attachChartWithButtons(data,labels,charts.chartB,divId)
+			attachChartWithButtons(testData,range(1,data['testY'].length),charts.chartB,divId)
 			attachMetrics(null,divId)
 			//showing actual prediction for regression
-			attachChartWithButtons(data,labels,charts.chartA,divId)
+			attachChartWithButtons(predictData,range(1,data['actual_pred'].length),charts.chartA,divId)
 		}else if(type === technique.clfy){
 			// attach what you want etc using attachChart
 		}
@@ -160,6 +165,7 @@
 	}
 
 	function attachChartWithButtons(data,labels,chartType,divId){
+		chartData.push(data)
 		console.log('attach Chart'+chartType)
 		var chartId = 'chart'+chartCount //create unique ID for the container
 		var row = $("<div/>",{class:'row content-Container'})//creates a row for the chart and buttons
@@ -225,7 +231,55 @@
 
 	}
 
+	function range(start, end, step) {
+	    var range = [];
+	    var typeofStart = typeof start;
+	    var typeofEnd = typeof end;
 
+	    if (step === 0) {
+	        throw TypeError("Step cannot be zero.");
+	    }
+
+	    if (typeofStart == "undefined" || typeofEnd == "undefined") {
+	        throw TypeError("Must pass start and end arguments.");
+	    } else if (typeofStart != typeofEnd) {
+	        throw TypeError("Start and end arguments must be of same type.");
+	    }
+
+	    typeof step == "undefined" && (step = 1);
+
+	    if (end < start) {
+	        step = -step;
+	    }
+
+	    if (typeofStart == "number") {
+
+	        while (step > 0 ? end >= start : end <= start) {
+	            range.push(start);
+	            start += step;
+	        }
+
+	    } else if (typeofStart == "string") {
+
+	        if (start.length != 1 || end.length != 1) {
+	            throw TypeError("Only strings with one character are supported.");
+	        }
+
+	        start = start.charCodeAt(0);
+	        end = end.charCodeAt(0);
+
+	        while (step > 0 ? end >= start : end <= start) {
+	            range.push(String.fromCharCode(start));
+	            start += step;
+	        }
+
+	    } else {
+	        throw TypeError("Only string and number types are supported");
+	    }
+
+	    return range;
+
+	}
 	function createChartA (data,categories,chartContainer) {
 		$(function () {
 		    $(chartContainer).highcharts({
@@ -259,7 +313,7 @@
 		            verticalAlign: 'middle',
 		            borderWidth: 0
 		        },
-		        series: testData
+		        series: data
 		        /* {
 		            name: 'New York',
 		            data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]

@@ -6,7 +6,6 @@ import pylab
 def handleRequest(tDatax,tDatay,mineData,method):
 	print method
 	print 'we are in the Regression wrapper with our lovely data'
-	print tDatay
 	if(method =='ridge'):
 		resp = Ridge(tDatax,tDatay,mineData)
 	elif method =='linear':
@@ -19,6 +18,8 @@ def Linear(tDataX,tDataY,mineData):
 	#print X_train,' ',y_train y_train is wrong
 	regLin = lin.RegLnr(y_train,X_train)
 	test_pred = regLin.predictDataSet(X_test)
+	print X_test
+	print mineData
 	#print test_pred
 	#compute metrics now
 

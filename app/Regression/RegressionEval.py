@@ -2,6 +2,8 @@ import sklearn.metrics as metrics
 import scipy.spatial.distance as dist
 
 def allErrors(y_true,y_predict):
+	print y_predict
+	print y_true
 	return {"r2":metrics.r2_score(y_true,y_predict),"mae":metrics.mean_absolute_error(y_true,y_predict),
 	"mse":metrics.mean_squared_error(y_true,y_predict),"dist":dist.euclidean(y_true,y_predict)}
 
