@@ -9,7 +9,7 @@
 from sklearn import linear_model
 from sklearn import preprocessing
 import numpy as np
-class RegRidge(object):
+class RegRidge:
 
 	def __init__(self,target,attributes):
 		self.target=target

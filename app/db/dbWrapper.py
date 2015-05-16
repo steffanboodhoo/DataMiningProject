@@ -11,11 +11,16 @@ import numpy as np
 def prepareData(dataObj):
 	#parsing json to dictionary
 	dataObj = yaml.load(dataObj)
-	dataset = dataObj['data']
-	
+
 	#convert the strings into floats
+	dataset = dataObj['data']
 	dataset = convertFloats(dataset)
 	dataObj['data']=dataset
+
+	if(dataObj['purpose']=="Training"):
+		target = dataObj['target']
+		target = convertFloats(target)
+		dataObj['target'] = target
 
 	print dataObj
 	return dataObj
@@ -120,8 +125,11 @@ def mine(name,technique,method,normalization,standardization):
 	print mineObj
 	print trainObj
 	mineData = np.array(mineObj['data'])
+	#mineData = mineObj['data']
 	trainDataX = np.array(trainObj['data'])
+	#trainDataX = trainObj['data']
 	trainDataY = np.array(trainObj['target'])
+	#trainDataY = trainObj['target']
 
 	#Set missing values in datasets
 	# imp = preprocessing.Imputer(missing_values='NaN', strategy='mean', axis=0)
@@ -133,10 +141,8 @@ def mine(name,technique,method,normalization,standardization):
 	
 	tdataY = trainDataY
 	tdataX = trainDataX
-	print tdataY
-	print tdataX
 	#training data:x,y; mining data mineData (a set of x attributes i.e. independent)
-
+	'''
 	#applying preprocessing methods Normailization / Standardization
 	if normalization == "yes":
 		tdataX = normalize(tdataX)
@@ -146,7 +152,7 @@ def mine(name,technique,method,normalization,standardization):
 		min_max_scaler = preprocessing.MinMaxScaler()
 		tdataX = min_max_scaler.fit_transform(tdataX)
 		mineData = min_max_scaler.fit_transform(mineData)
-
+	'''
 	#finally ready to apply data mining
 	resp = None
 	if technique=="regression":
@@ -155,12 +161,13 @@ def mine(name,technique,method,normalization,standardization):
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 
 	if technique == "regression":
+		#print "\n\n",resp
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
 		resp['errors'] = errors
 	return dumps(resp)
 
 def normalize(attributes):
-	'''
+	
 	#ensuring the values are floats
 	fixedDataX=[]
 	for e in attributes:
@@ -169,7 +176,7 @@ def normalize(attributes):
 			f=float(f)
 			row.append(f)
 		fixedDataX.append(row)
-	'''
+	
 	#normalizing each feature
 	attributes = np.array(fixedDataX)
 	L = len(attributes[0])
@@ -184,12 +191,12 @@ def normalize(attributes):
 	print attributes
 	return attributes
 
-	def normalizeRow(row):
-		maximum = np.amax(row)
-		minimum = np.amin(row)
-		div = maximum - minimum
-		v = []
-		for e in row:
-			v.append( (maximum - e) / div )
-		#print v
-		return v
+def normalizeRow(row):
+	maximum = np.amax(row)
+	minimum = np.amin(row)
+	div = maximum - minimum
+	v = []
+	for e in row:
+		v.append( (maximum - e) / div )
+	#print v
+	return v
