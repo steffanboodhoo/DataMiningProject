@@ -79,7 +79,6 @@
     }
 
     function createMethodTab(type) {
-        if (type === 'regression') {
             $("<label>", {
                 class: "btn btn-default btn-block"
             }).append($("<input>", {
@@ -101,16 +100,6 @@
                 name: "methodOptions",
                 value: "lasso"
             })).append("Lasso").appendTo($("#method_options_group"))
-
-        } else if (type === 'classification') {
-        	$("<label>", {
-                class: "btn btn-default btn-block"
-            }).append($("<input>", {
-                type: "radio",
-                name: "methodOptions",
-                value: "knn"
-            })).append("KNN Classification").appendTo($("#method_options_group"))
-        }
     }
 
     function createPreparationAndDoneTab() {

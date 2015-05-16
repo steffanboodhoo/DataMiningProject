@@ -10,10 +10,6 @@ import app.Classification.ClassificationWrapper as classify
 def index():
 	return render_template('index.html')
 
-@app.route('/myAnalysis')
-def myanalysis():
-	return render_template('myAnalysis.html')
-
 @app.route('/regression/linear/test')
 def regressionLinear():
 	 data = regr.testLinear()
@@ -40,9 +36,17 @@ def upload_file():
 def selection():
 	return render_template('selection.html')
 
-@app.route('/analysis')
-def analysis():
-	return render_template('analysis.html')
+@app.route('/regression/analysis')
+def regressionAnalysis():
+	return render_template('regr-analysis.html')
+
+@app.route('/classification/analysis')
+def classificationAnalysis():
+	return render_template('class-analysis.html')
+
+@app.route('/clustering/analysis')
+def clusteringAnalysis():
+	return render_template('clust-analysis.html')
 
 @app.route('/upload_success', methods = ['POST','GET'])
 def upload_success():

@@ -8,10 +8,10 @@ $(function(){
 	populate(chooser);
 	$('#submit').click(function() {
 		if(dataset_method == 'regression') {
-			window.location = getRootUrl()+'myAnalysis'
+			window.location = getRootUrl()+'regression/analysis'
 		}
 		if(dataset_method == 'classification') {
-			window.location = getRootUrl()+'myAnalysis'
+			window.location = getRootUrl()+'classification/analysis'
 		}
 	});
 	
