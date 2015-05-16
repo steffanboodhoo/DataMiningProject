@@ -36,15 +36,15 @@ def upload_file():
 def selection():
 	return render_template('selection.html')
 
-@app.route('/regression/analysis')
+@app.route('/regressionAnalysis')
 def regressionAnalysis():
 	return render_template('regr-analysis.html')
 
-@app.route('/classification/analysis')
+@app.route('/classificationAnalysis')
 def classificationAnalysis():
 	return render_template('class-analysis.html')
 
-@app.route('/clustering/analysis')
+@app.route('/clusteringAnalysis')
 def clusteringAnalysis():
 	return render_template('clust-analysis.html')
 
