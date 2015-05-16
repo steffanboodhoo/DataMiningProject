@@ -9,10 +9,6 @@
     var canCreate = true;
     var containerCount = 0
     var chartCount = 0
-    var technique = {
-        'regr': 'REGRESSION',
-        'clfy': 'CLASSIFICATION'
-    }
     var charts = {
         'chartA': 'CHARTA',
         'chartB': 'CHARTB',
@@ -88,11 +84,6 @@
         })).append("KNN Classification").appendTo($("#method_options_group"))
     }
 
-    function createPreparationAndDoneTab() {
-        ///<div class="btn-group btn-group-justified" role="group" aria-label="...">
-        //</div>
-    }
-
     function displayOptions() {
         $("#optionsDisplay").empty()
         var method = $('#method_options_group > .btn.active').find('input').attr('value');
@@ -125,9 +116,7 @@
         } else {
 
             mine(name, technique, method, normalization, standardization, function(data) {
-                //createAnalysisView()
-                console.log(data)
-                    //callback  
+                createAnalysisView(data)
             })
         }
     }
@@ -151,6 +140,7 @@
 
 
     function createAnalysisView(data, labels, type) {
+        console.log(data)
         var divId = 'container' + containerCount //create Unique container ID
         var container = $("<div/>", {
                 id: divId,
@@ -158,15 +148,15 @@
             }) //create container for this analysis
         $('#mid_pane').append(container) //append it to the page
 
-        if (type === technique.regr) {
-            //showing test data for regression
-            attachChartWithButtons(data, labels, charts.chartB, divId)
-            attachMetrics(null, divId)
-                //showing actual prediction for regression
-            attachChartWithButtons(data, labels, charts.chartA, divId)
-        } else if (type === technique.clfy) {
-            // attach what you want etc using attachChart
-        }
+        // if (type === technique.regr) {
+        //     //showing test data for regression
+        //     attachChartWithButtons(data, labels, charts.chartB, divId)
+        //     attachMetrics(null, divId)
+        //         //showing actual prediction for regression
+        //     attachChartWithButtons(data, labels, charts.chartA, divId)
+        // } else if (type === technique.clfy) {
+        //     // attach what you want etc using attachChart
+        // }
         //moves screen to container
         $('html, body').animate({
             'scrollTop': container.offset().top
