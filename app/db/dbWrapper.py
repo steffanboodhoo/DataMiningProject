@@ -19,12 +19,18 @@ def prepareData(dataObj):
 
 	if(dataObj['purpose']=="Training"):
 		target = dataObj['target']
+<<<<<<< HEAD
 		fixedTarget = []
 		for e in target:
 			fixedTarget.append(float(e))
 
 		print fixedTarget,' !!!!!!!!!!!!!!\n'
 		dataObj['target'] = fixedTarget
+=======
+		if not isinstance(target[0], basestring):
+			target = convertFloats(target)
+		dataObj['target'] = target
+>>>>>>> origin
 
 	print dataObj
 	return dataObj

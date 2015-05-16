@@ -1,38 +1,43 @@
-.content-Container{
-	margin: 10px;
+.content-Container {
+    margin: 10px;
 }
-.analysis-Container{
-	background-color: #555;
-	margin-bottom: 100px;
-}
-.analysis-text-Container{
 
-	height: 50px;
-	background-color: #eee;
-	text-align:center;
+.analysis-Container {
+    background-color: #555;
+    margin-bottom: 100px;
 }
-.pane{
-	background-color: #eee;
-	height:100%;
 
-	border-color: #ddd;
-  border-width: 3px;
+.analysis-text-Container {
+    height: 50px;
+    background-color: #eee;
+    text-align: center;
 }
-#right_pane{
-background-color: #FFFFFF;
-border-radius: 30px 30px 30px 30px;
--moz-border-radius: 30px 30px 30px 30px;
--webkit-border-radius: 30px 30px 30px 30px;
-border: 1px solid #ddd;
-  
-  -webkit-box-shadow: 7px 9px 18px -2px rgba(95,142,173,1);
--moz-box-shadow: 7px 9px 18px -2px rgba(95,142,173,1);
-box-shadow: 7px 9px 18px -2px rgba(95,142,173,1);
+
+.pane {
+    height: 100%;
 }
-#addChart{
-	margin:10px;
+
+#right_pane {
 }
-.test{
-	display:block;
-	padding:10px;
+
+#addChart {
+    margin: 10px;
+}
+
+.test {
+    display: block;
+    padding: 10px;
+}
+
+h1 {
+	font-family: Lato;
+	font-weight: 300;
+	font-size: 30px;
+	
+}
+
+body {
+	font: 18px/1.5em 'Source Sans Pro', 'Helvetica Neue', sans-serif;
+	color: #333;
+	height: 100%;
 }

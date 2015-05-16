@@ -7,32 +7,7 @@ var maxUnparseLength = 10000;
 $(function()
 {
 	
-		// validate();
- //    $('#dataset_name, #dataset_subject, #regression, #classification, #clustering, #training, #testing').change(validate);
-	// Tabs
 	previewDatasets(null,null,'Mining',null)
-	//mine('Iris','classification','knn','no','no',null);
-	// populate()
-	// var regrList = [];
-	// var clsfList = [];
-	// previewDatasets(null,null,null,function(response){//[ [{..},{..}], [{..},{..}] ]
-	// 	$.each(response, function(index, sublist){//[{..},{..}]
-	// 		var a=[],b=[];
-	// 		  $.each(sublist, function(index,dataObj){//{..}
-	// 			console.log(dataObj['type'])
-	// 		  	if(dataObj['type'] === 'regression'){
-	// 		  		var name = dataObj['name']
-	// 		  		regrList.push(name)
-	// 		  	}else
-	// 		  		clsfList.push(dataObj['name'])
-	// 		  })
-	// 	});
-	// 	console.log(regrList)
-	// 	console.log(clsfList)
-	// 	//call functions here
-	// })	
-
-	//here is called before get is completed
 
 	$('#tab-string').click(function()
 	{
@@ -89,8 +64,6 @@ $(function()
 		else
 			firstRun = false;
 
-
-
 		if (inputType == "local")
 		{
 			if (!$('#files')[0].files.length)
@@ -135,16 +108,6 @@ $(function()
 	});
 });
 
-// function populate(){
-// 	// Fetch the list of datasets
-// 	previewDatasets(null,null,'Mining',function(response){
-// 		data = $.parseJSON(response);
-// 		$.each(data,function(index,sublist){
-// 			console.log(sublist)
-// 		})
-// 	})
-// }
-
 function printStats(msg)
 {
 	if (msg)
@@ -157,8 +120,6 @@ function printStats(msg)
 	if (errorCount)
 		console.log("First error:", firstError);
 }
-
-
 
 function buildConfig()
 {
@@ -201,8 +162,6 @@ function completeFn(results)
 			rowCount = results.data.length;
 	}
 
-
-	
 	printStats("Parse complete");
 
 	console.log("Serving file");
