@@ -1,4 +1,7 @@
 import numpy as np
+from sklearn.cluster import KMeans
+from scipy.cluster.vq import  whiten
+import matplotlib.pyplot as plt
 
 dataX = [[4,3,3,14,13],
 	[4,4,3,13,14],
@@ -17,15 +20,39 @@ def main():
 	d = np.array(dataX)
 	n=len(d)
 	print dataX
-	print d[0:n,0]
+	cluster = KMeans(init='k-means++',n_clusters=3,n_init=10)
+	cluster.fit(dataX)
+	
+	print cluster.cluster_centers_
+	#init is how we initialize the centroids whether random or according to euclidean distances
+	#n_clusters how much clusters we want
+	#n_init how many times we initialize different seeds -> re run the algorithm
+	Z = cluster.predict(dataX)
+	print Z
+	'''
+	Z = Z.reshape(dataX.shape)
+	plt.figure(1)
+	plt.clf()
+	plt.imshow(Z, interpolation='nearest',
+	           extent=(dataX.min(), dataX.max()),
+	           cmap=plt.cm.Paired,
+	           aspect='auto', origin='lower')
 
-	A = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
-	B = np.array(A)
-	print B[0:3, 0]
-	B[0:3,0] = [0,0,0]
-	print B
-	x = np.random.rand(1000)*100
-	print x
+	plt.plot(reduced_data[:, 0], reduced_data[:, 1], 'k.', markersize=2)
+	# Plot the centroids as a white X
+	centroids = kmeans.cluster_centers_
+	plt.scatter(centroids[:, 0], centroids[:, 1],
+	            marker='x', s=169, linewidths=3,
+	            color='w', zorder=10)
+	plt.title('K-means clustering on the digits dataset (PCA-reduced data)\n'
+	          'Centroids are marked with white cross')
+	plt.xlim(x_min, x_max)
+	plt.ylim(y_min, y_max)
+	plt.xticks(())
+	plt.yticks(())
+	plt.show()
+	'''
+	
 
 if __name__ == '__main__':
 	main()
