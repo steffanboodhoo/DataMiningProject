@@ -19,7 +19,8 @@ def prepareData(dataObj):
 
 	if(dataObj['purpose']=="Training"):
 		target = dataObj['target']
-		target = convertFloats(target)
+		if not isinstance(target[0], basestring):
+			target = convertFloats(target)
 		dataObj['target'] = target
 
 	print dataObj
