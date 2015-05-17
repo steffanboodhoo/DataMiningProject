@@ -6,6 +6,7 @@ from bson.json_util import dumps
 import app.Regression.RegressionEval as evl
 import app.Regression.RegressionWrapper as regr
 import app.Classification.ClassificationWrapper as classify
+import app.Clustering.clusterWrapper as clstr
 import numpy as np
 
 def prepareData(dataObj):
@@ -168,6 +169,8 @@ def mine(name,technique,method,normalization,standardization):
 		resp = regr.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
+	elif technique=="clustering":
+		resp = clstr.handleRequest(data)
 
 	if technique == "regression":
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
