@@ -1,32 +1,44 @@
 (function(window) {
-    var dataset_name = JSON.parse(localStorage.getItem('dataset_name'));
-    var dataset_method = JSON.parse(localStorage.getItem('dataset_method'));
+    var dataset_name = JSON.parse(localStorage.getItem('dataset_name')),
+        dataset_method = JSON.parse(localStorage.getItem('dataset_method'));
 
     console.log(dataset_name);
     console.log(dataset_method);
     console.log(window.location);
 
-    var canCreate = true;
-    var containerCount = 0
-    var chartCount = 0
+    var chartData = [],
+        containerCount = 0,
+        chartCount = 0,
+        tableCount = 0;
+
+    var technique = {
+        'regr': 'REGRESSION',
+        'clfy': 'CLASSIFICATION',
+        'clust': 'CLUSTERING'
+    }
+
     var charts = {
         'chartA': 'CHARTA',
         'chartB': 'CHARTB',
         'chartC': 'CHARTC',
         'chartD': 'CHARTD',
-        'chartE': 'CHARTE'
+        'chartE': 'CHARTE',
+        'chart0': 'CHART0'
     }
     $(document).ready(function() {
         console.log("im loaded")
         setupTheme();
         setupButtons();
         setupMenu();
-        createMethodTab(dataset_method)
+        createMethodTab(null)
     });
 
     function setupButtons() {
         $('#doneCreatingBtn').click(function() {
+            var dataCopy = testData
             mineData(dataset_name, dataset_method, createAnalysisView)
+                //fetch data and pass them into this function
+                //createAnalysisView(dataCopy,testSeries,technique.regr)
         })
         $('#doneTabOption').click(function() {
             displayOptions();
@@ -57,8 +69,9 @@
             var val = parseInt($('#' + nextBtnId).val()) + 1
             val = (val) % 5
             $('#' + nextBtnId).val(val)
-            var dataCopy = deepCopy(testData)
-            var categories = testSeries
+            console.log(chartData[chartCount])
+            var dataCopy = deepCopy(chartData[chartCount])
+            var categories = range(1, dataCopy[0].data.length)
             console.log(dataCopy)
             if (val === 0) {
                 createChartA(dataCopy, categories, chartId)
@@ -82,6 +95,11 @@
             name: "methodOptions",
             value: "knn"
         })).append("KNN Classification").appendTo($("#method_options_group"))
+    }
+
+    function createPreparationAndDoneTab() {
+        ///<div class="btn-group btn-group-justified" role="group" aria-label="...">
+        //</div>
     }
 
     function displayOptions() {
@@ -116,7 +134,9 @@
         } else {
 
             mine(name, technique, method, normalization, standardization, function(data) {
-                createAnalysisView(data)
+                //createAnalysisView()
+                console.log(data)
+                callback(data, null, 'CLASSIFICATION')
             })
         }
     }
@@ -131,32 +151,48 @@
             data: query_str,
             success: function(response) {
                 if (typeof call_back === 'function')
-                    call_back(response)
+                    call_back(JSON.parse(response))
                 else
                     console.log(response)
             }
         })
     }
 
-
     function createAnalysisView(data, labels, type) {
-        console.log(data)
         var divId = 'container' + containerCount //create Unique container ID
         var container = $("<div/>", {
                 id: divId,
                 class: 'container-fluid analysis-Container'
             }) //create container for this analysis
         $('#mid_pane').append(container) //append it to the page
+        console.log('in call before IF')
+        console.log(data)
+        if (type === technique.regr) {
+            console.log('i am here');
+            var testData = [{
+                'name': 'actual_test',
+                'data': data['testY']
+            }, {
+                'name': 'predicted_test',
+                'data': data['testPredY']
+            }]
+            var predictData = [{
+                    'name': 'predicted',
+                    'data': data['actual_pred']
+                }]
+                //showing test data for regression
+            attachChartWithButtons(testData, range(1, data['testY'].length), charts.chartB, divId)
+            attachMetrics(null, divId)
+                //showing actual prediction for regression
+            attachChartWithButtons(predictData, range(1, data['actual_pred'].length), charts.chartA, divId)
+        } else if (type === technique.clfy) {
+            labels = data['labels']
+            console.log(labels)
 
-        // if (type === technique.regr) {
-        //     //showing test data for regression
-        //     attachChartWithButtons(data, labels, charts.chartB, divId)
-        //     attachMetrics(null, divId)
-        //         //showing actual prediction for regression
-        //     attachChartWithButtons(data, labels, charts.chartA, divId)
-        // } else if (type === technique.clfy) {
-        //     // attach what you want etc using attachChart
-        // }
+            // attach what you want etc using attachChart
+            createChart0(data,labels,'mid_pane')
+            attachChartWithButtons(data, labels, charts.chart0, divId)
+        }
         //moves screen to container
         $('html, body').animate({
             'scrollTop': container.offset().top
@@ -166,6 +202,7 @@
     }
 
     function attachChartWithButtons(data, labels, chartType, divId) {
+        chartData.push(data)
         console.log('attach Chart' + chartType)
         var chartId = 'chart' + chartCount //create unique ID for the container
         var row = $("<div/>", {
@@ -276,6 +313,87 @@
 
     }
 
+    function range(start, end, step) {
+        var range = [];
+        var typeofStart = typeof start;
+        var typeofEnd = typeof end;
+
+        if (step === 0) {
+            throw TypeError("Step cannot be zero.");
+        }
+
+        if (typeofStart == "undefined" || typeofEnd == "undefined") {
+            throw TypeError("Must pass start and end arguments.");
+        } else if (typeofStart != typeofEnd) {
+            throw TypeError("Start and end arguments must be of same type.");
+        }
+
+        typeof step == "undefined" && (step = 1);
+
+        if (end < start) {
+            step = -step;
+        }
+
+        if (typeofStart == "number") {
+
+            while (step > 0 ? end >= start : end <= start) {
+                range.push(start);
+                start += step;
+            }
+
+        } else if (typeofStart == "string") {
+
+            if (start.length != 1 || end.length != 1) {
+                throw TypeError("Only strings with one character are supported.");
+            }
+
+            start = start.charCodeAt(0);
+            end = end.charCodeAt(0);
+
+            while (step > 0 ? end >= start : end <= start) {
+                range.push(String.fromCharCode(start));
+                start += step;
+            }
+
+        } else {
+            throw TypeError("Only string and number types are supported");
+        }
+
+        return range;
+
+    }
+
+    function createChart0(data, categories, chartContainer) {
+        console.log("Creating table")
+        console.log(chartContainer)
+        var tableId = 'table'+tableCount
+        var row = $("<div/>",{class:'row'})//creates a row for the table
+        var col = $("<div/>",{class:'col-md-11'})//creates a column span 11/12 for chart
+        var table = $("<table/>", {id: tableId, class:'table table-striped'})
+        var tHD = $("<thead/>")
+        var tRow = $("<tr/>")
+        $.each(categories,function(index, value){
+            var header =
+        })
+        var temp = $("<th/>").append('Temp')
+        //     // colHeads = $.each(data)
+
+        // tbId = "dataBody",
+        //     tId = "mainTbl"
+
+        // data.forEach(function(el) {
+        //     var rec = transformRec(el);
+        //     $tBody.append(generateRowHTML(rec));
+        // });
+        // var tBody = $("<tbody/>")
+        temp.appendTo(tRow)
+        tRow.appendTo(tHD)
+        tHD.appendTo(table)
+        table.appendTo(col)
+
+        col.appendTo(row)
+        row.appendTo($('#'+chartContainer))
+    }
 
     function createChartA(data, categories, chartContainer) {
         $(function() {
@@ -310,438 +428,16 @@
                     verticalAlign: 'middle',
                     borderWidth: 0
                 },
-                series: testData
+                series: data
                     /* {
-                    name: 'New York',
-                    data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                }*/
+                        name: 'New York',
+                        data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
+                    }*/
             });
         });
     }
 
-    function createChartB(data, categories, chartContainer) {
-        $(function() {
-            $(chartContainer).highcharts({
-                title: {
-                    text: 'lk'
-                },
 
-                subtitle: {
-                    text: 'Source: Google Analytics'
-                },
-
-                xAxis: {
-                    // one week
-                    labels: {
-                        align: 'left',
-                        x: 3,
-                        y: -3
-                    }
-                },
-
-                yAxis: [{ // left y axis
-                    title: {
-                        text: null
-                    },
-                    labels: {
-                        align: 'left',
-                        x: 3,
-                        y: 16,
-                        format: '{value:.,0f}'
-                    },
-                    showFirstLabel: false
-                }, { // right y axis
-                    linkedTo: 0,
-                    gridLineWidth: 0,
-                    opposite: true,
-                    title: {
-                        text: null
-                    },
-                    labels: {
-                        align: 'right',
-                        x: -3,
-                        y: 16,
-                        format: '{value:.,0f}'
-                    },
-                    showFirstLabel: false
-                }],
-
-                legend: {
-                    align: 'left',
-                    verticalAlign: 'top',
-                    y: 20,
-                    floating: true,
-                    borderWidth: 0
-                },
-
-                tooltip: {
-                    shared: true,
-                    crosshairs: true
-                },
-
-                plotOptions: {
-                    series: {
-                        cursor: 'pointer',
-                        point: {
-                            events: {
-                                click: function(e) {
-                                    hs.htmlExpand(null, {
-                                        pageOrigin: {
-                                            x: e.pageX || e.clientX,
-                                            y: e.pageY || e.clientY
-                                        },
-                                        headingText: this.series.name,
-                                        maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
-                                            this.y + ' visits',
-                                        width: 200
-                                    });
-                                }
-                            }
-                        },
-                        marker: {
-                            lineWidth: 1
-                        }
-                    }
-                },
-                series: data
-            });
-        });
-    }
-
-    function createChartC(data, categories, chartContainer) {
-        var dataC = data
-        dataC.forEach(function(obj) {
-            obj['type'] = 'area';
-        })
-
-        $(function() {
-            $(chartContainer).highcharts({
-                chart: {
-                    zoomType: 'x'
-                },
-                title: {
-                    text: 'USD to EUR exchange rate from 2006 through 2008'
-                },
-                subtitle: {
-                    text: document.ontouchstart === undefined ?
-                        'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
-                },
-                xAxis: {
-                    categories: categories
-                },
-                yAxis: {
-                    title: {
-                        text: 'Exchange rate'
-                    }
-                },
-                legend: {
-                    enabled: false
-                },
-                plotOptions: {
-                    area: {
-                        fillColor: {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                                [0, Highcharts.getOptions().colors[0]],
-                                [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
-                            ]
-                        },
-                        marker: {
-                            radius: 2
-                        },
-                        lineWidth: 1,
-                        states: {
-                            hover: {
-                                lineWidth: 1
-                            }
-                        },
-                        threshold: null
-                    }
-                },
-                series: dataC
-            });
-        });
-    }
-
-    function createChartD(data, categories, chartContainer) {
-        $(function() {
-            $(chartContainer).highcharts({
-                chart: {
-                    type: 'area'
-                },
-                title: {
-                    text: 'US and USSR nuclear stockpiles'
-                },
-                subtitle: {
-                    text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-                        'thebulletin.metapress.com</a>'
-                },
-                xAxis: {
-                    categories: categories
-                },
-                yAxis: {
-                    title: {
-                        text: 'Nuclear weapon states'
-                    },
-
-                },
-                tooltip: {
-                    shared: true,
-                    crosshairs: true
-                },
-                plotOptions: {
-                    area: {
-
-                        marker: {
-                            enabled: false,
-                            symbol: 'circle',
-                            radius: 2,
-                            states: {
-                                hover: {
-                                    enabled: true
-                                }
-                            }
-                        }
-                    }
-                },
-                series: data
-            });
-        });
-    }
-
-    function createChartE(dataa, categories, chartContainer) {
-        //$("<div/>",{class:'container-fluid',id:'container'}).appendTo(chartContainer)
-        //$("<div/>",{class:'container-fluid ',id='master-container'}).appendTo(chartContainer)
-
-        $(function() {
-            var data = [3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8],
-                detailChart;
-
-
-
-            // create the detail chart
-            function createDetail(masterChart) {
-
-                // prepare the detail chart
-                var detailData = [],
-                    detailStart = Date.UTC(2008, 7, 1);
-
-                $.each(masterChart.series[0].data, function() {
-                    if (this.x >= detailStart) {
-                        detailData.push(this.y);
-                    }
-                });
-
-                // create a detail chart referenced by a global variable
-                detailChart = $('#detail-container').highcharts({
-                    chart: {
-                        marginBottom: 120,
-                        reflow: false,
-                        marginLeft: 50,
-                        marginRight: 20,
-                        style: {
-                            position: 'absolute'
-                        }
-                    },
-                    credits: {
-                        enabled: false
-                    },
-                    title: {
-                        text: 'Historical USD to EUR Exchange Rate'
-                    },
-                    subtitle: {
-                        text: 'Select an area by dragging across the lower chart'
-                    },
-                    xAxis: {
-                        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                            'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                        ]
-                    },
-                    yAxis: {
-                        title: {
-                            text: null
-                        },
-                        maxZoom: 0.1
-                    },
-                    tooltip: {
-                        formatter: function() {
-                            var point = this.points[0];
-                            return '<b>' + point.series.name + '</b><br/>' +
-                                Highcharts.dateFormat('%A %B %e %Y', this.x) + ':<br/>' +
-                                '1 USD = ' + Highcharts.numberFormat(point.y, 2) + ' EUR';
-                        },
-                        shared: true
-                    },
-                    legend: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        series: {
-                            marker: {
-                                enabled: false,
-                                states: {
-                                    hover: {
-                                        enabled: true,
-                                        radius: 3
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    series: [{
-                        name: 'USD to EUR',
-                        data: detailData
-                    }],
-
-                    exporting: {
-                        enabled: false
-                    }
-
-                }).highcharts(); // return chart
-            }
-
-            // create the master chart
-            function createMaster() {
-                $('#master-container').highcharts({
-                        chart: {
-                            reflow: false,
-                            borderWidth: 0,
-                            backgroundColor: null,
-                            marginLeft: 50,
-                            marginRight: 20,
-                            zoomType: 'x',
-                            events: {
-
-                                // listen to the selection event on the master chart to update the
-                                // extremes of the detail chart
-                                selection: function(event) {
-                                    var extremesObject = event.xAxis[0],
-                                        min = extremesObject.min,
-                                        max = extremesObject.max,
-                                        detailData = [],
-                                        xAxis = this.xAxis[0];
-
-                                    // reverse engineer the last part of the data
-                                    $.each(this.series[0].data, function() {
-                                        if (this.x > min && this.x < max) {
-                                            detailData.push([this.x, this.y]);
-                                        }
-                                    });
-
-                                    // move the plot bands to reflect the new detail span
-                                    xAxis.removePlotBand('mask-before');
-                                    xAxis.addPlotBand({
-                                        id: 'mask-before',
-                                        from: Date.UTC(2006, 0, 1),
-                                        to: min,
-                                        color: 'rgba(0, 0, 0, 0.2)'
-                                    });
-
-                                    xAxis.removePlotBand('mask-after');
-                                    xAxis.addPlotBand({
-                                        id: 'mask-after',
-                                        from: max,
-                                        to: Date.UTC(2008, 11, 31),
-                                        color: 'rgba(0, 0, 0, 0.2)'
-                                    });
-
-
-                                    detailChart.series[0].setData(detailData);
-
-                                    return false;
-                                }
-                            }
-                        },
-                        title: {
-                            text: null
-                        },
-                        xAxis: {
-
-                            title: {
-                                text: null
-                            }
-                        },
-                        yAxis: {
-                            gridLineWidth: 0,
-                            labels: {
-                                enabled: false
-                            },
-                            title: {
-                                text: null
-                            },
-                            min: 0.6,
-                            showFirstLabel: false
-                        },
-                        tooltip: {
-                            formatter: function() {
-                                return false;
-                            }
-                        },
-                        legend: {
-                            enabled: false
-                        },
-                        credits: {
-                            enabled: false
-                        },
-                        plotOptions: {
-                            series: {
-                                fillColor: {
-                                    linearGradient: [0, 0, 0, 70],
-                                    stops: [
-                                        [0, Highcharts.getOptions().colors[0]],
-                                        [1, 'rgba(255,255,255,0)']
-                                    ]
-                                },
-                                lineWidth: 1,
-                                marker: {
-                                    enabled: false
-                                },
-                                shadow: false,
-                                states: {
-                                    hover: {
-                                        lineWidth: 1
-                                    }
-                                },
-                                enableMouseTracking: false
-                            }
-                        },
-
-                        series: [{
-                            type: 'area',
-                            name: 'USD to EUR',
-                            data: data
-                        }],
-
-                        exporting: {
-                            enabled: false
-                        }
-
-                    }, function(masterChart) {
-                        createDetail(masterChart);
-                    })
-                    .highcharts(); // return chart instance
-            }
-
-            // make the container smaller and add a second container for the master chart
-            //var $container = $(chartContainer)
-
-
-            $('<div id="detail-container">')
-                .appendTo($(chartContainer));
-
-            $('<div id="master-container">')
-                .appendTo($(chartContainer));
-
-            // create master and in its callback, create the detail chart
-            createMaster();
-
-        });
-    }
 
     var testData = [{
         name: 'Tokyo',

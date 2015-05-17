@@ -20,7 +20,7 @@ def kMeansBasic(data,mine,n_clusters):
 	k = kmBasic.clstrCl(data,n_clusters)
 	Z = k.group(mine)
 	resp = {'centroids':k.centroids(),'clusters':Z}
-	resp['mine']=mine
+	resp['mine'] = mine
 	return resp
 
 def meanShiftBasic(data,mine,bandwidth):

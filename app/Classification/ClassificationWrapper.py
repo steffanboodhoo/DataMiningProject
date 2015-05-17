@@ -30,4 +30,7 @@ def kneighbors(tDataX,tDataY,mineData):
     accuracy = knn.accuracy(X_test,y_test)
     
     actual_pred = knn.predictDataSet(mineData)
-    return {'Testset Class':y_test,'Predicted Testset Class':test_pred,'Mining Results':actual_pred,'Accuracy':accuracy, 'Mining Attributes': mineData}
+    resp = {'Testset Class':y_test,'Predicted Testset Class':test_pred,'Classes':actual_pred}
+    resp['mineAttrs'] = mineData
+    resp['accuracy'] = accuracy
+    return resp
