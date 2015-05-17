@@ -165,7 +165,7 @@ def mine(name,technique,method,normalization,standardization,specializedParam):
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="clustering":
 		resp = clstr.handleRequest(trainObj['data'],mineObj['data'],method,specializedParam)
-		countCategories(resp['clusters'])
+		resp['aggregate']=countCategories(resp['clusters'])
 		print resp
 
 	if technique == "regression":
@@ -217,4 +217,4 @@ def countCategories(v):
 		else:
 			aggregates[d]=1
 
-	print aggregates
+	return aggregates
