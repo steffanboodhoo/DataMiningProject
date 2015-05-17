@@ -163,6 +163,7 @@ def mine(name,technique,method,normalization,standardization,specializedParam):
 		resp = regr.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
+		resp['aggregate'] = countCategories(resp['Classes'])
 	elif technique=="clustering":
 		resp = clstr.handleRequest(trainObj['data'],mineObj['data'],method,specializedParam)
 		resp['aggregate']=countCategories(resp['clusters'])

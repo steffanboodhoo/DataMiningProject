@@ -11,11 +11,11 @@ class KNN:
 
 	def predictTrainData(self):
 		predictedData = self.clf.predict(self.attributes)
-		return predictedData
+		return predictedData.tolist()
 
 	def predictDataSet(self,attributes):
 		predictedData = self.clf.predict(attributes)
-		return predictedData
+		return predictedData.tolist()
 
 	def disp(self):
 		print self.clf
