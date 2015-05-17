@@ -369,28 +369,31 @@
         var tableId = 'table'+tableCount
         var row = $("<div/>",{class:'row'})//creates a row for the table
         var col = $("<div/>",{class:'col-md-11'})//creates a column span 11/12 for chart
+
         var table = $("<table/>", {id: tableId, class:'table table-striped'})
-        var tHD = $("<thead/>")
-        var tRow = $("<tr/>")
-        $.each(categories,function(index, value){
-            var header =
+        //HEAD
+        var thead = $("<thead/>")
+        var labels = data['labels']
+        var tr = $("<tr/>")
+        labels.forEach(function(el){
+            $("<td/>").append(el).appendTo(tr)
         })
-        var temp = $("<th/>").append('Temp')
-        //     // colHeads = $.each(data)
+        tr.appendTo(thead)
+        thead.appendTo(table)
 
-        // tbId = "dataBody",
-        //     tId = "mainTbl"
+        //BODY
+        var tbody = $("<tbody/>")
+        var records = data['mineAttrs']
+        records.forEach(function(rec){
+            var tr = $("<tr/>")
+            rec.forEach(function(el){
+                $("<td/>").append(el).appendTo(tr)
+            })
+            tr.appendTo(tbody)
+        })
+        tbody.appendTo(table)
 
-        // data.forEach(function(el) {
-        //     var rec = transformRec(el);
-        //     $tBody.append(generateRowHTML(rec));
-        // });
-        // var tBody = $("<tbody/>")
-        temp.appendTo(tRow)
-        tRow.appendTo(tHD)
-        tHD.appendTo(table)
-        table.appendTo(col)
-
+        table.appendTo(row)
         col.appendTo(row)
         row.appendTo($('#'+chartContainer))
     }
