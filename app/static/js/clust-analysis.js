@@ -9,7 +9,8 @@
     var chartData=[];//
     var containerCount = 0
     var chartCount = 0
-    var technique = {'regr':'REGRESSION','clfy':'CLASSIFICATION'}
+    var chartAmount = 1
+    var technique = {'regr':'REGRESSION','clfy':'CLASSIFICATION','clstr':'CLUSTERING'}
     var charts = {'chartA':'CHARTA','chartB':'CHARTB','chartC':'CHARTC','chartD':'CHARTD','chartE':'CHARTE'}
     $(document).ready(function(){
         console.log("im loaded")
@@ -49,15 +50,15 @@
         $('#'+nextBtnId).click(function(){
             $(chartId).empty()
             var val = parseInt($('#'+nextBtnId).val()) + 1
-            val = (val)%5
+            val = (val)%chartAmount
             $('#'+nextBtnId).val(val)
             console.log(chartData[chartCount])
             var dataCopy = deepCopy(chartData[chartCount])
             var categories = range(1,dataCopy[0].data.length)
             console.log(dataCopy)
-            if(val===0){
+            if(val===0)
                 createChartA(dataCopy,categories,chartId)
-            }else if(val===1){
+           /* }else if(val===1){
                 createChartB(dataCopy,categories,chartId)
             }else if(val===2){
                 createChartC(dataCopy,categories,chartId)
@@ -65,7 +66,7 @@
                 createChartD(dataCopy,categories,chartId)
             }else if(val===4){
                 createChartE(dataCopy,categories,chartId)
-            }
+            }*/
         })
     }
     function createMethodTab(type){
@@ -74,6 +75,7 @@
             <input type="radio" name="options" id="option2"> Option 2
         </label>*/
             $("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions",value:"kmeans"})).append("K-means").appendTo($("#method_options_group"))
+            $("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions",value:"meanShift"})).append("Mean Shift").appendTo($("#method_options_group"))
             $("<label>",{class:"btn btn-default btn-block"}).append($("<input>",{type:"radio",name:"methodOptions",value:"heiarchical"})).append("Heiarchical").appendTo($("#method_options_group"))
         /*}else if(type==='classification'){
 
@@ -153,8 +155,16 @@
             attachMetrics(null,divId)
             //showing actual prediction for regression
             attachChartWithButtons(predictData,range(1,data['actual_pred'].length),charts.chartA,divId)
+
         }else if(type === technique.clfy){
             // attach what you want etc using attachChart
+        }else if(type ==technique.clstr){
+            var aggregates = data['aggregate'];
+            var fixedAggregates=[];
+            for(var key in aggregates)
+              fixedAggregates.push(['cluster'+key,aggregates[key]])
+            console.log(fixedAggregates)
+            attachChartWithButtons(fixedAggregates,null,charts.chartA,divId)
         }
         //moves screen to container
          $('html, body').animate({'scrollTop': container.offset().top}, 'slow', 'swing');
@@ -189,6 +199,7 @@
             createChartE(data, labels, '#'+chartId)
         chartCount++
     }
+
     function attachChartButtons(divId,row,chartCount){
         var btns_col  = $("<div/>",{class:'col-md-1'})//creates a column span 1/12 for buttons
         var btn_group = $("<div/>",{class:'btn-group-vertial'})
@@ -278,7 +289,7 @@
         return range;
 
     }
-    function createChartA (data,categories,chartContainer) {
+    /*function createChartA (data,categories,chartContainer) {
         $(function () {
             $(chartContainer).highcharts({
                 title: {
@@ -312,14 +323,52 @@
                     borderWidth: 0
                 },
                 series: data
-                /* {
-                    name: 'New York',
-                    data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                }*/
             });
         });
-    }
+    }*/
 
+    function createChartA(data,categories,chartContainer){
+      console.log(data)
+      console.log(chartContainer)
+      $(function () {
+        // Radialize the colors
+        
+
+        // Build the chart
+        $(chartContainer).highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: 'Browser market shares at a specific website, 2014'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        style: {
+                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                        },
+                        connectorColor: 'silver'
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Browser share',
+                data: data
+            }]
+        });
+    });
+  }
    
 
     var testData=[{
@@ -344,6 +393,7 @@
          * Dark theme for Highcharts JS
          * @author Torstein Honsi
          */
+        
 
         // Load the fonts
         Highcharts.createElement('link', {
@@ -552,5 +602,15 @@
         };
         // Apply the theme
         Highcharts.setOptions(Highcharts.theme);
+
+         Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+                radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                stops: [
+                    [0, color],
+                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
     }
 }(this));
