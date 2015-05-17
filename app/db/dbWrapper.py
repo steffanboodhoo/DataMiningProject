@@ -15,45 +15,35 @@ def prepareData(dataObj):
 
 	#convert the strings into floats
 	dataset = dataObj['data']
+	print dataObj
+
 	dataset = convertFloats(dataset)
 	dataObj['data']=dataset
-
-	if(dataObj['purpose']=="Training" and (dataObj['type'] == "classification" or dataObj['type'] == "regression")):
+	print dataObj
+	if(dataObj['purpose']=="Training" and (dataObj['type'] != "clustering")):
 		target = dataObj['target']
-		'''	
+		
 		fixedTarget = []
 		for e in target:
 			fixedTarget.append(float(e))
 
-		print fixedTarget,' !!!!!!!!!!!!!!\n'
+		#print fixedTarget,' !!!!!!!!!!!!!!\n'
 		dataObj['target'] = fixedTarget
-		'''
+		
 		if not isinstance(target[0], basestring):
 			target = convertFloats(target)
 		dataObj['target'] = target
 
+	'''
+	clustering training or mining has no target
 	elif (dataObj['purpose'] == "Training" and dataObj['type'] == "clustering"):
 		target = dataObj['target']
 		target = convertFloats(target)
 		dataObj['target'] = target
-
+	'''
 	print dataObj
 	return dataObj
-'''
-def testData(dataObj):
-	if dataObj['name'] == None:
-		return {'status':'failure','reason':'No name given to dataset'}
-	if dataObj['type'] == None:
-		return {'status':'failure','reason':'No technique given to dataset'}
-	if dataObj['purpose'] == None:
-		return {'status':'failure','reason':'Purpose of dataset not stated'}
-	if dataObj['purpose'] == 'Mining':
-		obj = db.testMineForTrain(dataObj['name'],dataObj['type'])
-		if obj['status'] == 'failure':
-			return {'status':'failure','reason':'No training data found'}
-	return True
-	#dataset = db.getTreai
-'''
+
 def convertFloats(dataset):
 	fixedData=[]
 	for e in dataset:
@@ -132,7 +122,7 @@ def getFilteredDatasetPreviews(name, technique, purpose):
 	return dumps(resp)
 
 
-def mine(name,technique,method,normalization,standardization):
+def mine(name,technique,method,normalization,standardization,specializedParam):
 	#fetching from database
 	print name,',',technique
 	mineObj = db.getAdataset(name,'Mining')
@@ -174,7 +164,9 @@ def mine(name,technique,method,normalization,standardization):
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="clustering":
-		resp = clstr.handleRequest(data)
+		resp = clstr.handleRequest(trainObj['data'],mineObj['data'],method,specializedParam)
+		resp['aggregate']=countCategories(resp['clusters'])
+		print resp
 
 	if technique == "regression":
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
@@ -216,3 +208,13 @@ def normalizeRow(row):
 		v.append( (maximum - e) / div )
 	#print v
 	return v
+
+def countCategories(v):
+	aggregates={}
+	for d in v:
+		if d in aggregates:
+			aggregates[d]+=1
+		else:
+			aggregates[d]=1
+
+	return aggregates
