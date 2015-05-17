@@ -122,7 +122,7 @@ def getFilteredDatasetPreviews(name, technique, purpose):
 	return dumps(resp)
 
 
-def mine(name,technique,method,normalization,standardization):
+def mine(name,technique,method,normalization,standardization,specializedParam):
 	#fetching from database
 	print name,',',technique
 	mineObj = db.getAdataset(name,'Mining')
@@ -164,7 +164,7 @@ def mine(name,technique,method,normalization,standardization):
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="clustering":
-		resp = clstr.handleRequest(data)
+		resp = clstr.handleRequest(tDataX,mineData,method,specializedParam)
 
 	if technique == "regression":
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
