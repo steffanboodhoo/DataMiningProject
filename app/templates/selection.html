@@ -6,14 +6,16 @@
 {% endblock %}
 
 {% block content %}
-<div  class="grid-container">
-	<div class="grid-25">
-		<div class="text-center">
-			<button id="submit" class="green"><i class="fa fa-magic"></i>&nbsp; Confirm Selection</button>
+<section>
+	<div  class="grid-container">
+		<div id='content' class="grid-50 push-30 form-group dataset-chooser">
+		
 		</div>
-	</div>
-	<div id='content' class="grid-50 form-group dataset-chooser">
-	
-	</div>
-</div>
+		<div class="grid-100">
+			<div class="text-center">
+				<button id="submit" class="green"><i class="fa fa-magic"></i>&nbsp; Confirm Selection</button>
+			</div>
+		</div>
+	</div>	
+</section>
 {% endblock %}

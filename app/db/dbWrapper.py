@@ -18,7 +18,7 @@ def prepareData(dataObj):
 	dataset = convertFloats(dataset)
 	dataObj['data']=dataset
 
-	if(dataObj['purpose']=="Training"):
+	if(dataObj['purpose']=="Training" & (dataObj['type'] == 'classification' | dataObj['type'] == 'regression')):
 		target = dataObj['target']
 		'''	
 		fixedTarget = []
@@ -32,6 +32,10 @@ def prepareData(dataObj):
 			target = convertFloats(target)
 		dataObj['target'] = target
 
+	else if (dataObj['purpose'] == 'Training' & dataObj['type'] == 'clustering'):
+		target = dataObj['target']
+		target = convertFloats(target)
+		dataObj['target'] = target
 
 	print dataObj
 	return dataObj
