@@ -27,7 +27,7 @@ def prepareData(dataObj):
 		for e in target:
 			fixedTarget.append(float(e))
 
-		print fixedTarget,' !!!!!!!!!!!!!!\n'
+		#print fixedTarget,' !!!!!!!!!!!!!!\n'
 		dataObj['target'] = fixedTarget
 		
 		if not isinstance(target[0], basestring):
@@ -164,7 +164,9 @@ def mine(name,technique,method,normalization,standardization,specializedParam):
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="clustering":
-		resp = clstr.handleRequest(tDataX,mineData,method,specializedParam)
+		resp = clstr.handleRequest(trainObj['data'],mineObj['data'],method,specializedParam)
+		countCategories(resp['clusters'])
+		print resp
 
 	if technique == "regression":
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
@@ -206,3 +208,13 @@ def normalizeRow(row):
 		v.append( (maximum - e) / div )
 	#print v
 	return v
+
+def countCategories(v):
+	aggregates={}
+	for d in v:
+		if d in aggregates:
+			aggregates[d]+=1
+		else:
+			aggregates[d]=1
+
+	print aggregates

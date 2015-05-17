@@ -115,8 +115,7 @@
 
             mine(name,technique,method,normalization,standardization,function(data){
                 //createAnalysisView()
-                console.log('before call')
-                var t=technique.regr
+                console.log(data)
                 callback(data,null,'CLUSTERING')
             })
         }
@@ -144,6 +143,7 @@
         var container = $("<div/>", {id: divId,class:'container-fluid analysis-Container'})//create container for this analysis
         $('#mid_pane').append(container)//append it to the page
         console.log('in call before IF')
+        console.log(data)
         if(type===technique.regr){
             console.log('i am here');
             var testData=[{'name':'actual_test','data':data['testY']},{'name':'predicted_test','data':data['testPredY']}]
