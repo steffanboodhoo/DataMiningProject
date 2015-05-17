@@ -168,6 +168,8 @@ def mine(name,technique,method,normalization,standardization):
 		resp = regr.handleRequest(tdataX,tdataY,mineData,method)
 	elif technique=="classification":
 		resp = classify.handleRequest(tdataX,tdataY,mineData,method)
+	elif technique=="clustering":
+		resp = clustr.handleRequest(data)
 
 	if technique == "regression":
 		errors = evl.allErrors(resp['testY'],resp['testPredY'])
