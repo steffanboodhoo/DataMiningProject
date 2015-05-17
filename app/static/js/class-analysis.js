@@ -140,30 +140,47 @@
 
 
     function createAnalysisView(data, labels, type) {
-        console.log(data)
+        var obj = $.parseJSON(data);
+        console.log(obj['Mining Results']);
+        // $.each(obj['Mining Results'], function(topIndex, row) {
+        //     $.each(row, function(index, value) {
+        //         console.log(value);
+        // });
+        // });
         var divId = 'container' + containerCount //create Unique container ID
         var container = $("<div/>", {
                 id: divId,
                 class: 'container-fluid analysis-Container'
             }) //create container for this analysis
         $('#mid_pane').append(container) //append it to the page
+        createChartA(data,container);
+        
 
-        // if (type === technique.regr) {
-        //     //showing test data for regression
-        //     attachChartWithButtons(data, labels, charts.chartB, divId)
-        //     attachMetrics(null, divId)
-        //         //showing actual prediction for regression
-        //     attachChartWithButtons(data, labels, charts.chartA, divId)
-        // } else if (type === technique.clfy) {
-        //     // attach what you want etc using attachChart
-        // }
-        //moves screen to container
         $('html, body').animate({
             'scrollTop': container.offset().top
         }, 'slow', 'swing');
         //$('html, body').animate({'scrollTop': container.offset().top}, 1000);
         containerCount++;
     }
+
+    function populateTable(data){
+        var table = $("<table>", {
+                    id: "mainTbl",
+                    class:'table table-striped'
+        })
+        var tbId = "dataBody",
+            tId = "mainTbl",
+            $tBody = $("#" + tbId),
+            $tbl = $("#" + tId);
+
+        data.forEach(function(el){
+            var rec = transformRec(el);
+            $tBody.append(generateRowHTML(rec));
+        });
+
+        $tbl.dataTable();
+    }
+
 
     function attachChartWithButtons(data, labels, chartType, divId) {
         console.log('attach Chart' + chartType)
@@ -230,41 +247,9 @@
             })).appendTo(btn_group)
         }
         btn_group.appendTo(btns_col)
-            //<div class="btn-group-vertical" role="group" aria-label="...">
-            //</div>
-            //btnClose.appendTo(btns_col);
         btns_col.appendTo(row);
     }
 
-    function attachMetrics(data, divId) {
-        var row = $("<div/>", {
-            class: 'row content-Container'
-        }).appendTo($('#' + divId))
-        var col1 = $("<div/>", {
-            class: 'col-md-4'
-        })
-        var C1_content = $("<div/>", {
-            class: 'container-fluid analysis-text-Container'
-        }).append('<p>Mean Squared Error</p>')
-        C1_content.appendTo(col1)
-        var col2 = $("<div/>", {
-            class: 'col-md-4'
-        })
-        var C2_content = $("<div/>", {
-            class: 'container-fluid analysis-text-Container'
-        }).append('<p>Mean Squared Error</p>')
-        C2_content.appendTo(col2)
-        var col3 = $("<div/>", {
-            class: 'col-md-4'
-        })
-        var C3_content = $("<div/>", {
-            class: 'container-fluid analysis-text-Container'
-        }).append('<p>Mean Squared Error</p>')
-        C3_content.appendTo(col3)
-        row.append(col1)
-        row.append(col2)
-        row.append(col3)
-    }
 
     function setupMenu() {
         $(".toggle-btn").click(function() {
@@ -272,12 +257,7 @@
         });
     }
 
-    function openAnalysisMenu(divId) {
-
-    }
-
-
-    function createChartA(data, categories, chartContainer) {
+    function createChartA(data, chartContainer) {
         $(function() {
             $(chartContainer).highcharts({
                 title: {
@@ -289,7 +269,8 @@
                     x: -20
                 },
                 xAxis: {
-                    categories: categories
+                     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                 },
                 yAxis: {
                     title: {
