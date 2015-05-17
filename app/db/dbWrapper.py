@@ -15,10 +15,12 @@ def prepareData(dataObj):
 
 	#convert the strings into floats
 	dataset = dataObj['data']
+	print dataObj
+
 	dataset = convertFloats(dataset)
 	dataObj['data']=dataset
-
-	if(dataObj['purpose']=="Training" and (dataObj['type'] == "classification" or dataObj['type'] == "regression")):
+	print dataObj
+	if(dataObj['purpose']=="Training" and (dataObj['type'] != "clustering")):
 		target = dataObj['target']
 		
 		fixedTarget = []
@@ -32,28 +34,16 @@ def prepareData(dataObj):
 			target = convertFloats(target)
 		dataObj['target'] = target
 
+	'''
+	clustering training or mining has no target
 	elif (dataObj['purpose'] == "Training" and dataObj['type'] == "clustering"):
 		target = dataObj['target']
 		target = convertFloats(target)
 		dataObj['target'] = target
-
+	'''
 	print dataObj
 	return dataObj
-'''
-def testData(dataObj):
-	if dataObj['name'] == None:
-		return {'status':'failure','reason':'No name given to dataset'}
-	if dataObj['type'] == None:
-		return {'status':'failure','reason':'No technique given to dataset'}
-	if dataObj['purpose'] == None:
-		return {'status':'failure','reason':'Purpose of dataset not stated'}
-	if dataObj['purpose'] == 'Mining':
-		obj = db.testMineForTrain(dataObj['name'],dataObj['type'])
-		if obj['status'] == 'failure':
-			return {'status':'failure','reason':'No training data found'}
-	return True
-	#dataset = db.getTreai
-'''
+
 def convertFloats(dataset):
 	fixedData=[]
 	for e in dataset:
