@@ -3,6 +3,8 @@ from pymongo import MongoClient
 URI = "mongodb://adminuser:adminuser@ds061611.mongolab.com:61611/datamining"
 client = MongoClient(URI)
 db = client.get_default_database()
+# client = MongoClient('localhost', 27017)
+# db = client.dataset_database
 
 def createDataset(dataObj):
 	if dataObj['purpose'] == 'Training':
