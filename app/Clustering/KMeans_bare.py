@@ -12,3 +12,7 @@ class clstrCl:
 	def group(self,attributes):
 		Z = self.cluster.predict(attribues)
 		return Z
+
+	def centroids(self):
+		info = self.cluster.cluster_centers_
+		return info

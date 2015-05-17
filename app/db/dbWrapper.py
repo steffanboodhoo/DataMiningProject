@@ -6,6 +6,7 @@ from bson.json_util import dumps
 import app.Regression.RegressionEval as evl
 import app.Regression.RegressionWrapper as regr
 import app.Classification.ClassificationWrapper as classify
+import app.Clustering.clusterWrapper as clstr
 import numpy as np
 
 def prepareData(dataObj):
