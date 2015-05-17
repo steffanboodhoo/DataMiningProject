@@ -32,7 +32,7 @@ def prepareData(dataObj):
 			target = convertFloats(target)
 		dataObj['target'] = target
 
-	else if (dataObj['purpose'] == 'Training' & dataObj['type'] == 'clustering'):
+	elif (dataObj['purpose'] == 'Training' & dataObj['type'] == 'clustering'):
 		target = dataObj['target']
 		target = convertFloats(target)
 		dataObj['target'] = target
