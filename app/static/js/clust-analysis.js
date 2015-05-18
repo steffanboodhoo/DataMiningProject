@@ -7,11 +7,12 @@
     console.log(window.location);
 
     var chartData=[];//
+    var tableCount=0;
     var containerCount = 0
     var chartCount = 0
-    var chartAmount = 1
+    var chartAmount = 2
     var technique = {'regr':'REGRESSION','clfy':'CLASSIFICATION','clstr':'CLUSTERING'}
-    var charts = {'chartA':'CHARTA','chartB':'CHARTB','chartC':'CHARTC','chartD':'CHARTD','chartE':'CHARTE'}
+    var charts = {'chart0':'CHART0','chartA':'CHARTA','chartB':'CHARTB','chartC':'CHARTC','chartD':'CHARTD','chartE':'CHARTE'}
     $(document).ready(function(){
         console.log("im loaded")
         setupTheme();
@@ -39,11 +40,26 @@
         })
     }
     function deepCopy(data){
-        var dataCopy = []
-        data.forEach(function(oldObject){
-            var newObject = jQuery.extend(true, {}, oldObject);
-            dataCopy.push(newObject)
-        })
+        var dataCopy;
+        if(data instanceof Array){
+            dataCopy = []
+            data.forEach(function(oldObject){
+                var newObject = jQuery.extend(true, {}, oldObject);
+                dataCopy.push(newObject)
+            })
+        }else{
+            dataCopy = {}
+            for(var key in data){    
+                var variable = data[key]
+                var newProp;
+                if(variable instanceof Array)
+                    newProp = variable.slice();
+                else
+                    newProp = jQuery.extend(true, {}, variable)
+                dataCopy[key]=newProp;
+            }
+            console.log(dataCopy)
+        }
         return dataCopy
     }
     function setupChangeBtn(nextBtnId,chartId,chartCount){
@@ -53,14 +69,15 @@
             val = (val)%chartAmount
             $('#'+nextBtnId).val(val)
             console.log(chartData[chartCount])
+            console.log('-----')
             var dataCopy = deepCopy(chartData[chartCount])
-            var categories = range(1,dataCopy[0].data.length)
+            //var categories = range(1,dataCopy[0].data.length)
             console.log(dataCopy)
             if(val===0)
-                createChartA(dataCopy,categories,chartId)
-           /* }else if(val===1){
-                createChartB(dataCopy,categories,chartId)
-            }else if(val===2){
+                createChartA(dataCopy,null,chartId)
+            else if(val===1)
+                createChartB(dataCopy,null,chartId)
+           /* }else if(val===2){
                 createChartC(dataCopy,categories,chartId)
             }else if(val===3){
                 createChartD(dataCopy,categories,chartId)
@@ -159,12 +176,18 @@
         }else if(type === technique.clfy){
             // attach what you want etc using attachChart
         }else if(type ==technique.clstr){
-            var aggregates = data['aggregate'];
-            var fixedAggregates=[];
-            for(var key in aggregates)
-              fixedAggregates.push(['cluster'+key,aggregates[key]])
-            console.log(fixedAggregates)
-            attachChartWithButtons(fixedAggregates,null,charts.chartA,divId)
+            var  labels = data['labels'];
+            if(labels===undefined || labels===null){
+                labels = [];
+                var mineData = data['mine']
+                l = mineData[0].length
+                for(i = 0; i<l; i++)
+                    labels.push('attribute-'+i);
+            }
+            //chart 0 is special
+            attachChartWithButtons(data,labels,charts.chart0,divId)
+            //console.log(fixedAggregates)
+            attachChartWithButtons(data,labels,charts.chartB,divId)
         }
         //moves screen to container
          $('html, body').animate({'scrollTop': container.offset().top}, 'slow', 'swing');
@@ -185,27 +208,25 @@
         row.appendTo($('#'+divId))
         if(chartCount%2==0)
             setupCloseBtn("btn_close_"+chartCount,divId)
-        setupChangeBtn("btn_next_"+chartCount,'#'+chartId,chartCount)
+        if(chartType!=charts.chart0)
+            setupChangeBtn("btn_next_"+chartCount,'#'+chartId,chartCount)
 
         if(chartType===charts.chartA)
             createChartA(data,labels,'#'+chartId)
         else if(chartType===charts.chartB)
             createChartB(data, labels, '#'+chartId)
-        else if(chartType===charts.chartC)
-            createChartC(data, labels, '#'+chartId)
-        else if(chartType===charts.chartD)
-            createChartD(data, labels, '#'+chartId)
-        else if(chartType===charts.chartE)
-            createChartE(data, labels, '#'+chartId)
+        else if(chartType===charts.chart0)
+            createChart0(data, labels, '#'+chartId)
         chartCount++
     }
+
 
     function attachChartButtons(divId,row,chartCount){
         var btns_col  = $("<div/>",{class:'col-md-1'})//creates a column span 1/12 for buttons
         var btn_group = $("<div/>",{class:'btn-group-vertial'})
         if(chartCount%2==0){
             $("<button>",{id:"btn_close_"+chartCount,class:'btn btn-default btn-lg '}).append($('<span>',{class:'glyphicon glyphicon-remove-circle'})).appendTo(btn_group)
-            $("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:1}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
+            //$("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:1}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
         }else{
             $("<button>",{id:'btn_next_'+chartCount,class:'btn btn-default btn-lg',value:0}).append($('<span>',{class:'glyphicon glyphicon-circle-arrow-right'})).appendTo(btn_group)
         }
@@ -326,14 +347,14 @@
             });
         });
     }*/
-    function createChart0(data, categories, chartContainer) {
+    function createChart0(data, categories, chartContainer){
         console.log("Creating table")
         console.log(chartContainer)
         var tableId = 'table'+tableCount
         var table = $("<table/>", {id: tableId, class:'table table-striped'})
         //HEAD
         var thead = $("<thead/>")
-        var labels = data['labels']
+        var labels = categories
         var tr = $("<tr/>")
         labels.forEach(function(el){
             $("<th/>").append(el).appendTo(tr)
@@ -344,8 +365,9 @@
 
         //BODY
         var tbody = $("<tbody/>")
-        var records = data['mineAttrs']
-        var predicted = data['Classes']
+        var records = data['mine']
+        var predicted = data['clusters']
+        console.log(records)
         records.forEach(function(rec,index){
             var tr = $("<tr/>")
             rec.forEach(function(el){
@@ -357,49 +379,152 @@
         tbody.appendTo(table)
         table.appendTo($(chartContainer))
         $(chartContainer).attr({backgroundColor:'#fff'})
-    }
-    function createChartA(data,categories,chartContainer){
-      console.log(data)
-      console.log(chartContainer)
-      $(function () {
-        // Radialize the colors
-        
-
-        // Build the chart
-        $(chartContainer).highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false
-            },
-            title: {
-                text: 'Browser market shares at a specific website, 2014'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                        style: {
-                            color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                        },
-                        connectorColor: 'silver'
-                    }
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Browser share',
-                data: data
-            }]
+        $('#'+tableId).DataTable()
+        tableCount++;
+        var bttn = $("<button/>", {
+            class: 'btn btn-warning btn-sm dropdown-toggle',
+            'data-toggle': 'dropdown'
+        }).append($('<i/>', {
+            class: 'fa fa-bars',
+            text: 'Export Table Data'
+        }))
+        var opts = $("<ul/>", {
+            class: 'dropdown-menu',
+            role: 'menu'
         });
-    });
-  }
+        var li1 = $("<li/>");
+
+        var opt1 = $('<a>', {
+            text: 'JSON',
+            href: '#',
+            onClick: "$('#" + tableId + "').tableExport({type:'json',escape:'false'});"
+        }).appendTo(li1);
+
+        var opt2 = $('<a>', {
+            text: 'PDF',
+            href: '#',
+            onClick: "$('#" + tableId + "').tableExport({type:'pdf',escape:'false'});"
+        }).appendTo(li1);
+
+        var opt3 = $('<a>', {
+            text: 'CSV',
+            href: '#',
+            onClick: "$('#" + tableId + "').tableExport({type:'csv',escape:'false'});"
+        }).appendTo(li1);
+
+        li1.appendTo(opts);
+        $(chartContainer).append(bttn);
+        $(chartContainer).append(opts);        
+    }
+
+    function createChartA(dataObj,categories,chartContainer){
+        var aggregates = dataObj['aggregate'];
+        var data=[];
+        for(var key in aggregates)
+            data.push(['cluster'+key,aggregates[key]])
+
+        console.log(data)
+        console.log(chartContainer)
+        $(function () {
+            // Radialize the colors
+        
+            // Build the chart
+            $(chartContainer).highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
+                title: {
+                    text: 'Browser market shares at a specific website, 2014'
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Browser share',
+                    data: data
+                }]
+            });
+        });
+    } 
+    //Data accepts an array of objects in our case an array of one object
+    //the fields of this object would be name data 
+    function createChartB(respObj, categories, chartContainer){
+        var obj={};
+        obj['data']=[]
+        categories = []
+        for(var key in respObj['aggregate']){
+            categories.push('cluster'+key)
+            obj['data'].push(respObj['aggregate'][key])
+        }
+        if(respObj['labels']!=undefined)
+            categories=data['labels']
+        console.log(categories)
+        obj['name']='clusters';
+        obj['pointPlacement']='on';
+        var data =[obj]
+        console.log(data)
+        
+        $(function () {
+            $(chartContainer).highcharts({
+
+                chart: {
+                    polar: true,
+                    type: 'line'
+                },
+
+                title: {
+                    text: 'Classified Data',
+                    x: -80
+                },
+
+                pane: {
+                    size: '80%'
+                },
+
+                xAxis: {
+                    categories: categories,
+                    tickmarkPlacement: 'on',
+                    lineWidth: 0
+                },
+
+                yAxis: {
+                    gridLineInterpolation: 'polygon',
+                    lineWidth: 0,
+                    min: 0
+                },
+
+                tooltip: {
+                    shared: true,
+                    pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+                },
+
+                legend: {
+                    align: 'right',
+                    verticalAlign: 'top',
+                    y: 70,
+                    layout: 'vertical'
+                },
+                series: data
+            });
+        });
+    }
    
 
     var testData=[{
