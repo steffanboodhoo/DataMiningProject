@@ -94,7 +94,24 @@
             type: "radio",
             name: "methodOptions",
             value: "knn"
-        })).append("KNN Classification").appendTo($("#method_options_group"))
+        })).append("KNN Classification").appendTo($("#method_options_group")),
+
+        $("<label>", {
+            class: "btn btn-default btn-block"
+        }).append($("<input>", {
+            type: "radio",
+            name: "methodOptions",
+            value: "svm"
+        })).append("SVM Classification").appendTo($("#method_options_group")),
+
+        $("<label>", {
+            class: "btn btn-default btn-block"
+        }).append($("<input>", {
+            type: "radio",
+            name: "methodOptions",
+            value: "nb"
+        })).append("Naive Bayes Classifier").appendTo($("#method_options_group"))
+
     }
 
     function createPreparationAndDoneTab() {
@@ -368,13 +385,16 @@
     function createChart0(data, categories, chartContainer) {
         console.log("Creating table")
         console.log(chartContainer)
-        var tableId = 'table'+tableCount
-        var table = $("<table/>", {id: tableId, class:'table table-striped'})
-        //HEAD
+        var tableId = 'table' + tableCount
+        var table = $("<table/>", {
+                id: tableId,
+                class: 'table table-striped'
+            })
+            //HEAD
         var thead = $("<thead/>")
         var labels = data['labels']
         var tr = $("<tr/>")
-        labels.forEach(function(el){
+        labels.forEach(function(el) {
             $("<th/>").append(el).appendTo(tr)
         })
         $("<th/>").append("predicted").appendTo(tr)
@@ -385,9 +405,9 @@
         var tbody = $("<tbody/>")
         var records = data['mineAttrs']
         var predicted = data['Classes']
-        records.forEach(function(rec,index){
+        records.forEach(function(rec, index) {
             var tr = $("<tr/>")
-            rec.forEach(function(el){
+            rec.forEach(function(el) {
                 $("<td/>").append(el).appendTo(tr)
             })
             $("<td/>").append(predicted[index]).appendTo(tr)
@@ -395,34 +415,45 @@
         })
         tbody.appendTo(table)
         table.appendTo($(chartContainer))
-        $(chartContainer).attr({backgroundColor:'#fff'})
-        //$('#'+tableId).DataTable()
+        $(chartContainer).attr({
+                backgroundColor: '#fff'
+            })
+            //$('#'+tableId).DataTable()
         tableCount++;
-        var bttn = $("<button/>",{class: 'btn btn-warning btn-sm dropdown-toggle', 'data-toggle':'dropdown'}).append($('<i/>',{class:'fa fa-bars', text:'Export Table Data'}))
-        var opts = $("<ul/>",{class:'dropdown-menu', role:'menu'});
+        var bttn = $("<button/>", {
+            class: 'btn btn-warning btn-sm dropdown-toggle',
+            'data-toggle': 'dropdown'
+        }).append($('<i/>', {
+            class: 'fa fa-bars',
+            text: 'Export Table Data'
+        }))
+        var opts = $("<ul/>", {
+            class: 'dropdown-menu',
+            role: 'menu'
+        });
         var li1 = $("<li/>");
 
-        var opt1 = $('<a>',{
+        var opt1 = $('<a>', {
             text: 'JSON',
             href: '#',
-            onClick: "$('#"+tableId+"').tableExport({type:'json',escape:'false'});"
+            onClick: "$('#" + tableId + "').tableExport({type:'json',escape:'false'});"
         }).appendTo(li1);
 
-        var opt2 = $('<a>',{
+        var opt2 = $('<a>', {
             text: 'PDF',
             href: '#',
-            onClick: "$('#"+tableId+"').tableExport({type:'pdf',escape:'false'});"
+            onClick: "$('#" + tableId + "').tableExport({type:'pdf',escape:'false'});"
         }).appendTo(li1);
 
-        var opt3 = $('<a>',{
+        var opt3 = $('<a>', {
             text: 'CSV',
             href: '#',
-            onClick: "$('#"+tableId+"').tableExport({type:'csv',escape:'false'});"
+            onClick: "$('#" + tableId + "').tableExport({type:'csv',escape:'false'});"
         }).appendTo(li1);
 
         li1.appendTo(opts);
         $(chartContainer).append(bttn);
-        $(chartContainer).append(opts);        
+        $(chartContainer).append(opts);
     }
 
     function createChartA(data, categories, chartContainer) {
