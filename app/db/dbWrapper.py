@@ -128,12 +128,11 @@ def mine(name,technique,method,normalization,standardization,specializedParam):
 	mineObj = db.getAdataset(name,'Mining')
 	trainObj = db.getAdataset(name,'Training')
 	
+	if(technique!='clustering'):
+		tdataY = np.array(trainObj['target'])
+
+	tdataX = np.array(trainObj['data'])
 	mineData = np.array(mineObj['data'])
-	#mineData = mineObj['data']
-	trainDataX = np.array(trainObj['data'])
-	#trainDataX = trainObj['data']
-	trainDataY = np.array(trainObj['target'])
-	#trainDataY = trainObj['target']
 
 	#Set missing values in datasets
 	# imp = preprocessing.Imputer(missing_values='NaN', strategy='mean', axis=0)
@@ -141,11 +140,10 @@ def mine(name,technique,method,normalization,standardization,specializedParam):
 	# mineData = imp.fit_transform(mineData)
 
 	#seperating sets to fit model
-	n = len(trainDataX)
+	#n = len(trainDataX)
 	
-	tdataY = trainDataY
-	tdataX = trainDataX
-	#training data:x,y; mining data mineData (a set of x attributes i.e. independent)
+	 
+	 #training data:x,y; mining data mineData (a set of x attributes i.e. independent)
 	'''
 	#applying preprocessing methods Normailization / Standardization
 	if normalization == "yes":
