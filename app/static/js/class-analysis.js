@@ -397,7 +397,7 @@
         labels.forEach(function(el) {
             $("<th/>").append(el).appendTo(tr)
         })
-        $("<th/>").append("predicted").appendTo(tr)
+        $("<th/>").append("Predicted").appendTo(tr)
         tr.appendTo(thead)
         thead.appendTo(table)
 
