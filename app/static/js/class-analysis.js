@@ -190,7 +190,7 @@
             console.log(labels)
 
             // attach what you want etc using attachChart
-            createChart0(data,labels,'mid_pane')
+            //createChart0(data,labels,'mid_pane')
             attachChartWithButtons(data, labels, charts.chart0, divId)
         }
         //moves screen to container
@@ -233,6 +233,8 @@
             createChartD(data, labels, '#' + chartId)
         else if (chartType === charts.chartE)
             createChartE(data, labels, '#' + chartId)
+        else if (chartType === charts.chart0)
+            createChart0(data, labels, '#' + chartId)
         chartCount++
     }
 
@@ -367,35 +369,33 @@
         console.log("Creating table")
         console.log(chartContainer)
         var tableId = 'table'+tableCount
-        var row = $("<div/>",{class:'row'})//creates a row for the table
-        var col = $("<div/>",{class:'col-md-11'})//creates a column span 11/12 for chart
-
         var table = $("<table/>", {id: tableId, class:'table table-striped'})
         //HEAD
         var thead = $("<thead/>")
         var labels = data['labels']
         var tr = $("<tr/>")
         labels.forEach(function(el){
-            $("<td/>").append(el).appendTo(tr)
+            $("<th/>").append(el).appendTo(tr)
         })
+        $("<th/>").append("predicted").appendTo(tr)
         tr.appendTo(thead)
         thead.appendTo(table)
 
         //BODY
         var tbody = $("<tbody/>")
         var records = data['mineAttrs']
-        records.forEach(function(rec){
+        var predicted = data['Classes']
+        records.forEach(function(rec,index){
             var tr = $("<tr/>")
             rec.forEach(function(el){
                 $("<td/>").append(el).appendTo(tr)
             })
+            $("<td/>").append(predicted[index]).appendTo(tr)
             tr.appendTo(tbody)
         })
         tbody.appendTo(table)
-
-        table.appendTo(row)
-        col.appendTo(row)
-        row.appendTo($('#'+chartContainer))
+        table.appendTo($(chartContainer))
+        $(chartContainer).attr({backgroundColor:'#fff'})
     }
 
     function createChartA(data, categories, chartContainer) {

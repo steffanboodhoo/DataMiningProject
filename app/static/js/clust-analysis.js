@@ -326,7 +326,38 @@
             });
         });
     }*/
+    function createChart0(data, categories, chartContainer) {
+        console.log("Creating table")
+        console.log(chartContainer)
+        var tableId = 'table'+tableCount
+        var table = $("<table/>", {id: tableId, class:'table table-striped'})
+        //HEAD
+        var thead = $("<thead/>")
+        var labels = data['labels']
+        var tr = $("<tr/>")
+        labels.forEach(function(el){
+            $("<th/>").append(el).appendTo(tr)
+        })
+        $("<th/>").append("predicted").appendTo(tr)
+        tr.appendTo(thead)
+        thead.appendTo(table)
 
+        //BODY
+        var tbody = $("<tbody/>")
+        var records = data['mineAttrs']
+        var predicted = data['Classes']
+        records.forEach(function(rec,index){
+            var tr = $("<tr/>")
+            rec.forEach(function(el){
+                $("<td/>").append(el).appendTo(tr)
+            })
+            $("<td/>").append(predicted[index]).appendTo(tr)
+            tr.appendTo(tbody)
+        })
+        tbody.appendTo(table)
+        table.appendTo($(chartContainer))
+        $(chartContainer).attr({backgroundColor:'#fff'})
+    }
     function createChartA(data,categories,chartContainer){
       console.log(data)
       console.log(chartContainer)
