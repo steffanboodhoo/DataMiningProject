@@ -480,7 +480,7 @@
                     plotShadow: false
                 },
                 title: {
-                    text: 'Browser market shares at a specific website, 2014'
+                    text: 'Aggregate distribution of Classification Results'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -501,7 +501,7 @@
                 },
                 series: [{
                     type: 'pie',
-                    name: 'Browser share',
+                    name: 'Aggregate',
                     data: data
                 }]
             });
@@ -533,7 +533,7 @@
                 },
 
                 title: {
-                    text: 'Classified Data',
+                    text: 'Aggregate Data',
                     x: -80
                 },
 
