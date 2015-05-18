@@ -396,6 +396,20 @@
         tbody.appendTo(table)
         table.appendTo($(chartContainer))
         $(chartContainer).attr({backgroundColor:'#fff'})
+        //$('#'+tableId).DataTable()
+        tableCount++;
+        var bttn = $("<button/>",{class: 'btn btn-warning btn-sm dropdown-toggle', 'data-toggle':'dropdown'}).append($('<i/>',{class:'fa fa-bars', text:'Export Table Data'}))
+        var opts = $("<ul/>",{class:'dropdown-menu', role:'menu'});
+        var li1 = $("<li/>");
+        var opt1 = $('<a>',{
+            text: 'JSON',
+            href: '#',
+            onClick: "console.log($('#"+tableId+"'));$('#"+tableId+"').tableExport({type:'json',escape:'false'});"
+        }).appendTo(li1);
+
+        li1.appendTo(opts);
+        $(chartContainer).append(bttn);
+        $(chartContainer).append(opts);        
     }
 
     function createChartA(data, categories, chartContainer) {
