@@ -21,7 +21,7 @@
     function setupButtons(){
         $('#doneCreatingBtn').click(function(){
             var dataCopy = testData
-            mineData("weight","regression",createAnalysisView)
+            mineData(dataset_name,dataset_method,createAnalysisView)
                 //fetch data and pass them into this function
                 //createAnalysisView(dataCopy,testSeries,technique.regr)
         })

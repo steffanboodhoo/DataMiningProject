@@ -23,7 +23,7 @@
     function setupButtons(){
         $('#doneCreatingBtn').click(function(){
             var dataCopy = testData
-            mineData("weight","clustering",createAnalysisView)
+            mineData(dataset_name,dataset_method,createAnalysisView)
                 //fetch data and pass them into this function
                 //createAnalysisView(dataCopy,testSeries,technique.regr)
         })
@@ -359,7 +359,7 @@
         labels.forEach(function(el){
             $("<th/>").append(el).appendTo(tr)
         })
-        $("<th/>").append("predicted").appendTo(tr)
+        $("<th/>").append("Predicted").appendTo(tr)
         tr.appendTo(thead)
         thead.appendTo(table)
 
