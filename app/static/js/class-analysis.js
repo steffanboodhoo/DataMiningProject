@@ -9,7 +9,8 @@
     var chartData = [],
         containerCount = 0,
         chartCount = 0,
-        tableCount = 0;
+        tableCount = 0,
+        chartAmount = 2;
 
     var technique = {
         'regr': 'REGRESSION',
@@ -54,12 +55,27 @@
         })
     }
 
-    function deepCopy(data) {
-        var dataCopy = []
-        data.forEach(function(oldObject) {
-            var newObject = jQuery.extend(true, {}, oldObject);
-            dataCopy.push(newObject)
-        })
+    function deepCopy(data){
+        var dataCopy;
+        if(data instanceof Array){
+            dataCopy = []
+            data.forEach(function(oldObject){
+                var newObject = jQuery.extend(true, {}, oldObject);
+                dataCopy.push(newObject)
+            })
+        }else{
+            dataCopy = {}
+            for(var key in data){    
+                var variable = data[key]
+                var newProp;
+                if(variable instanceof Array)
+                    newProp = variable.slice();
+                else
+                    newProp = jQuery.extend(true, {}, variable)
+                dataCopy[key]=newProp;
+            }
+            console.log(dataCopy)
+        }
         return dataCopy
     }
 
@@ -67,22 +83,16 @@
         $('#' + nextBtnId).click(function() {
             $(chartId).empty()
             var val = parseInt($('#' + nextBtnId).val()) + 1
-            val = (val) % 5
+            val = (val) % chartAmount
             $('#' + nextBtnId).val(val)
             console.log(chartData[chartCount])
             var dataCopy = deepCopy(chartData[chartCount])
-            var categories = range(1, dataCopy[0].data.length)
+            //var categories = range(1, dataCopy[0].data.length)
             console.log(dataCopy)
             if (val === 0) {
-                createChartA(dataCopy, categories, chartId)
+                createChartA(dataCopy,null, chartId)
             } else if (val === 1) {
-                createChartB(dataCopy, categories, chartId)
-            } else if (val === 2) {
-                createChartC(dataCopy, categories, chartId)
-            } else if (val === 3) {
-                createChartD(dataCopy, categories, chartId)
-            } else if (val === 4) {
-                createChartE(dataCopy, categories, chartId)
+                createChartB(dataCopy, null, chartId)
             }
         })
     }
@@ -205,10 +215,10 @@
         } else if (type === technique.clfy) {
             labels = data['labels']
             console.log(labels)
-
             // attach what you want etc using attachChart
             //createChart0(data,labels,'mid_pane')
             attachChartWithButtons(data, labels, charts.chart0, divId)
+            attachChartWithButtons(data, labels, charts.chartA, divId)
         }
         //moves screen to container
         $('html, body').animate({
@@ -238,18 +248,19 @@
         row.appendTo($('#' + divId))
         if (chartCount % 2 == 0)
             setupCloseBtn("btn_close_" + chartCount, divId)
-        setupChangeBtn("btn_next_" + chartCount, '#' + chartId, chartCount)
+        if(chartType!=charts.chart0)
+            setupChangeBtn("btn_next_" + chartCount, '#' + chartId, chartCount)
 
         if (chartType === charts.chartA)
             createChartA(data, labels, '#' + chartId)
         else if (chartType === charts.chartB)
             createChartB(data, labels, '#' + chartId)
-        else if (chartType === charts.chartC)
+        /*else if (chartType === charts.chartC)
             createChartC(data, labels, '#' + chartId)
         else if (chartType === charts.chartD)
             createChartD(data, labels, '#' + chartId)
         else if (chartType === charts.chartE)
-            createChartE(data, labels, '#' + chartId)
+            createChartE(data, labels, '#' + chartId)*/
         else if (chartType === charts.chart0)
             createChart0(data, labels, '#' + chartId)
         chartCount++
@@ -269,13 +280,7 @@
             }).append($('<span>', {
                 class: 'glyphicon glyphicon-remove-circle'
             })).appendTo(btn_group)
-            $("<button>", {
-                id: 'btn_next_' + chartCount,
-                class: 'btn btn-default btn-lg',
-                value: 1
-            }).append($('<span>', {
-                class: 'glyphicon glyphicon-circle-arrow-right'
-            })).appendTo(btn_group)
+           
         } else {
             $("<button>", {
                 id: 'btn_next_' + chartCount,
@@ -418,7 +423,7 @@
         $(chartContainer).attr({
                 backgroundColor: '#fff'
             })
-            //$('#'+tableId).DataTable()
+            $('#'+tableId).DataTable()
         tableCount++;
         var bttn = $("<button/>", {
             class: 'btn btn-warning btn-sm dropdown-toggle',
@@ -456,48 +461,113 @@
         $(chartContainer).append(opts);
     }
 
-    function createChartA(data, categories, chartContainer) {
-        $(function() {
+    function createChartA(dataObj, categories, chartContainer) {
+        var aggregates = dataObj['aggregate'];
+        var data=[];
+        for(var key in aggregates)
+            data.push([key,aggregates[key]])
+
+        console.log(data)
+        console.log(chartContainer)
+        $(function () {
+            // Radialize the colors
+        
+            // Build the chart
             $(chartContainer).highcharts({
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false
+                },
                 title: {
-                    text: 'Monthly Average Temperature',
-                    x: -20 //center
-                },
-                subtitle: {
-                    text: 'Source: WorldClimate.com',
-                    x: -20
-                },
-                xAxis: {
-                    categories: categories
-                },
-                yAxis: {
-                    title: {
-                        text: 'Temperature (°C)'
-                    },
-                    plotLines: [{
-                        value: 0,
-                        width: 1,
-                        color: '#808080'
-                    }]
+                    text: 'Browser market shares at a specific website, 2014'
                 },
                 tooltip: {
-                    valueSuffix: '°C'
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
                 },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                            style: {
+                                color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                            },
+                            connectorColor: 'silver'
+                        }
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Browser share',
+                    data: data
+                }]
+            });
+        });
+    } 
+
+    function createChartB(respObj, categories, chartContainer){
+        var obj={};
+        obj['data']=[]
+        categories = []
+        for(var key in respObj['aggregate']){
+            categories.push('cluster'+key)
+            obj['data'].push(respObj['aggregate'][key])
+        }
+        if(respObj['labels']!=undefined)
+            categories=respObj['labels']
+        console.log(categories)
+        obj['name']='clusters';
+        obj['pointPlacement']='on';
+        var data =[obj]
+        console.log(data)
+        
+        $(function () {
+            $(chartContainer).highcharts({
+
+                chart: {
+                    polar: true,
+                    type: 'line'
+                },
+
+                title: {
+                    text: 'Classified Data',
+                    x: -80
+                },
+
+                pane: {
+                    size: '80%'
+                },
+
+                xAxis: {
+                    categories: categories,
+                    tickmarkPlacement: 'on',
+                    lineWidth: 0
+                },
+
+                yAxis: {
+                    gridLineInterpolation: 'polygon',
+                    lineWidth: 0,
+                    min: 0
+                },
+
+                tooltip: {
+                    shared: true,
+                    pointFormat: '<span style="color:{series.color}">{series.name}: <b>{point.y:,.0f}</b><br/>'
+                },
+
                 legend: {
-                    layout: 'vertical',
                     align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
+                    verticalAlign: 'top',
+                    y: 70,
+                    layout: 'vertical'
                 },
                 series: data
-                    /* {
-                        name: 'New York',
-                        data: [-0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5]
-                    }*/
             });
         });
     }
-
 
 
     var testData = [{
@@ -737,5 +807,15 @@
         };
         // Apply the theme
         Highcharts.setOptions(Highcharts.theme);
+
+        Highcharts.getOptions().colors = Highcharts.map(Highcharts.getOptions().colors, function (color) {
+            return {
+                radialGradient: { cx: 0.5, cy: 0.3, r: 0.7 },
+                stops: [
+                    [0, color],
+                    [1, Highcharts.Color(color).brighten(-0.3).get('rgb')] // darken
+                ]
+            };
+        });
     }
 }(this));
