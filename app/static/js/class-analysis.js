@@ -401,10 +401,23 @@
         var bttn = $("<button/>",{class: 'btn btn-warning btn-sm dropdown-toggle', 'data-toggle':'dropdown'}).append($('<i/>',{class:'fa fa-bars', text:'Export Table Data'}))
         var opts = $("<ul/>",{class:'dropdown-menu', role:'menu'});
         var li1 = $("<li/>");
+
         var opt1 = $('<a>',{
             text: 'JSON',
             href: '#',
-            onClick: "console.log($('#"+tableId+"'));$('#"+tableId+"').tableExport({type:'json',escape:'false'});"
+            onClick: "$('#"+tableId+"').tableExport({type:'json',escape:'false'});"
+        }).appendTo(li1);
+
+        var opt2 = $('<a>',{
+            text: 'PDF',
+            href: '#',
+            onClick: "$('#"+tableId+"').tableExport({type:'pdf',escape:'false'});"
+        }).appendTo(li1);
+
+        var opt3 = $('<a>',{
+            text: 'CSV',
+            href: '#',
+            onClick: "$('#"+tableId+"').tableExport({type:'csv',escape:'false'});"
         }).appendTo(li1);
 
         li1.appendTo(opts);
