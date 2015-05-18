@@ -187,7 +187,7 @@
             //chart 0 is special
             attachChartWithButtons(data,labels,charts.chart0,divId)
             //console.log(fixedAggregates)
-            attachChartWithButtons(data,labels,charts.chartB,divId)
+            attachChartWithButtons(data,labels,charts.chartA,divId)
         }
         //moves screen to container
          $('html, body').animate({'scrollTop': container.offset().top}, 'slow', 'swing');
