@@ -117,7 +117,7 @@
 
             mine(name,technique,method,normalization,standardization,function(data){
                 //createAnalysisView()
-                console.log('before call')
+                console.log(data)
                 var t=technique.regr
                 callback(data,null,'REGRESSION')
             })
@@ -152,7 +152,7 @@
             var predictData = [{'name':'predicted','data':data['actual_pred']}]
             //showing test data for regression
             attachChartWithButtons(testData,range(1,data['testY'].length),charts.chartB,divId)
-            attachMetrics(null,divId)
+            attachMetrics(data,divId)
             //showing actual prediction for regression
             attachChartWithButtons(predictData,range(1,data['actual_pred'].length),charts.chartA,divId)
         }else if(type === technique.clfy){
@@ -210,13 +210,13 @@
     function attachMetrics(data,divId){
         var row = $("<div/>",{class:'row content-Container'}).appendTo($('#'+divId))
         var col1 = $("<div/>",{class:'col-md-4'})
-        var C1_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
+        var C1_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error'+data['errors'].mse+'</p>')
         C1_content.appendTo(col1)
         var col2 = $("<div/>",{class:'col-md-4'})
-        var C2_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
+        var C2_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Absolute Error'+data['errors'].mae+'</p>')
         C2_content.appendTo(col2)
         var col3 = $("<div/>",{class:'col-md-4'})
-        var C3_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Mean Squared Error</p>')
+        var C3_content = $("<div/>",{class:'container-fluid analysis-text-Container'}).append('<p>Euclidean Distance'+data['errors'].dist+'</p>')
         C3_content.appendTo(col3)
         row.append(col1)
         row.append(col2)
@@ -284,11 +284,10 @@
         $(function () {
             $(chartContainer).highcharts({
                 title: {
-                    text: 'Monthly Average Temperature',
+                    text: 'Regression Results',
                     x: -20 //center
                 },
                 subtitle: {
-                    text: 'Source: WorldClimate.com',
                     x: -20
                 },
                 xAxis: {
@@ -296,7 +295,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Temperature (°C)'
+                        text: 'Predicted Values'
                     },
                     plotLines: [{
                         value: 0,
@@ -305,7 +304,7 @@
                     }]
                 },
                 tooltip: {
-                    valueSuffix: '°C'
+                    valueDecimals: 3
                 },
                 legend: {
                     layout: 'vertical',
@@ -326,11 +325,7 @@
         $(function () {
             $(chartContainer).highcharts({
                 title: {
-                    text: 'lk'
-                },
-
-                subtitle: {
-                    text: 'Source: Google Analytics'
+                    text: 'Regression Results'
                 },
 
                 xAxis: {
@@ -423,7 +418,7 @@
                     zoomType: 'x'
                 },
                 title: {
-                    text: 'USD to EUR exchange rate from 2006 through 2008'
+                    text: 'Regression Results'
                 },
                 subtitle: {
                     text: document.ontouchstart === undefined ?
@@ -435,7 +430,7 @@
                 },
                 yAxis: {
                     title: {
-                        text: 'Exchange rate'
+                        text: 'Predicted Values'
                     }
                 },
                 legend: {
@@ -473,18 +468,14 @@
                     type: 'area'
                 },
                 title: {
-                    text: 'US and USSR nuclear stockpiles'
-                },
-                subtitle: {
-                    text: 'Source: <a href="http://thebulletin.metapress.com/content/c4120650912x74k7/fulltext.pdf">' +
-                        'thebulletin.metapress.com</a>'
+                    text: 'Regression Results'
                 },
                 xAxis: {
                     categories:categories
                 },
                 yAxis: {
                     title: {
-                        text: 'Nuclear weapon states'
+                        text: 'Predicted Values'
                     },
                     
                 },
@@ -550,7 +541,7 @@
                         enabled: false
                     },
                     title: {
-                        text: 'Historical USD to EUR Exchange Rate'
+                        text: 'Regression Results'
                     },
                     subtitle: {
                         text: 'Select an area by dragging across the lower chart'
